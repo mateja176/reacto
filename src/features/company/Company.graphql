@@ -2,7 +2,3 @@ type Company @entity {
   id: ID! @id
   name: String! @column
 }
-
-type Query {
-  company: Company!
-}
