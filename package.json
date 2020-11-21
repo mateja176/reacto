@@ -5,16 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "codegen": "graphql-codegen --config codegen.yml",
+    "prebuild": "npm run codegen",
     "build": "tsc",
     "type-check": "tsc --noEmit",
     "format": "prettier src/**/*.ts --check",
     "format:fix": "prettier src/**/*.ts --write",
     "lint": "eslint src/**/*.ts",
     "ci": "cross-env CI=true concurrently --kill-others-on-fail --names format,lint,type-check,test --prefix-colors yellow,cyan,blue,green npm:format npm:lint npm:type-check npm:test",
+    "prestart": "npm run codegen",
     "start": "ts-node src/index.ts",
     "dev": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts",
-    "serve": "node build/index.js",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "serve": "node build/index.js"
   },
   "repository": {
     "type": "git",
