@@ -1,23 +1,28 @@
-import { ApolloServer, gql } from 'apollo-server-express';
+import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
+import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
-import * as fs from 'fs';
 import { join } from 'path';
-import resolvers from './resolvers';
+import resolvers from './features';
+import { readSchemas } from './utils';
 
-const server = new ApolloServer({
-  typeDefs: gql`
-    ${fs.readFileSync(join(__dirname, '/graphql/schema.graphql'))}
-  `,
-  resolvers,
-  playground: true,
-});
+(async () => {
+  const schemas = await readSchemas(join(__dirname, 'features'));
 
-const app = express();
+  const server = new ApolloServer({
+    typeDefs: [DIRECTIVES, ...schemas],
+    resolvers,
+    playground: true,
+  });
 
-server.applyMiddleware({ app });
+  const app = express();
 
-const port = process.env.PORT ?? 4000;
+  server.applyMiddleware({ app });
 
-app.listen({ port }, () => {
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
-});
+  const port = process.env.PORT ?? 4000;
+
+  app.listen({ port }, () => {
+    console.log(
+      `🚀 Server ready at http://localhost:4000${server.graphqlPath}`,
+    );
+  });
+})();

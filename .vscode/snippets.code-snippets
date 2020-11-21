@@ -1,0 +1,12 @@
+{
+  "graphql entity": {
+    "prefix": "entity",
+    "body": [
+      "type ${1:${TM_FILENAME_BASE}} {",
+      "  id: ID! @id",
+      "  name: String! @column",
+      "  $2",
+      "}"
+    ]
+  }
+}
