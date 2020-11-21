@@ -1,4 +1,4 @@
-type Company {
+type Company @entity {
   id: ID! @id
   name: String! @column
 }
