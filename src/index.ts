@@ -1,9 +1,12 @@
 import { DIRECTIVES } from '@graphql-codegen/typescript-mongodb';
 import { ApolloServer } from 'apollo-server-express';
+import dotenv from 'dotenv';
 import express from 'express';
 import { join } from 'path';
 import resolvers from './features';
 import { readSchemas } from './utils';
+
+dotenv.config();
 
 (async () => {
   const schemas = await readSchemas(join(__dirname, 'features'));
@@ -22,7 +25,7 @@ import { readSchemas } from './utils';
 
   app.listen({ port }, () => {
     console.log(
-      `🚀 Server ready at http://localhost:4000${server.graphqlPath}`,
+      `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`,
     );
   });
 })();
