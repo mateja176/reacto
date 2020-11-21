@@ -8,5 +8,14 @@
       "  $2",
       "}"
     ]
+  },
+  "resolver params": {
+    "prefix": "resParams",
+    "body": [
+      "  parent: TParent,",
+      "  args: TArgs,",
+      "  context: TContext,",
+      "  info: GraphQLResolveInfo"
+    ]
   }
 }
