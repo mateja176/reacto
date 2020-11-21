@@ -1,4 +1,4 @@
-import { Company, QueryResolvers } from '../../../generated/graphql';
+import { Company, QueryResolvers } from '../../../generated/resolvers';
 
 const company: QueryResolvers['company'] = (): Company => ({
   id: '1',

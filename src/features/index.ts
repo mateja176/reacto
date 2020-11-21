@@ -1,4 +1,4 @@
-import { Resolvers } from '../generated/graphql';
+import { Resolvers } from '../generated/resolvers';
 import company from './company';
 
 const resolvers: Resolvers = {
