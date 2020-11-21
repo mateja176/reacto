@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { join } from 'path';
 import resolvers from './features';
-import { readSchemas } from './utils';
+import { readSchemas } from './utils/utils';
 
 dotenv.config();
 
