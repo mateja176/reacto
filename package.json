@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "codegen": "graphql-codegen -r dotenv/config --config codegen.yml",
+    "codegen": "graphql-codegen --config codegen.yml",
     "build": "tsc",
     "type-check": "tsc --noEmit",
     "format": "prettier src/**/*.ts --check",
@@ -14,10 +14,8 @@
     "ci": "cross-env CI=true concurrently --kill-others-on-fail --names format,lint,type-check,test --prefix-colors yellow,cyan,blue,green npm:format npm:lint npm:type-check npm:test",
     "start": "ts-node src/index.ts",
     "codegen:watch": "nodemon --watch 'src/**/*.graphql' --ext graphql --exec 'ts-node' scripts/codegen.ts",
-    "codegen:wait": "wait-on --log tcp:$PORT && npm run codegen:watch",
-    "codegen:watch:wait": "dotenv npm -- run codegen:wait",
     "dev:server": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts",
-    "dev": "concurrently --names server,codegen npm:dev:server npm:codegen:watch:wait",
+    "dev": "concurrently --names server,codegen npm:dev:server npm:codegen:watch",
     "serve": "node build/index.js"
   },
   "repository": {
