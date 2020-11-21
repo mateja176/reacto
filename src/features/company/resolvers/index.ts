@@ -1,8 +1,3 @@
-import { Company, QueryResolvers } from '../../../generated/graphql';
+import company from './company';
 
-const company: QueryResolvers['company'] = (): Company => ({
-  id: '1',
-  name: 'Test',
-});
-
-export default company;
+export default { company };
