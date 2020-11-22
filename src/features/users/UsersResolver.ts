@@ -1,5 +1,12 @@
-import { GraphQLID } from 'graphql';
-import { Arg, Args, Authorized, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Args,
+  Authorized,
+  ID,
+  Mutation,
+  Query,
+  Resolver,
+} from 'type-graphql';
 import { Repository } from 'typeorm';
 import { User } from '../../entity/User';
 import { Roles } from '../../interfaces/Roles';
@@ -33,7 +40,7 @@ export class UserResolver {
     return this.userRepository.save(user);
   }
 
-  @Mutation(() => GraphQLID)
+  @Mutation(() => ID)
   @Authorized(Roles.Admin)
   async removeUser(@Arg('id') id: string) {
     await this.userRepository.delete(id);
