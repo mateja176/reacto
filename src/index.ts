@@ -1,6 +1,7 @@
 import { ApolloServer } from 'apollo-server-express';
 import dotenv from 'dotenv';
 import express from 'express';
+import jwt from 'express-jwt';
 import 'reflect-metadata';
 import { buildSchema, ContainerType } from 'type-graphql';
 import {
@@ -9,9 +10,13 @@ import {
   getConnectionOptions,
 } from 'typeorm';
 import ormConfig from '../ormconfig';
+import { path } from './config/config';
 import configureContainer from './container';
+import { Context } from './interfaces/interfaces';
+import { JWTUser } from './interfaces/jwt';
 import resolvers from './resolvers';
 import authChecker from './utils/authChecker';
+import { EnvError } from './utils/errors';
 
 dotenv.config();
 
@@ -32,12 +37,30 @@ dotenv.config();
   const server = new ApolloServer({
     schema,
     playground: true,
-    context: { connection },
+    context: ({ req }) => {
+      const context: Context = {
+        connection,
+        user: (req as express.Request & { user: JWTUser }).user, // `req.user` comes from `express-jwt`
+      };
+      return context;
+    },
   });
 
   const app = express();
 
-  server.applyMiddleware({ app });
+  if (!process.env.JWT_SECRET) {
+    throw new EnvError('JWT_SECRET');
+  }
+  app.use(
+    path,
+    jwt({
+      secret: process.env.JWT_SECRET,
+      credentialsRequired: false,
+      algorithms: ['RS256'],
+    }),
+  );
+
+  server.applyMiddleware({ app, path });
 
   const port = process.env.PORT ?? 4000;
 
