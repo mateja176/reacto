@@ -1,5 +1,4 @@
 import { Arg, Args, Authorized, Mutation, Query, Resolver } from 'type-graphql';
-import {Entity} from 'typeorm'
 import { Roles } from '../../interfaces/Roles';
 import { UserNotFoundError } from './errors';
 import { UserService } from './service';
