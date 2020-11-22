@@ -2,13 +2,14 @@ import { ApolloServer } from 'apollo-server-express';
 import dotenv from 'dotenv';
 import express from 'express';
 import 'reflect-metadata';
-import { buildSchema } from 'type-graphql';
+import { buildSchema, ContainerType } from 'type-graphql';
 import {
   ConnectionOptions,
   createConnection,
   getConnectionOptions,
 } from 'typeorm';
 import ormConfig from '../ormconfig';
+import configureContainer from './container';
 import { UserResolver } from './resolvers/users/UsersResolver';
 import authChecker from './utils/authChecker';
 
@@ -25,6 +26,7 @@ dotenv.config();
   const schema = await buildSchema({
     resolvers: [UserResolver],
     authChecker,
+    container: () => configureContainer(connection) as ContainerType,
   });
 
   const server = new ApolloServer({
