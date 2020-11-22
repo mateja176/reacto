@@ -13,8 +13,8 @@
     "lint": "eslint src/**/*.ts",
     "ci": "cross-env CI=true concurrently --kill-others-on-fail --names format,lint,type-check,test --prefix-colors yellow,cyan,blue,green npm:format npm:lint npm:type-check npm:test",
     "start": "ts-node src/index.ts",
-    "codegen:watch": "nodemon --watch 'src/**/*.graphql' --ext graphql --exec 'ts-node' scripts/codegen.ts",
-    "dev:server": "nodemon --watch 'src/**/*.ts' --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts",
+    "codegen:watch": "nodemon --watch src --ext graphql --exec 'ts-node' scripts/codegen.ts",
+    "dev:server": "nodemon --watch src --ext ts --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts",
     "dev": "concurrently --names server,codegen npm:dev:server npm:codegen:watch",
     "serve": "node build/index.js"
   },
