@@ -15,7 +15,7 @@
     "start": "ts-node src/index.ts",
     "codegen:watch": "nodemon --watch src --ext graphql --exec 'ts-node' scripts/codegen.ts",
     "dev:server": "nodemon --watch src --ext ts --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts",
-    "dev": "concurrently --names server,codegen npm:dev:server npm:codegen:watch",
+    "dev": "npm run dev:server",
     "serve": "node build/index.js"
   },
   "repository": {
