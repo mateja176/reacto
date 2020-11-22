@@ -7,7 +7,7 @@ import {
   Query,
   Resolver,
 } from 'type-graphql';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import { User } from '../../entity/User';
 import { Roles } from '../../interfaces/Roles';
 import { UserNotFoundError } from './errors';
@@ -15,7 +15,10 @@ import { UserInput, UsersArgs } from './types';
 
 @Resolver(User)
 export class UserResolver {
-  constructor(private userRepository: Repository<User>) {}
+  private userRepository: Repository<User>;
+  constructor(connection: Connection) {
+    this.userRepository = connection.getRepository(User);
+  }
 
   @Query(() => User)
   async user(@Arg('id') id: string) {
