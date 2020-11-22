@@ -9,7 +9,7 @@ import {
   getConnectionOptions,
 } from 'typeorm';
 import ormConfig from '../ormconfig';
-import { UserResolver } from './features/users/UsersResolver';
+import { UserResolver } from './resolvers/users/UsersResolver';
 import authChecker from './utils/authChecker';
 
 dotenv.config();
