@@ -3,10 +3,13 @@ import { MongoConnectionOptions } from 'typeorm/driver/mongodb/MongoConnectionOp
 const ormConfig: MongoConnectionOptions = {
   type: 'mongodb',
   useUnifiedTopology: true,
-  entities: ['src/entity/**/*.ts'],
-  migrations: ['src/migrations/**/*.ts'],
   synchronize: false,
   logging: true,
+  entities: ['src/entity/**/*.ts'],
+  migrations: ['src/migrations/**/*.ts'],
+  cli: {
+    migrationsDir: 'src/migrations',
+  },
 };
 
 export default ormConfig;
