@@ -4,7 +4,12 @@ import express from 'express';
 import 'reflect-metadata';
 import { buildSchema, ResolverData } from 'type-graphql';
 import Container from 'typedi';
-import { createConnection } from 'typeorm';
+import {
+  ConnectionOptions,
+  createConnection,
+  getConnectionOptions,
+} from 'typeorm';
+import ormConfig from './config/ormConfig';
 import { UserResolver } from './features/users/UsersResolver';
 import { Context } from './interfaces/interfaces';
 import authChecker from './utils/authChecker';
@@ -12,14 +17,19 @@ import authChecker from './utils/authChecker';
 dotenv.config();
 
 (async () => {
+  const configConnectionOptions = await getConnectionOptions();
+  const connectionOptions = {
+    ...ormConfig,
+    ...configConnectionOptions,
+  } as ConnectionOptions;
+  const connection = await createConnection(connectionOptions);
+
   const schema = await buildSchema({
     resolvers: [UserResolver],
     authChecker,
     container: ({ context }: ResolverData<Context>) =>
       Container.of(context.connection),
   });
-
-  const connection = await createConnection();
 
   const server = new ApolloServer({
     schema,
