@@ -10,7 +10,7 @@ import {
 import { Inject, Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { Identifiers } from '../../container';
-import { Role, User } from '../../entity/User';
+import { Role, User } from '../../entities/User';
 import { NotFoundError } from '../../utils/errors';
 import { UserInput, UsersArgs } from './types';
 

@@ -5,7 +5,7 @@ const ormConfig: MongoConnectionOptions = {
   useUnifiedTopology: true,
   synchronize: false,
   logging: true,
-  entities: ['src/entity/**/*.ts'],
+  entities: ['src/entities/**/*.ts'],
   migrations: ['src/migrations/**/*.ts'],
   cli: {
     migrationsDir: 'src/migrations',

@@ -1,6 +1,6 @@
 import Container from 'typedi';
 import { Connection } from 'typeorm';
-import { User } from './entity/User';
+import { User } from './entities/User';
 
 export enum Identifiers {
   userRepository = 'userRepository',
