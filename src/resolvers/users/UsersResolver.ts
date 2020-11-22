@@ -10,8 +10,7 @@ import {
 import { Inject, Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { Identifiers } from '../../container';
-import { User } from '../../entity/User';
-import { Roles } from '../../interfaces/Roles';
+import { Role, User } from '../../entity/User';
 import { UserNotFoundError } from './errors';
 import { UserInput, UsersArgs } from './types';
 
@@ -46,7 +45,7 @@ export class UserResolver {
   }
 
   @Mutation(() => ID)
-  @Authorized(Roles.Admin)
+  @Authorized(Role.admin)
   async removeUser(@Arg('id') id: string) {
     await this.userRepository.delete(id);
     return id;
