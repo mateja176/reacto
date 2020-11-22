@@ -9,6 +9,6 @@ export class User implements IEntity {
   @Field(() => ID)
   id: string;
   @Column()
-  @Field()
+  @Field({ description: 'First name and last name' })
   name: string;
 }
