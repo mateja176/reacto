@@ -18,7 +18,10 @@ import { UserInput, UsersArgs } from './types';
 @Service()
 @Resolver(User)
 export class UserResolver {
-  @Inject(Identifiers.userRepository) userRepository: Repository<User>;
+  constructor(
+    @Inject(Identifiers.userRepository)
+    private userRepository: Repository<User>,
+  ) {}
   @Query(() => User)
   async user(@Arg('id') id: string) {
     const user = await this.userRepository.findOne(id);
