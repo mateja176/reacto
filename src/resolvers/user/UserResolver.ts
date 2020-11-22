@@ -41,6 +41,7 @@ export class UserResolver {
   createUser(@Arg('input') input: UserInput): Promise<User> {
     const user = new User();
     user.name = input.name;
+    user.role = input.role;
     return this.userRepository.save(user);
   }
 

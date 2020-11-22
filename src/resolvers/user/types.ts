@@ -1,11 +1,14 @@
 import { Max, MaxLength, Min } from 'class-validator';
 import { ArgsType, Field, InputType, Int } from 'type-graphql';
+import { Role } from '../../entities/User';
 
 @InputType()
 export class UserInput {
   @Field()
   @MaxLength(50)
   name: string;
+  @Field(() => Role)
+  role: Role;
 }
 
 @ArgsType()
