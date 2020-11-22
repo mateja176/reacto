@@ -1,14 +1,5 @@
 import { Max, MaxLength, Min } from 'class-validator';
-import { ArgsType, Field, ID, InputType, Int, ObjectType } from 'type-graphql';
-import { IEntity } from '../../interfaces/Entity';
-
-@ObjectType()
-export class User implements IEntity {
-  @Field(() => ID)
-  id: string;
-  @Field()
-  name: string;
-}
+import { ArgsType, Field, InputType, Int } from 'type-graphql';
 
 @InputType()
 export class UserInput {

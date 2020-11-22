@@ -4,18 +4,22 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { join } from 'path';
 import 'reflect-metadata';
+import { createConnection } from 'typeorm';
 import resolvers from './features';
 import { readSchemas } from './utils/utils';
 
 dotenv.config();
 
 (async () => {
+  const connection = await createConnection();
+
   const schemas = await readSchemas(join(__dirname, 'features'));
 
   const server = new ApolloServer({
     typeDefs: [DIRECTIVES, ...schemas],
     resolvers,
     playground: true,
+    context: { connection },
   });
 
   const app = express();
