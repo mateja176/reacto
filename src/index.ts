@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import ormConfig from '../ormconfig';
 import configureContainer from './container';
-import { UserResolver } from './resolvers/users/UsersResolver';
+import { UserResolver } from './resolvers/user/UserResolver';
 import authChecker from './utils/authChecker';
 
 dotenv.config();

@@ -11,7 +11,7 @@ import { Inject, Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { Identifiers } from '../../container';
 import { Role, User } from '../../entity/User';
-import { UserNotFoundError } from './errors';
+import { NotFoundError } from '../../utils/errors';
 import { UserInput, UsersArgs } from './types';
 
 @Service()
@@ -27,7 +27,7 @@ export class UserResolver {
     if (user) {
       return user;
     } else {
-      throw new UserNotFoundError(id);
+      throw new NotFoundError(id);
     }
   }
 
