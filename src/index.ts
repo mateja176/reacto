@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 import ormConfig from '../ormconfig';
 import configureContainer from './container';
-import { UserResolver } from './resolvers/user/UserResolver';
+import resolvers from './resolvers';
 import authChecker from './utils/authChecker';
 
 dotenv.config();
@@ -24,7 +24,7 @@ dotenv.config();
   const connection = await createConnection(connectionOptions);
 
   const schema = await buildSchema({
-    resolvers: [UserResolver],
+    resolvers,
     authChecker,
     container: () => configureContainer(connection) as ContainerType,
   });
