@@ -66,13 +66,24 @@ export class LoginOutput {
 }
 
 @InputType()
-export class UserInput {
+export class RegisterInput {
+  @Field()
+  @IsEmail()
+  email: string;
+  @Field()
+  @Validate(IsPassword)
+  password: string;
   @Field()
   @MaxLength(50)
   @Matches(/\w+\s+\w+/, {
     message: 'Name must consist of a first and last name.',
   })
   name: string;
-  @Field(() => Role)
-  role: Role;
+}
+@ObjectType()
+export class RegisterOutput {
+  @Field(() => UserOutput)
+  user: UserOutput;
+  @Field()
+  token: string;
 }

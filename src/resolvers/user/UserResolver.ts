@@ -1,20 +1,22 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import { Arg, Args, Authorized, Mutation, Query, Resolver } from 'type-graphql';
 import { Inject, Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { Identifiers } from '../../container';
 import { Role, User } from '../../entities/User';
-import env from '../../utils/env';
+import createToken from '../../services/createToken';
+import hashPassword from '../../services/hashPassword';
 import {
   InvalidCredentialsError,
   NotFoundByEmailError,
   NotFoundError,
+  UserExistsError,
 } from '../../utils/errors';
 import {
   LoginInput,
   LoginOutput,
-  UserInput,
+  RegisterInput,
+  RegisterOutput,
   UserOutput,
   UsersArgs,
 } from './types';
@@ -54,9 +56,7 @@ export class UserResolver {
 
       const passwordsMatch = await bcrypt.compare(password, passwordHash);
 
-      const token = jwt.sign({ ...user, id: String(user.id) }, env.jwtSecret, {
-        algorithm: 'HS256',
-      });
+      const token = createToken(user);
 
       if (passwordsMatch) {
         console.log({ user, token });
@@ -69,12 +69,29 @@ export class UserResolver {
     }
   }
 
-  @Mutation(() => UserOutput)
-  @Authorized(Role.admin)
-  createUser(@Arg('input') input: UserInput): Promise<UserOutput> {
-    const user = new UserOutput();
-    user.name = input.name;
-    user.role = input.role;
-    return this.userRepository.save(user);
+  @Mutation(() => RegisterOutput)
+  async register(@Arg('input') input: RegisterInput): Promise<RegisterOutput> {
+    const user = await this.userRepository.findOne({
+      where: { email: input.email },
+    });
+
+    if (user) {
+      throw new UserExistsError(user.email);
+    } else {
+      const newUser = new User();
+      newUser.email = input.email;
+      newUser.passwordHash = await hashPassword(input.password);
+      newUser.name = input.name;
+      newUser.role = Role.regular;
+
+      await this.userRepository.save(newUser);
+
+      const token = createToken(newUser);
+
+      return {
+        user: newUser,
+        token,
+      };
+    }
   }
 }

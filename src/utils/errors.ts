@@ -20,3 +20,8 @@ export class InvalidCredentialsError extends Error {
     super(`The provided credentials are not valid.`);
   }
 }
+export class UserExistsError extends Error {
+  constructor(email: string) {
+    super(`User with email "${email}" already exists.`);
+  }
+}
