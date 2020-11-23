@@ -1,3 +1,3 @@
-import { User } from '../entities/User';
+import { UserOutput } from '../resolvers/user/types';
 
-export interface JWTUser extends User {}
+export interface JWTUser extends UserOutput {}
