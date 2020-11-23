@@ -41,6 +41,7 @@ import env from './utils/env';
       };
       return context;
     },
+    tracing: process.env.NODE_ENV !== 'production',
   });
 
   const app = express();
