@@ -51,7 +51,7 @@ import env from './utils/env';
     jwt({
       secret: env.jwtSecret,
       credentialsRequired: false,
-      algorithms: ['RS256'],
+      algorithms: ['HS256'],
     }),
   );
 
