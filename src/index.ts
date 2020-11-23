@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import jwt from 'express-jwt';
 import 'reflect-metadata';
-import { buildSchema, ContainerType } from 'type-graphql';
+import { buildSchema } from 'type-graphql';
 import {
   ConnectionOptions,
   createConnection,
@@ -28,7 +28,7 @@ import env from './utils/env';
   const schema = await buildSchema({
     resolvers,
     authChecker,
-    container: () => configureContainer(connection) as ContainerType,
+    container: () => configureContainer(connection),
   });
 
   const server = new ApolloServer({
