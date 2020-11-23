@@ -1,4 +1,8 @@
-import { ForbiddenError } from 'apollo-server-express';
+import {
+  AuthenticationError,
+  ForbiddenError,
+  UserInputError,
+} from 'apollo-server-express';
 import bcrypt from 'bcrypt';
 import {
   Arg,
@@ -16,12 +20,7 @@ import { Role, User } from '../../entities/User';
 import { Context } from '../../interfaces/interfaces';
 import createToken from '../../services/createToken';
 import hashPassword from '../../services/hashPassword';
-import {
-  InvalidCredentialsError,
-  NotFoundByEmailError,
-  NotFoundError,
-  UserExistsError,
-} from '../../utils/errors';
+import { NotFoundError } from '../../utils/errors';
 import {
   LoginInput,
   LoginOutput,
@@ -83,10 +82,10 @@ export class UserResolver {
         console.log({ user, token });
         return { user, token };
       } else {
-        throw new InvalidCredentialsError();
+        throw new AuthenticationError('Invalid credentials');
       }
     } else {
-      throw new NotFoundByEmailError(email);
+      throw new AuthenticationError(`User with email "${email}" not found.`);
     }
   }
 
@@ -97,7 +96,9 @@ export class UserResolver {
     });
 
     if (user) {
-      throw new UserExistsError(user.email);
+      throw new UserInputError(
+        `User with email "${input.email}" already exists.`,
+      );
     } else {
       const newUser = new User();
       newUser.email = input.email;
