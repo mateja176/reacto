@@ -13,7 +13,7 @@ import {
   Query,
   Resolver,
 } from 'type-graphql';
-import { Inject, Service } from 'typedi';
+import { Inject } from 'typedi';
 import { Identifiers, UserRepository } from '../../config/container';
 import { Role } from '../../entities/User';
 import { Context } from '../../interfaces/interfaces';
