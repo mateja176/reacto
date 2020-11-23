@@ -12,8 +12,8 @@ import ormConfig from '../ormconfig';
 import { path } from './config/config';
 import configureContainer from './container';
 import { Context } from './interfaces/interfaces';
-import { JWTUser } from './interfaces/jwt';
 import resolvers from './resolvers';
+import { UserOutput } from './resolvers/user/types';
 import authChecker from './utils/authChecker';
 import env from './utils/env';
 
@@ -37,7 +37,7 @@ import env from './utils/env';
     context: ({ req }) => {
       const context: Context = {
         connection,
-        user: (req as express.Request & { user: JWTUser }).user, // `req.user` comes from `express-jwt`
+        user: (req as express.Request & { user: UserOutput }).user, // `req.user` comes from `express-jwt`
       };
       return context;
     },
