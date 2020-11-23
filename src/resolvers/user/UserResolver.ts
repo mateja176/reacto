@@ -13,12 +13,11 @@ import {
   Query,
   Resolver,
 } from 'type-graphql';
-import { UserRepository } from '../../config/container';
 import { Role } from '../../entities/User';
 import { Context } from '../../interfaces/interfaces';
 import createToken from '../../services/createToken';
 import hashPassword from '../../services/hashPassword';
-import { createEntity } from '../../utils/container';
+import { createEntity, UserRepository } from '../../utils/container';
 import { NotFoundError } from '../../utils/errors';
 import {
   LoginInput,
