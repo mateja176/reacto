@@ -1,5 +1,4 @@
 import { ApolloServer } from 'apollo-server-express';
-import dotenv from 'dotenv';
 import express from 'express';
 import jwt from 'express-jwt';
 import 'reflect-metadata';
@@ -16,9 +15,7 @@ import { Context } from './interfaces/interfaces';
 import { JWTUser } from './interfaces/jwt';
 import resolvers from './resolvers';
 import authChecker from './utils/authChecker';
-import { EnvError } from './utils/errors';
-
-dotenv.config();
+import env from './utils/env';
 
 (async () => {
   const configConnectionOptions = await getConnectionOptions();
@@ -48,13 +45,10 @@ dotenv.config();
 
   const app = express();
 
-  if (!process.env.JWT_SECRET) {
-    throw new EnvError('JWT_SECRET');
-  }
   app.use(
     path,
     jwt({
-      secret: process.env.JWT_SECRET,
+      secret: env.jwtSecret,
       credentialsRequired: false,
       algorithms: ['RS256'],
     }),
