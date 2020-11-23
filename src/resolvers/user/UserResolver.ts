@@ -13,8 +13,7 @@ import {
   Query,
   Resolver,
 } from 'type-graphql';
-import { Inject } from 'typedi';
-import { Identifiers, UserRepository } from '../../config/container';
+import { UserRepository } from '../../config/container';
 import { Role } from '../../entities/User';
 import { Context } from '../../interfaces/interfaces';
 import createToken from '../../services/createToken';
@@ -32,10 +31,7 @@ import {
 
 @Resolver(UserOutput)
 export class UserResolver {
-  constructor(
-    @Inject(Identifiers.userRepository)
-    private userRepository: UserRepository,
-  ) {}
+  constructor(private userRepository: UserRepository) {}
   @Query(() => UserOutput)
   @Authorized()
   async user(@Arg('id') id: string, @Ctx() context: Context) {
