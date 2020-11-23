@@ -29,7 +29,6 @@ import {
   UsersArgs,
 } from './types';
 
-@Service()
 @Resolver(UserOutput)
 export class UserResolver {
   constructor(
