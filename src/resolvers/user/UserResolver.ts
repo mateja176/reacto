@@ -14,9 +14,8 @@ import {
   Resolver,
 } from 'type-graphql';
 import { Inject, Service } from 'typedi';
-import { Repository } from 'typeorm';
-import { Identifiers } from '../../container';
-import { Role, User } from '../../entities/User';
+import { Identifiers, UserRepository } from '../../config/container';
+import { Role } from '../../entities/User';
 import { Context } from '../../interfaces/interfaces';
 import createToken from '../../services/createToken';
 import hashPassword from '../../services/hashPassword';
@@ -35,7 +34,7 @@ import {
 export class UserResolver {
   constructor(
     @Inject(Identifiers.userRepository)
-    private userRepository: Repository<User>,
+    private userRepository: UserRepository,
   ) {}
   @Query(() => UserOutput)
   @Authorized()
@@ -100,11 +99,12 @@ export class UserResolver {
         `User with email "${input.email}" already exists.`,
       );
     } else {
-      const newUser = new User();
-      newUser.email = input.email;
-      newUser.passwordHash = await hashPassword(input.password);
-      newUser.name = input.name;
-      newUser.role = Role.regular;
+      const newUser = this.userRepository.make({
+        email: input.email,
+        passwordHash: await hashPassword(input.password),
+        name: input.name,
+        role: Role.regular,
+      });
 
       await this.userRepository.save(newUser);
 

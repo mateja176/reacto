@@ -1,13 +1,11 @@
 import Container from 'typedi';
 import { Connection } from 'typeorm';
+import { Identifiers } from './config/container';
 import { User } from './entities/User';
-
-export enum Identifiers {
-  userRepository = 'userRepository',
-}
+import { createRepository } from './utils/container';
 
 const configureContainer = (connection: Connection): Container => {
-  Container.set(Identifiers.userRepository, connection.getRepository(User));
+  Container.set(Identifiers.userRepository, createRepository(connection, User));
 
   return Container;
 };
