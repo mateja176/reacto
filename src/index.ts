@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import ormConfig from '../ormconfig';
 import { path } from './config/config';
+import { jwtAlgorithm } from './config/jwt';
 import configureContainer from './container';
 import { Context } from './interfaces/interfaces';
 import resolvers from './resolvers';
@@ -51,7 +52,7 @@ import env from './utils/env';
     jwt({
       secret: env.jwtSecret,
       credentialsRequired: false,
-      algorithms: ['HS256'],
+      algorithms: [jwtAlgorithm],
     }),
   );
 
