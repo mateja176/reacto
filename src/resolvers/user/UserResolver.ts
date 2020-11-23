@@ -1,9 +1,19 @@
+import { ForbiddenError } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
-import { Arg, Args, Authorized, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg,
+  Args,
+  Authorized,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+} from 'type-graphql';
 import { Inject, Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { Identifiers } from '../../container';
 import { Role, User } from '../../entities/User';
+import { Context } from '../../interfaces/interfaces';
 import createToken from '../../services/createToken';
 import hashPassword from '../../services/hashPassword';
 import {
@@ -29,13 +39,24 @@ export class UserResolver {
     private userRepository: Repository<User>,
   ) {}
   @Query(() => UserOutput)
-  @Authorized(Role.admin)
-  async user(@Arg('id') id: string) {
+  @Authorized()
+  async user(@Arg('id') id: string, @Ctx() context: Context) {
     const user = await this.userRepository.findOne(id);
-    if (user) {
-      return user;
+
+    if (context.user.role === Role.admin) {
+      if (user) {
+        return user;
+      } else {
+        throw new NotFoundError(id);
+      }
     } else {
-      throw new NotFoundError(id);
+      if (user?.id === context.user.id) {
+        return user;
+      } else {
+        throw new ForbiddenError(
+          'You are not allowed to perform this operation.',
+        );
+      }
     }
   }
 
