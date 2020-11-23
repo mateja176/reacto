@@ -78,7 +78,6 @@ export class UserResolver {
       const token = createToken(user);
 
       if (passwordsMatch) {
-        console.log({ user, token });
         return { user, token };
       } else {
         throw new AuthenticationError('Invalid credentials');
