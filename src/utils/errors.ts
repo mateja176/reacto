@@ -15,3 +15,8 @@ export class NotFoundByEmailError extends Error {
     super(`User with email "${email}" not found.`);
   }
 }
+export class InvalidCredentialsError extends Error {
+  constructor() {
+    super(`The provided credentials are not valid.`);
+  }
+}
