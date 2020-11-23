@@ -19,6 +19,7 @@ import { Role } from '../../entities/User';
 import { Context } from '../../interfaces/interfaces';
 import createToken from '../../services/createToken';
 import hashPassword from '../../services/hashPassword';
+import { createEntity } from '../../utils/container';
 import { NotFoundError } from '../../utils/errors';
 import {
   LoginInput,
@@ -97,7 +98,7 @@ export class UserResolver {
         `User with email "${input.email}" already exists.`,
       );
     } else {
-      const newUser = this.userRepository.make({
+      const newUser = createEntity(this.userRepository, {
         email: input.email,
         passwordHash: await hashPassword(input.password),
         name: input.name,

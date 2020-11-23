@@ -1,23 +1,11 @@
-import { Connection, DeepPartial, EntityTarget } from 'typeorm';
-import { IRepository } from '../interfaces/container';
+import { DeepPartial, Repository } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
 
-export const createRepository = <E extends IEntity>(
-  connection: Connection,
-  Entity: EntityTarget<E>,
+export const createEntity = <E extends IEntity>(
+  repository: Repository<E>,
+  props: Omit<E, 'id'>,
 ) => {
-  const connectionRepository = connection.getRepository(Entity);
+  const [entity] = repository.create([props as DeepPartial<E>]);
 
-  const repository = {
-    ...connectionRepository,
-    make: (props) => {
-      const [newEntity] = connectionRepository.create([
-        (props as unknown) as DeepPartial<E>, // * TypeScript does not understand that E is a subtype of DeepPartial<E>
-      ]);
-
-      return newEntity;
-    },
-  } as IRepository<E>;
-
-  return repository;
+  return entity;
 };
