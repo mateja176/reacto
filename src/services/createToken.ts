@@ -5,6 +5,7 @@ import env from '../utils/env';
 const createToken = (user: UserOutput) => {
   return jwt.sign({ ...user, id: String(user.id) }, env.jwtSecret, {
     algorithm: 'HS256',
+    expiresIn: '2h',
   });
 };
 
