@@ -1,14 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import {
-  Arg,
-  Args,
-  Authorized,
-  ID,
-  Mutation,
-  Query,
-  Resolver,
-} from 'type-graphql';
+import { Arg, Args, Authorized, Mutation, Query, Resolver } from 'type-graphql';
 import { Inject, Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { Identifiers } from '../../container';
@@ -35,6 +27,7 @@ export class UserResolver {
     private userRepository: Repository<User>,
   ) {}
   @Query(() => UserOutput)
+  @Authorized(Role.admin)
   async user(@Arg('id') id: string) {
     const user = await this.userRepository.findOne(id);
     if (user) {
@@ -83,12 +76,5 @@ export class UserResolver {
     user.name = input.name;
     user.role = input.role;
     return this.userRepository.save(user);
-  }
-
-  @Mutation(() => ID)
-  @Authorized(Role.admin)
-  async removeUser(@Arg('id') id: string) {
-    await this.userRepository.delete(id);
-    return id;
   }
 }
