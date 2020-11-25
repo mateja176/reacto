@@ -1,5 +1,6 @@
-import { Column, Entity, ObjectIdColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, ObjectIdColumn } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
+import { Company } from './Company';
 
 export enum Role {
   regular = 'regular',
@@ -10,12 +11,14 @@ export enum Role {
 export class User implements IEntity {
   @ObjectIdColumn({ unique: true })
   id: string;
+  @Column()
+  name: string;
   @Column({ unique: true })
   email: string;
   @Column()
   passwordHash: string;
   @Column()
-  name: string;
-  @Column()
   role: Role;
+  @ManyToMany(() => Company, (company) => company.managers)
+  company: Company;
 }
