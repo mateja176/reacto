@@ -7,12 +7,13 @@ import {
   OneToOne,
 } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
+import { Ruled } from '../interfaces/Ruled';
 import { Answer } from './Answer';
 import { AnswerOption } from './AnswerOption';
 import { QuestionnaireConfiguration } from './QuestionnaireConfiguration';
 
 @Entity()
-export class Question implements IEntity {
+export class Question implements IEntity, Ruled {
   @ObjectIdColumn({ unique: true })
   id: string;
   @Column()
@@ -27,6 +28,8 @@ export class Question implements IEntity {
   @OneToOne(() => Answer, (answer) => answer.question)
   @JoinColumn()
   answer: Answer;
-  @Column(() => AnswerOption)
-  option: AnswerOption;
+  @ManyToOne(() => AnswerOption)
+  options: AnswerOption[];
+  @Column()
+  rule?: string;
 }
