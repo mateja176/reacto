@@ -17,7 +17,7 @@ export class User implements IEntity {
   email: string;
   @Column()
   passwordHash: string;
-  @Column()
+  @Column({ type: 'enum', enum: Role })
   role: Role;
   @ManyToMany(() => Company, (company) => company.managers)
   company: Company;
