@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, ObjectIdColumn } from 'typeorm';
+import { Column, Entity, ObjectIdColumn, OneToOne } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
 import { Question } from './Question';
 
@@ -8,7 +8,7 @@ export class Answer implements IEntity {
   id: string;
   @Column()
   name: string;
-  @ManyToOne(() => Question, (question) => question.answers)
+  @OneToOne(() => Question, (question) => question.answer)
   question: Question[];
   @Column()
   yesNo?: boolean;
