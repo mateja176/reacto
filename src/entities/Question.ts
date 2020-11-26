@@ -17,6 +17,8 @@ export class Question implements IEntity {
   id: string;
   @Column()
   name: string;
+  @Column()
+  label: string;
   @ManyToOne(
     () => QuestionnaireConfiguration,
     (questionnaireConfiguration) => questionnaireConfiguration.questions,
