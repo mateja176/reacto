@@ -30,6 +30,9 @@ export class Question implements IEntity, Ruled {
   answer: Answer;
   @ManyToOne(() => AnswerOption)
   options: AnswerOption[];
-  @Column()
+  @Column({
+    comment:
+      'Rule which when parsed determines whether to show or skip the question.',
+  })
   rule?: string;
 }
