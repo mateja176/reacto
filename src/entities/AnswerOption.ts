@@ -7,8 +7,12 @@ export class AnswerOption implements AnswerBase {
   id: string;
   @Column()
   name: string;
-  @Column()
-  boolean?: boolean;
+  @Column({
+    array: true,
+    default: ['No', 'Yes'],
+    comment: 'The label used for the "false" and the label used for "true".',
+  })
+  boolean?: [string, string];
   @Column()
   string?: string;
   @Column({ array: true })
