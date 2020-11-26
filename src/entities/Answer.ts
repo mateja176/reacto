@@ -1,9 +1,9 @@
 import { Column, Entity, ObjectIdColumn, OneToOne } from 'typeorm';
-import { IAnswerOption } from '../interfaces/AnswerOption';
+import { AnswerBase } from '../interfaces/AnswerBase';
 import { Question } from './Question';
 
 @Entity()
-export class Answer implements IAnswerOption {
+export class Answer implements AnswerBase {
   @ObjectIdColumn({ unique: true })
   id: string;
   @Column()
