@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
 import { Answer } from './Answer';
+import { AnswerOption } from './AnswerOption';
 import { QuestionnaireConfiguration } from './QuestionnaireConfiguration';
 
 @Entity()
@@ -24,4 +25,6 @@ export class Question implements IEntity {
   @OneToOne(() => Answer, (answer) => answer.question)
   @JoinColumn()
   answer: Answer;
+  @Column(() => AnswerOption)
+  option: AnswerOption;
 }
