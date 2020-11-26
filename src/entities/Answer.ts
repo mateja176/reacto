@@ -11,16 +11,16 @@ export class Answer implements IEntity {
   @OneToOne(() => Question, (question) => question.answer)
   question: Question[];
   @Column()
-  yesNo?: boolean;
+  boolean?: boolean;
   @Column()
-  selectedAnswer?: string;
+  string?: string;
   @Column({ array: true })
-  selectedAnswers?: string[];
-  selectedNumberAnswer?: number;
+  strings?: string[];
+  number?: number;
   @Column({ array: true })
-  selectedNumberAnswers?: number[];
+  numbers?: number[];
   @Column({ type: 'bytea' })
   file?: Buffer;
   @Column({ type: 'bytea', array: true })
-  multiFile?: Buffer[];
+  files?: Buffer[];
 }
