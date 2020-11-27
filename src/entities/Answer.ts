@@ -1,26 +1,35 @@
 import { Column, Entity, ObjectIdColumn, OneToOne } from 'typeorm';
-import { AnswerBase } from '../interfaces/AnswerBase';
 import { Question } from './Question';
 
+/**
+ * Answer values are saved even in case of questions with default values.
+ * In rare cases where the default question value has changed.
+ * This would be inconsistent in relation the to default user was presented with, at the time of answering.
+ */
 @Entity()
-export class Answer implements AnswerBase {
+export class Answer {
   @ObjectIdColumn({ unique: true })
   id: string;
   @Column()
   name: string;
   @OneToOne(() => Question, (question) => question.answer)
   question: Question[];
-  @Column()
+  @Column({ comment: 'Yes or No' })
   boolean?: boolean;
-  @Column()
+  @Column({ comment: 'Textual' })
   string?: string;
-  @Column({ array: true })
+  @Column({ array: true, comment: 'Select Textual' })
   strings?: string[];
+  @Column({ array: true, comment: 'Multi-select Textual' })
+  multiStrings?: string[];
+  @Column({ comment: 'Numerical' })
   number?: number;
-  @Column({ array: true })
-  numbers?: number[];
-  @Column({ type: 'bytea' })
+  @Column({ array: true, comment: 'Select Numerical' })
+  numbers?: number;
+  @Column({ array: true, comment: 'Multi-select Numerical' })
+  multiNumbers?: number[];
+  @Column({ type: 'bytea', comment: 'File' })
   file?: Buffer;
-  @Column({ type: 'bytea', array: true })
+  @Column({ type: 'bytea', array: true, comment: 'Multi-file' })
   files?: Buffer[];
 }
