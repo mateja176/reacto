@@ -19,6 +19,6 @@ export class User implements IEntity {
   passwordHash: string;
   @Column({ type: 'enum', enum: Role })
   role: Role;
-  @ManyToMany(() => Company, (company) => company.managers)
+  @ManyToMany(() => Company, (company) => company.users)
   company: Company;
 }

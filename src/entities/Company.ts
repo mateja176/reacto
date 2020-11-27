@@ -10,7 +10,7 @@ export class Company implements IEntity {
   @Column()
   name: string;
   @OneToMany(() => User, (user) => user.company)
-  managers: User[];
+  users: User[];
   @OneToMany(
     () => QuestionnaireConfiguration,
     (questionnaireConfiguration) => questionnaireConfiguration.company,
