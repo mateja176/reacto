@@ -1,4 +1,4 @@
-import { Column, Entity, ObjectIdColumn, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, ObjectIdColumn } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
 import { Company } from './Company';
 
@@ -8,6 +8,10 @@ export class QuestionnaireConfiguration implements IEntity {
   id: string;
   @Column()
   name: string;
-  @OneToOne(() => Company, (company) => company.questionnaireConfiguration)
+  @Column({
+    comment: 'User defined, for example: E-Commerce, Blog, Social Media',
+  })
+  type: string;
+  @ManyToOne(() => Company, (company) => company.questionnaireConfigurations)
   company: Company;
 }
