@@ -59,11 +59,11 @@ export class Question implements IEntity, Ruled {
   @Column()
   numberDefault?: number;
   @Column({ array: true, comment: 'Select Numerical' })
-  numbers: number[];
+  numbers?: number[];
   @Column()
-  numbersDefault: number;
+  numbersDefault?: number;
   @Column({ array: true, comment: 'Multi-select Numerical' })
-  multiNumbers: number[];
+  multiNumbers?: number[];
   @Column({ array: true })
-  multiNumbersDefault: number[];
+  multiNumbersDefault?: number[];
 }
