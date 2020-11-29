@@ -9,7 +9,7 @@ import {
 import { IEntity } from '../interfaces/Entity';
 import { Ruled } from '../interfaces/Ruled';
 import { Answer } from './Answer';
-import { QuestionnaireConfiguration } from './QuestionnaireConfiguration';
+import { Questionnaire } from './Questionnaire';
 
 @Entity()
 export class Question implements IEntity, Ruled {
@@ -19,11 +19,8 @@ export class Question implements IEntity, Ruled {
   name: string;
   @Column()
   label: string;
-  @ManyToOne(
-    () => QuestionnaireConfiguration,
-    (questionnaireConfiguration) => questionnaireConfiguration.questions,
-  )
-  questionnaireConfiguration: QuestionnaireConfiguration;
+  @ManyToOne(() => Questionnaire, (questionnaire) => questionnaire.questions)
+  questionnaire: Questionnaire;
   @OneToOne(() => Answer, (answer) => answer.question)
   @JoinColumn()
   answer: Answer;
