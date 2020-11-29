@@ -1,4 +1,4 @@
-import { Column, Entity, ObjectIdColumn, OneToMany } from 'typeorm';
+import { Column, Entity, ObjectIdColumn, OneToMany, OneToOne } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
 import { QuestionnaireConfiguration } from './QuestionnaireConfiguration';
 import { User } from './User';
@@ -11,9 +11,9 @@ export class Company implements IEntity {
   name: string;
   @OneToMany(() => User, (user) => user.company)
   users: User[];
-  @OneToMany(
+  @OneToOne(
     () => QuestionnaireConfiguration,
     (questionnaireConfiguration) => questionnaireConfiguration.company,
   )
-  questionnaireConfigurations: QuestionnaireConfiguration[];
+  questionnaireConfiguration: QuestionnaireConfiguration;
 }

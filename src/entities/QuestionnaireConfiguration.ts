@@ -1,8 +1,7 @@
-import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
+import { Column, Entity, ObjectIdColumn, OneToMany, OneToOne } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
 import { Company } from './Company';
 import { Question } from './Question';
-import { User } from './User';
 
 @Entity()
 export class QuestionnaireConfiguration implements IEntity {
@@ -10,10 +9,8 @@ export class QuestionnaireConfiguration implements IEntity {
   id: string;
   @Column()
   name: string;
-  @ManyToOne(() => Company, (company) => company.questionnaireConfigurations)
+  @OneToOne(() => Company, (company) => company.questionnaireConfiguration)
   company: Company;
   @OneToMany(() => Question, (question) => question.questionnaireConfiguration)
   questions: Question[];
-  @ManyToOne(() => User, (user) => user.questionnaireConfigurations)
-  user: User;
 }
