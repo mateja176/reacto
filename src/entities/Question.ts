@@ -35,7 +35,7 @@ export class Question implements IEntity, Ruled {
 
   @Column({
     array: true,
-    default: ['No', 'Yes'],
+
     comment:
       'If the array is empty, a switch is displayed. If the array has one member a single checkbox is displayed. If the array has two members two radio buttons are displayed.',
   })
