@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ObjectIdColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, ObjectIdColumn } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
 import { Company } from './Company';
 
@@ -19,6 +19,6 @@ export class User implements IEntity {
   passwordHash: string;
   @Column({ type: 'enum', enum: Role })
   role: Role;
-  @ManyToMany(() => Company, (company) => company.users)
+  @ManyToOne(() => Company, (company) => company.users)
   company: Company;
 }
