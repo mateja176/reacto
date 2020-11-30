@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
 import { Company } from './Company';
 import { Questionnaire } from './Questionnaire';
+import { QuestionnaireConfiguration } from './QuestionnaireConfiguration';
 
 export enum Role {
   regular = 'regular',
@@ -24,4 +25,12 @@ export class User implements IEntity {
   company: Company;
   @OneToMany(() => Questionnaire, (questionnaire) => questionnaire.user)
   questionnaires: Questionnaire;
+  /**
+   * only admins may create configurations
+   */
+  @OneToMany(
+    () => QuestionnaireConfiguration,
+    (questionnaireConfiguration) => questionnaireConfiguration.user,
+  )
+  questionnaireConfigurations?: QuestionnaireConfiguration[];
 }

@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
 import { Company } from './Company';
 import { QuestionTemplate } from './Question/QuestionTemplate';
+import { User } from './User';
 
 @Entity()
 export class QuestionnaireConfiguration implements IEntity {
@@ -15,6 +16,8 @@ export class QuestionnaireConfiguration implements IEntity {
   type: string;
   @ManyToOne(() => Company, (company) => company.questionnaireConfigurations)
   company: Company;
+  @ManyToOne(() => User, (user) => user.questionnaireConfigurations)
+  user: User;
   @OneToMany(
     () => QuestionTemplate,
     (questionTemplate) => questionTemplate.questionnaireConfiguration,
