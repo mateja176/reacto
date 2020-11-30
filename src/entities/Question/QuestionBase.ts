@@ -1,7 +1,6 @@
-import { Column, JoinColumn, ObjectIdColumn, OneToOne } from 'typeorm';
+import { Column, ObjectIdColumn } from 'typeorm';
 import { IEntity } from '../../interfaces/Entity';
 import { Ruled } from '../../interfaces/Ruled';
-import { Answer } from '../Answer';
 
 export class QuestionBase implements IEntity, Ruled {
   @ObjectIdColumn({ unique: true })
@@ -10,9 +9,6 @@ export class QuestionBase implements IEntity, Ruled {
   name: string;
   @Column()
   label: string;
-  @OneToOne(() => Answer, (answer) => answer.question)
-  @JoinColumn()
-  answer: Answer;
   @Column({
     comment:
       'Rule which when parsed determines whether to show or skip the question.',
