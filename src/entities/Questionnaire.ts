@@ -14,6 +14,6 @@ export class Questionnaire implements IEntity {
   company: Company;
   @ManyToOne(() => User, (user) => user.questionnaires)
   user: User;
-  @OneToMany(() => Question, (question) => question.questionnaireConfiguration)
+  @OneToMany(() => Question, (question) => question.questionnaire)
   questions: Question[];
 }
