@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
 import { Company } from './Company';
-import { Question } from './Question';
+import { Question } from './Question/Question';
 import { User } from './User';
 
 @Entity()

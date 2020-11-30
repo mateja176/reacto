@@ -1,26 +1,15 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  ObjectIdColumn,
-  OneToOne,
-} from 'typeorm';
-import { IEntity } from '../interfaces/Entity';
-import { Ruled } from '../interfaces/Ruled';
-import { Answer } from './Answer';
-import { Questionnaire } from './Questionnaire';
+import { Column, JoinColumn, ObjectIdColumn, OneToOne } from 'typeorm';
+import { IEntity } from '../../interfaces/Entity';
+import { Ruled } from '../../interfaces/Ruled';
+import { Answer } from '../Answer';
 
-@Entity()
-export class Question implements IEntity, Ruled {
+export class QuestionBase implements IEntity, Ruled {
   @ObjectIdColumn({ unique: true })
   id: string;
   @Column()
   name: string;
   @Column()
   label: string;
-  @ManyToOne(() => Questionnaire, (questionnaire) => questionnaire.questions)
-  questionnaire: Questionnaire;
   @OneToOne(() => Answer, (answer) => answer.question)
   @JoinColumn()
   answer: Answer;

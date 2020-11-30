@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, ObjectIdColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
 import { Company } from './Company';
+import { QuestionTemplate } from './Question/QuestionTemplate';
 
 @Entity()
 export class QuestionnaireConfiguration implements IEntity {
@@ -14,4 +15,9 @@ export class QuestionnaireConfiguration implements IEntity {
   type: string;
   @ManyToOne(() => Company, (company) => company.questionnaireConfigurations)
   company: Company;
+  @OneToMany(
+    () => QuestionTemplate,
+    (questionTemplate) => questionTemplate.questionnaireConfiguration,
+  )
+  questionTemplates: QuestionTemplate;
 }
