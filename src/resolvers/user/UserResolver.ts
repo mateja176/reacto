@@ -17,7 +17,11 @@ import { Role } from '../../entities/User/User';
 import { Context } from '../../interfaces/interfaces';
 import createToken from '../../services/createToken';
 import hashPassword from '../../services/hashPassword';
-import { createEntity, UserRepository } from '../../utils/container';
+import {
+  createEntity,
+  UserPendingRepository,
+  UserRepository,
+} from '../../utils/container';
 import { NotFoundError } from '../../utils/errors';
 import {
   LoginInput,
@@ -30,7 +34,10 @@ import {
 
 @Resolver(UserOutput)
 export class UserResolver {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private userPendingRepository: UserPendingRepository,
+  ) {}
   @Query(() => UserOutput)
   @Authorized()
   async user(@Arg('id') id: string, @Ctx() context: Context) {
@@ -93,22 +100,32 @@ export class UserResolver {
         `User with email "${input.email}" already exists.`,
       );
     } else {
-      const newUser = createEntity(this.userRepository, {
-        email: input.email,
-        passwordHash: await hashPassword(input.password),
-        name: input.name,
-        role: Role.regular,
-        questionnaires: [],
+      const pendingUser = await this.userPendingRepository.findOne({
+        where: { email: input.email },
       });
+      if (pendingUser) {
+        const newUser = createEntity(this.userRepository, {
+          email: input.email,
+          passwordHash: await hashPassword(input.password),
+          name: input.name,
+          role: Role.regular,
+          questionnaires: [],
+          company: pendingUser.company,
+        });
 
-      await this.userRepository.save(newUser);
+        await this.userRepository.save(newUser);
 
-      const token = createToken(newUser);
+        const token = createToken(newUser);
 
-      return {
-        user: newUser,
-        token,
-      };
+        return {
+          user: newUser,
+          token,
+        };
+      } else {
+        throw new ForbiddenError(
+          `User with email "${input.email}" is not allowed to perform this action`,
+        );
+      }
     }
   }
 }
