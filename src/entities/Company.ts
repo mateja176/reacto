@@ -11,7 +11,7 @@ export class Company implements IEntity {
   @Column()
   name: string;
   @Column(() => User)
-  creator: User;
+  owner: User;
   @OneToMany(() => User, (user) => user.company)
   users: User[];
   @OneToMany(
