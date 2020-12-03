@@ -3,6 +3,7 @@ import { IEntity } from '../interfaces/Entity';
 import { Questionnaire } from './Questionnaire';
 import { QuestionnaireConfiguration } from './QuestionnaireConfiguration';
 import { User } from './User/User';
+import { UserPending } from './User/UserPending';
 
 @Entity()
 export class Company implements IEntity {
@@ -14,6 +15,8 @@ export class Company implements IEntity {
   owner: User;
   @OneToMany(() => User, (user) => user.company)
   users: User[];
+  @OneToMany(() => UserPending, (user) => user.company)
+  pendingUsers: UserPending[];
   @OneToMany(
     () => QuestionnaireConfiguration,
     (questionnaireConfiguration) => questionnaireConfiguration.company,
