@@ -9,5 +9,5 @@ export class Question extends QuestionBase {
   questionnaire: Questionnaire;
   @OneToOne(() => Answer, (answer) => answer.question)
   @JoinColumn()
-  answer: Answer;
+  answer?: Answer;
 }

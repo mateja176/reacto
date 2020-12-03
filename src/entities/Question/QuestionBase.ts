@@ -7,14 +7,19 @@ export class QuestionBase implements IEntity, Ruled {
   id: string;
   @Column()
   name: string;
-  @Column()
+  @Column({ comment: 'The text of the question.' })
   label: string;
   @Column({
     comment:
       'Rule which when parsed determines whether to show or skip the question.',
   })
   rule?: string;
-
+  @Column({
+    default: false,
+    comment:
+      'The corresponding questionnaire may be complete with having an answer for the respective optional question.',
+  })
+  optional: boolean;
   @Column({
     array: true,
 

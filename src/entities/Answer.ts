@@ -14,7 +14,7 @@ export class Answer {
   name: string;
   @OneToOne(() => Question, (question) => question.answer)
   question: Question[];
-  @Column({ comment: 'Yes or No' })
+  @Column()
   boolean?: boolean;
   @Column({ comment: 'Textual' })
   string?: string;
