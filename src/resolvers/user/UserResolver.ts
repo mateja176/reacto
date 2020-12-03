@@ -13,7 +13,7 @@ import {
   Query,
   Resolver,
 } from 'type-graphql';
-import { Role } from '../../entities/User';
+import { Role } from '../../entities/User/User';
 import { Context } from '../../interfaces/interfaces';
 import createToken from '../../services/createToken';
 import hashPassword from '../../services/hashPassword';
@@ -98,6 +98,7 @@ export class UserResolver {
         passwordHash: await hashPassword(input.password),
         name: input.name,
         role: Role.regular,
+        questionnaires: [],
       });
 
       await this.userRepository.save(newUser);

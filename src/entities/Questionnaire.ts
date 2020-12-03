@@ -3,7 +3,7 @@ import { IEntity } from '../interfaces/Entity';
 import { Company } from './Company';
 import { Question } from './Question/Question';
 import { QuestionInherited } from './Question/QuestionInherited';
-import { User } from './User';
+import { User } from './User/User';
 
 @Entity()
 export class Questionnaire implements IEntity {

@@ -1,5 +1,5 @@
 import { DeepPartial, Repository } from 'typeorm';
-import { User } from '../entities/User';
+import { User } from '../entities/User/User';
 import { IEntity } from '../interfaces/Entity';
 
 export const createEntity = <E extends IEntity>(

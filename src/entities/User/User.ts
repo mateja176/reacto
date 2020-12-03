@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
-import { IEntity } from '../interfaces/Entity';
-import { Company } from './Company';
-import { Questionnaire } from './Questionnaire';
-import { QuestionnaireConfiguration } from './QuestionnaireConfiguration';
+import { IEntity } from '../../interfaces/Entity';
+import { Company } from '../Company';
+import { Questionnaire } from '../Questionnaire';
+import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration';
 
 export enum Role {
   regular = 'regular',

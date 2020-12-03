@@ -2,7 +2,7 @@ import { Column, Entity, ObjectIdColumn, OneToMany } from 'typeorm';
 import { IEntity } from '../interfaces/Entity';
 import { Questionnaire } from './Questionnaire';
 import { QuestionnaireConfiguration } from './QuestionnaireConfiguration';
-import { User } from './User';
+import { User } from './User/User';
 
 @Entity()
 export class Company implements IEntity {
