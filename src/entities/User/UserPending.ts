@@ -13,6 +13,4 @@ export class UserPending implements Pick<IEntity, 'id'> {
   role: Role;
   @ManyToOne(() => Company, (company) => company.users)
   company: Company;
-  @Column()
-  oneOffCode: string;
 }
