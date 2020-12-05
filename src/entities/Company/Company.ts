@@ -10,6 +10,8 @@ export class Company implements NamedEntity {
   @Column()
   name: string;
   @Column(() => User)
+  owner: User;
+  @Column(() => User)
   users: User[];
   @Column(() => UserPending)
   pendingUsers: UserPending[];

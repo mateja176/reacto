@@ -4,7 +4,6 @@ import { Questionnaire } from './entities/Questionnaire/Questionnaire';
 import { QuestionnaireConfiguration } from './entities/QuestionnaireConfiguration';
 
 export enum Role {
-  owner = 'owner',
   admin = 'admin',
   regular = 'regular',
 }
