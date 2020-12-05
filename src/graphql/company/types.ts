@@ -9,8 +9,6 @@ export class CompanyOutput implements NamedEntity {
   id: string;
   @Field()
   name: string;
-  @Field(() => User)
-  owner: User;
   @Field(() => [User])
   users: User[];
   @Field(() => UserPendingOutput)

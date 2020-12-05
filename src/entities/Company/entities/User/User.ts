@@ -5,8 +5,9 @@ import { Questionnaire } from '../Questionnaire/Questionnaire';
 import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration';
 
 export enum Role {
-  regular = 'regular',
+  owner = 'owner',
   admin = 'admin',
+  regular = 'regular',
 }
 
 @Entity()

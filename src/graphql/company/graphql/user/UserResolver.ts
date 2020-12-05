@@ -62,7 +62,7 @@ export class UserResolver {
   async user(@Arg('id') id: string, @Ctx() context: Context) {
     const user = await this.userRepository.findOne(id);
 
-    if (context.user.role === Role.admin) {
+    if ([Role.admin, Role.owner].includes(context.user.role)) {
       if (user) {
         return user;
       } else {
@@ -80,7 +80,7 @@ export class UserResolver {
   }
 
   @Query(() => [UserOutput])
-  @Authorized(Role.admin)
+  @Authorized([Role.admin, Role.owner])
   users(@Args() { skip, take }: UsersArgs) {
     return this.userRepository.find({ skip, take });
   }
@@ -108,7 +108,7 @@ export class UserResolver {
     }
   }
 
-  @Authorized(Role.admin)
+  @Authorized([Role.admin, Role.owner])
   @Mutation(() => RegisterOutput)
   async invite(
     @Arg('input') input: InviteInput,
