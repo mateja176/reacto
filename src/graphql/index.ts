@@ -1,5 +1,5 @@
-import { UserResolver } from './company/graphql/user/UserResolver';
+import companyResolvers from './company';
 
-const resolvers = [UserResolver] as const;
+const resolvers = [...companyResolvers] as const;
 
 export default resolvers;
