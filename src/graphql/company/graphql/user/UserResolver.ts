@@ -16,20 +16,20 @@ import {
   Query,
   Resolver,
 } from 'type-graphql';
-import { Company } from '../../entities/Company/Company';
-import { Role } from '../../entities/Company/entities/User/User';
-import { UserPending } from '../../entities/Company/entities/User/UserPending';
-import { Context } from '../../interfaces/Context';
-import createToken from '../../services/createToken';
-import env from '../../services/env';
-import hashPassword from '../../services/hashPassword';
+import { Company } from '../../../../entities/Company/Company';
+import { Role } from '../../../../entities/Company/entities/User/User';
+import { UserPending } from '../../../../entities/Company/entities/User/UserPending';
+import { Context } from '../../../../interfaces/Context';
+import createToken from '../../../../services/createToken';
+import env from '../../../../services/env';
+import hashPassword from '../../../../services/hashPassword';
 import {
   CompanyRepository,
   UserPendingRepository,
   UserRepository,
-} from '../../utils/container';
-import { createEntity } from '../../utils/createEntity';
-import { NotFoundError } from '../../utils/errors';
+} from '../../../../utils/container';
+import { createEntity } from '../../../../utils/createEntity';
+import { NotFoundError } from '../../../../utils/errors';
 import {
   InviteInput,
   LoginInput,

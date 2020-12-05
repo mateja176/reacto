@@ -15,10 +15,10 @@ import {
   ObjectType,
   registerEnumType,
 } from 'type-graphql';
-import { Role } from '../../../entities/Company/entities/User/User';
-import { NamedEntity } from '../../../interfaces/Entity';
-import { IsPassword } from '../../../utils/validators';
-import { CompanyOutput } from '../../company/types';
+import { Role } from '../../../../../entities/Company/entities/User/User';
+import { NamedEntity } from '../../../../../interfaces/Entity';
+import { IsPassword } from '../../../../../utils/validators';
+import { CompanyOutput } from '../../../types';
 
 registerEnumType(Role, {
   name: 'Role',

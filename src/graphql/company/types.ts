@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import { User } from '../../entities/Company/entities/User/User';
 import { NamedEntity } from '../../interfaces/Entity';
-import { UserPendingOutput } from '../user/types/UserPendingOutput';
+import { UserPendingOutput } from './graphql/user/types/UserPendingOutput';
 
 @ObjectType('Company')
 export class CompanyOutput implements NamedEntity {

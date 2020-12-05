@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { jwtAlgorithm } from '../config/jwt';
-import { UserOutput } from '../graphql/user/types/types';
+import { UserOutput } from '../graphql/company/graphql/user/types/types';
 import env from './env';
 
 const createToken = (user: UserOutput) => {

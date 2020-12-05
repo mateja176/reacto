@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from 'type-graphql';
-import { Role } from '../../../entities/Company/entities/User/User';
+import { Role } from '../../../../../entities/Company/entities/User/User';
 
 @ObjectType('UserPending')
 export class UserPendingOutput {
