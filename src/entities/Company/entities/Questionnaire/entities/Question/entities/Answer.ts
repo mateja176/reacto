@@ -1,5 +1,5 @@
 import { Column, Entity, ObjectIdColumn, OneToOne } from 'typeorm';
-import { Question } from './Company/entities/Questionnaire/entities/Question/Question';
+import { Question } from '../Question';
 
 /**
  * Answer values are saved even in case of questions with default values.
