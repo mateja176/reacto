@@ -1,17 +1,18 @@
-import { DeepPartial, Repository } from 'typeorm';
+import { ContainerType } from 'type-graphql';
+import Container from 'typedi';
+import { Connection, Repository } from 'typeorm';
 import { Company } from '../entities/Company';
 import { User } from '../entities/User/User';
 import { UserPending } from '../entities/User/UserPending';
-import { IEntity } from '../interfaces/Entity';
 
-export const createEntity = <E extends IEntity>(
-  repository: Repository<E>,
-  props: Omit<E, 'id'>,
-) => {
-  const entity = repository.create(props as DeepPartial<E>);
+const configureContainer = (connection: Connection): ContainerType => {
+  Container.set(UserRepository, connection.getRepository(User));
+  Container.set(UserPendingRepository, connection.getRepository(UserPending));
 
-  return entity;
+  return Container;
 };
+
+export default configureContainer;
 
 export class CompanyRepository extends Repository<Company> {}
 export class UserRepository extends Repository<User> {}

@@ -25,10 +25,10 @@ import env from '../../services/env';
 import hashPassword from '../../services/hashPassword';
 import {
   CompanyRepository,
-  createEntity,
   UserPendingRepository,
   UserRepository,
 } from '../../utils/container';
+import { createEntity } from '../../utils/createEntity';
 import { NotFoundError } from '../../utils/errors';
 import {
   InviteInput,
