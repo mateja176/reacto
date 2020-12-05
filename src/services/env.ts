@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { EnvError } from './errors';
+import { EnvError } from '../utils/errors';
 
 dotenv.config();
 

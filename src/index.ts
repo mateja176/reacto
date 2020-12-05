@@ -15,8 +15,8 @@ import configureContainer from './container';
 import { Context } from './interfaces/Context';
 import resolvers from './resolvers';
 import { UserOutput } from './resolvers/user/types/types';
+import env from './services/env';
 import authChecker from './utils/authChecker';
-import env from './utils/env';
 
 (async () => {
   const configConnectionOptions = await getConnectionOptions();

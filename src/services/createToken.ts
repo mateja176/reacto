@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { jwtAlgorithm } from '../config/jwt';
 import { UserOutput } from '../resolvers/user/types/types';
-import env from '../utils/env';
+import env from './env';
 
 const createToken = (user: UserOutput) => {
   return jwt.sign({ ...user, id: String(user.id) }, env.jwtSecret, {

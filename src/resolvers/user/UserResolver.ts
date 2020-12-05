@@ -21,6 +21,7 @@ import { Role } from '../../entities/User/User';
 import { UserPending } from '../../entities/User/UserPending';
 import { Context } from '../../interfaces/Context';
 import createToken from '../../services/createToken';
+import env from '../../services/env';
 import hashPassword from '../../services/hashPassword';
 import {
   CompanyRepository,
@@ -28,7 +29,6 @@ import {
   UserPendingRepository,
   UserRepository,
 } from '../../utils/container';
-import env from '../../utils/env';
 import { NotFoundError } from '../../utils/errors';
 import {
   InviteInput,
