@@ -11,8 +11,6 @@ export class Company implements NamedEntity {
   id: string;
   @Column()
   name: string;
-  @Column(() => User)
-  owner: User;
   @OneToMany(() => User, (user) => user.company)
   users: User[];
   @OneToMany(() => UserPending, (user) => user.company)
