@@ -5,5 +5,5 @@ import { QuestionTemplate } from './QuestionTemplate';
 @Entity()
 export class Question extends QuestionTemplate {
   @Column(() => Answer)
-  answer: Answer;
+  answers: Answer[];
 }
