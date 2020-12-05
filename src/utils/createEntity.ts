@@ -14,7 +14,11 @@ export const createEntity = <E extends IEntity>(
   repository: MongoRepository<E>,
   props: E,
 ) => {
-  const entity = repository.create((props as unknown) as DeepPartial<E>);
+  const entity = repository.create();
+
+  Object.entries(props).forEach(([key, value]) => {
+    entity[key as keyof E] = value;
+  });
 
   return entity;
 };
