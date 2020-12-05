@@ -11,9 +11,9 @@ import {
 import ormConfig from '../ormconfig';
 import { path } from './config/config';
 import { jwtAlgorithm } from './config/jwt';
+import resolvers from './graphql';
+import { UserOutput } from './graphql/user/types/types';
 import { Context } from './interfaces/Context';
-import resolvers from './resolvers';
-import { UserOutput } from './resolvers/user/types/types';
 import env from './services/env';
 import authChecker from './utils/authChecker';
 import configureContainer from './utils/container';
