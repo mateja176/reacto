@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { NamedEntity } from '../../../../../interfaces/Entity';
-import { QuestionTemplate } from '../../Questionnaire/entities/Question/QuestionTemplate';
+import { QuestionTemplate } from './Questionnaire/entities/Question/QuestionTemplate';
 
 @Entity()
 export class QuestionnaireConfiguration implements NamedEntity {

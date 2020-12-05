@@ -1,5 +1,4 @@
-import { Column, Entity, ObjectIdColumn, OneToOne } from 'typeorm';
-import { Question } from '../Question';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 /**
  * Answer values are saved even in case of questions with default values.
@@ -8,12 +7,10 @@ import { Question } from '../Question';
  */
 @Entity()
 export class Answer {
-  @ObjectIdColumn({ unique: true })
+  @PrimaryColumn({ type: 'uuid' })
   id: string;
   @Column()
   name: string;
-  @OneToOne(() => Question, (question) => question.answer)
-  question: Question;
   @Column()
   boolean?: boolean;
   @Column({ comment: 'Textual' })

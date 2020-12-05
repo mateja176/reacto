@@ -1,9 +1,9 @@
-import { Column, ObjectIdColumn } from 'typeorm';
-import { NamedEntity } from '../../../../../../interfaces/Entity';
-import { Ruled } from '../../../../../../interfaces/Ruled';
+import { Column, PrimaryColumn } from 'typeorm';
+import { NamedEntity } from '../../../../../../../../interfaces/Entity';
+import { Ruled } from '../../../../../../../../interfaces/Ruled';
 
-export class QuestionBase implements NamedEntity, Ruled {
-  @ObjectIdColumn({ unique: true })
+export class QuestionTemplate implements NamedEntity, Ruled {
+  @PrimaryColumn({ type: 'uuid' })
   id: string;
   @Column()
   name: string;

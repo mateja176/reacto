@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { NamedEntity } from '../../../../interfaces/Entity';
-import { Questionnaire } from '../Questionnaire/Questionnaire';
+import { Questionnaire } from './entities/Questionnaire/Questionnaire';
 import { QuestionnaireConfiguration } from './entities/QuestionnaireConfiguration';
 
 export enum Role {
