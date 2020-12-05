@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
-import { NamedEntity } from '../../../interfaces/Entity';
-import { Question } from '../../Question/Question';
-import { QuestionInherited } from '../../Question/QuestionInherited';
-import { Company } from '../Company';
-import { User } from './User/User';
+import { NamedEntity } from '../../../../interfaces/Entity';
+import { Question } from '../../../Question/Question';
+import { QuestionInherited } from '../../../Question/QuestionInherited';
+import { Company } from '../../Company';
+import { User } from '../User/User';
 
 @Entity()
 export class Questionnaire implements NamedEntity {

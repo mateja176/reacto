@@ -1,6 +1,6 @@
 import { Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Answer } from '../Answer';
-import { Questionnaire } from '../Company/entities/Questionnaire';
+import { Questionnaire } from '../Company/entities/Questionnaire/Questionnaire';
 import { QuestionBase } from './QuestionBase';
 
 @Entity()
