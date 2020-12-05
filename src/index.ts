@@ -12,7 +12,7 @@ import ormConfig from '../ormconfig';
 import { path } from './config/config';
 import { jwtAlgorithm } from './config/jwt';
 import configureContainer from './container';
-import { Context } from './interfaces/interfaces';
+import { Context } from './interfaces/Context';
 import resolvers from './resolvers';
 import { UserOutput } from './resolvers/user/types/types';
 import authChecker from './utils/authChecker';

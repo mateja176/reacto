@@ -19,7 +19,7 @@ import {
 import { Company } from '../../entities/Company';
 import { Role } from '../../entities/User/User';
 import { UserPending } from '../../entities/User/UserPending';
-import { Context } from '../../interfaces/interfaces';
+import { Context } from '../../interfaces/Context';
 import createToken from '../../services/createToken';
 import hashPassword from '../../services/hashPassword';
 import {
