@@ -16,6 +16,7 @@ import {
   Query,
   Resolver,
 } from 'type-graphql';
+import { Company } from '../../entities/Company';
 import { Role } from '../../entities/User/User';
 import { UserPending } from '../../entities/User/UserPending';
 import { Context } from '../../interfaces/interfaces';
@@ -113,10 +114,12 @@ export class UserResolver {
     @Arg('input') input: InviteInput,
     @Ctx() context: Context,
   ): Promise<UserPending> {
-    // TODO include a the company relation
-    const userPending = this.userPendingRepository.create({
+    const company = new Company();
+    company.id = context.user.company.id;
+    const userPending = createEntity(this.userPendingRepository, {
       email: input.email,
       role: input.role,
+      company,
     });
 
     await this.userPendingRepository.save(userPending);
