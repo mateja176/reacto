@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, ObjectIdColumn } from 'typeorm';
-import { IEntity } from '../../interfaces/Entity';
-import { Company } from '../Company/Company';
+import { IEntity } from '../../../../interfaces/Entity';
+import { Company } from '../../Company';
 import { Role } from './User';
 
 @Entity()

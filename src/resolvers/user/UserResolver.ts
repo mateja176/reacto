@@ -17,8 +17,8 @@ import {
   Resolver,
 } from 'type-graphql';
 import { Company } from '../../entities/Company/Company';
-import { Role } from '../../entities/User/User';
-import { UserPending } from '../../entities/User/UserPending';
+import { Role } from '../../entities/Company/entities/User/User';
+import { UserPending } from '../../entities/Company/entities/User/UserPending';
 import { Context } from '../../interfaces/Context';
 import createToken from '../../services/createToken';
 import env from '../../services/env';
