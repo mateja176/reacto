@@ -24,7 +24,6 @@ import createToken from '../../../../services/createToken';
 import env from '../../../../services/env';
 import hashPassword from '../../../../services/hashPassword';
 import {
-  CompanyRepository,
   UserPendingRepository,
   UserRepository,
 } from '../../../../utils/container';
@@ -53,7 +52,6 @@ const nodemailerMailgun = nodemailer.createTransport(mg(auth));
 @Resolver(UserOutput)
 export class UserResolver {
   constructor(
-    private companyRepository: CompanyRepository,
     private userRepository: UserRepository,
     private userPendingRepository: UserPendingRepository,
   ) {}
