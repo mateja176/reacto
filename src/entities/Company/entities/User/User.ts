@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
 import { NamedEntity } from '../../../../interfaces/Entity';
-import { Questionnaire } from '../../../Questionnaire';
 import { Company } from '../../Company';
+import { Questionnaire } from '../Questionnaire';
 import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration';
 
 export enum Role {
