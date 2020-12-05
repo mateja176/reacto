@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
 import { NamedEntity } from '../../interfaces/Entity';
-import { Company } from '../Company';
+import { Company } from '../Company/Company';
 import { Questionnaire } from '../Questionnaire';
 import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration';
 

@@ -1,9 +1,9 @@
 import { Column, Entity, ObjectIdColumn, OneToMany } from 'typeorm';
-import { NamedEntity } from '../interfaces/Entity';
-import { Questionnaire } from './Questionnaire';
-import { QuestionnaireConfiguration } from './QuestionnaireConfiguration';
-import { User } from './User/User';
-import { UserPending } from './User/UserPending';
+import { NamedEntity } from '../../interfaces/Entity';
+import { Questionnaire } from '../Questionnaire';
+import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration';
+import { User } from '../User/User';
+import { UserPending } from '../User/UserPending';
 
 @Entity()
 export class Company implements NamedEntity {

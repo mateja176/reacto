@@ -1,7 +1,7 @@
 import { ContainerType } from 'type-graphql';
 import Container from 'typedi';
 import { Connection, MongoRepository } from 'typeorm';
-import { Company } from '../entities/Company';
+import { Company } from '../entities/Company/Company';
 import { User } from '../entities/User/User';
 import { UserPending } from '../entities/User/UserPending';
 

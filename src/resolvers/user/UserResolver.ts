@@ -16,7 +16,7 @@ import {
   Query,
   Resolver,
 } from 'type-graphql';
-import { Company } from '../../entities/Company';
+import { Company } from '../../entities/Company/Company';
 import { Role } from '../../entities/User/User';
 import { UserPending } from '../../entities/User/UserPending';
 import { Context } from '../../interfaces/Context';

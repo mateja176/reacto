@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
 import { NamedEntity } from '../interfaces/Entity';
-import { Company } from './Company';
+import { Company } from './Company/Company';
 import { Question } from './Question/Question';
 import { QuestionInherited } from './Question/QuestionInherited';
 import { User } from './User/User';
