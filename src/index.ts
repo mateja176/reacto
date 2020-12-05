@@ -14,7 +14,7 @@ import { jwtAlgorithm } from './config/jwt';
 import configureContainer from './container';
 import { Context } from './interfaces/interfaces';
 import resolvers from './resolvers';
-import { UserOutput } from './resolvers/user/types';
+import { UserOutput } from './resolvers/user/types/types';
 import authChecker from './utils/authChecker';
 import env from './utils/env';
 

@@ -4,6 +4,9 @@ import {
   UserInputError,
 } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
+import nodemailer from 'nodemailer';
+import mg from 'nodemailer-mailgun-transport';
+import { join } from 'path';
 import {
   Arg,
   Args,
@@ -14,27 +17,42 @@ import {
   Resolver,
 } from 'type-graphql';
 import { Role } from '../../entities/User/User';
+import { UserPending } from '../../entities/User/UserPending';
 import { Context } from '../../interfaces/interfaces';
 import createToken from '../../services/createToken';
 import hashPassword from '../../services/hashPassword';
 import {
+  CompanyRepository,
   createEntity,
   UserPendingRepository,
   UserRepository,
 } from '../../utils/container';
+import env from '../../utils/env';
 import { NotFoundError } from '../../utils/errors';
 import {
+  InviteInput,
   LoginInput,
   LoginOutput,
   RegisterInput,
   RegisterOutput,
   UserOutput,
   UsersArgs,
-} from './types';
+} from './types/types';
+
+// This is your API key that you retrieve from www.mailgun.com/cp (free up to 10K monthly emails)
+const auth: mg.Options = {
+  auth: {
+    api_key: env.mailGunApiKey,
+    domain: env.mailGunUsername,
+  },
+};
+
+const nodemailerMailgun = nodemailer.createTransport(mg(auth));
 
 @Resolver(UserOutput)
 export class UserResolver {
   constructor(
+    private companyRepository: CompanyRepository,
     private userRepository: UserRepository,
     private userPendingRepository: UserPendingRepository,
   ) {}
@@ -89,6 +107,47 @@ export class UserResolver {
     }
   }
 
+  @Authorized(Role.admin)
+  @Mutation(() => RegisterOutput)
+  async invite(
+    @Arg('input') input: InviteInput,
+    @Ctx() context: Context,
+  ): Promise<UserPending> {
+    // TODO include a the company relation
+    const userPending = this.userPendingRepository.create({
+      email: input.email,
+      role: input.role,
+    });
+
+    await this.userPendingRepository.save(userPending);
+
+    return new Promise((resolve, reject) =>
+      nodemailerMailgun.sendMail(
+        {
+          from: env.mailGunUsername,
+          to: input.email,
+          subject: 'Reacto Invitation',
+          html: `<h1>Welcome to Reacto</h1>
+          <br />
+          <br />
+          You have been invited to join <strong>${
+            context.user.company.name
+          }</strong>.
+          <br />
+          To complete your registration follow the link below:
+          <br/>
+          ${join(env.appOrigin, env.appEmailPath)}?email=${input.email}`,
+        },
+        (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(userPending);
+          }
+        },
+      ),
+    );
+  }
   @Mutation(() => RegisterOutput)
   async register(@Arg('input') input: RegisterInput): Promise<RegisterOutput> {
     const user = await this.userRepository.findOne({

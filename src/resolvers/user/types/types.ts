@@ -15,16 +15,17 @@ import {
   ObjectType,
   registerEnumType,
 } from 'type-graphql';
-import { Role } from '../../entities/User/User';
-import { IEntity } from '../../interfaces/Entity';
-import { IsPassword } from '../../utils/validators';
+import { Role } from '../../../entities/User/User';
+import { NamedEntity } from '../../../interfaces/Entity';
+import { IsPassword } from '../../../utils/validators';
+import { CompanyOutput } from '../../company/types';
 
 registerEnumType(Role, {
   name: 'Role',
 });
 
 @ObjectType('User')
-export class UserOutput implements IEntity {
+export class UserOutput implements NamedEntity {
   @Field(() => ID)
   id: string;
   @Field()
@@ -33,6 +34,14 @@ export class UserOutput implements IEntity {
   name: string;
   @Field(() => Role)
   role: Role;
+  @Field(() => CompanyOutput)
+  company: CompanyOutput;
+  // @Field(() => [QuestionnaireOutput])
+  // questionnaires: QuestionnaireOutput[];
+  // @Field(
+  //   () => QuestionnaireConfigurationOutput[]
+  // )
+  // questionnaireConfigurations?: QuestionnaireConfigurationOutput[];
 }
 
 @ArgsType()
@@ -63,6 +72,15 @@ export class LoginOutput {
   user: UserOutput;
   @Field()
   token: string;
+}
+
+@InputType()
+export class InviteInput {
+  @Field()
+  @IsEmail()
+  email: string;
+  @Field()
+  role: Role;
 }
 
 @InputType()

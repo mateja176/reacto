@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { jwtAlgorithm } from '../config/jwt';
-import { UserOutput } from '../resolvers/user/types';
+import { UserOutput } from '../resolvers/user/types/types';
 import env from '../utils/env';
 
 const createToken = (user: UserOutput) => {
