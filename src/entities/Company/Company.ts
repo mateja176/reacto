@@ -1,7 +1,5 @@
-import { Column, Entity, ObjectIdColumn, OneToMany } from 'typeorm';
+import { Column, Entity, ObjectIdColumn } from 'typeorm';
 import { NamedEntity } from '../../interfaces/Entity';
-import { Questionnaire } from './entities/Questionnaire/Questionnaire';
-import { QuestionnaireConfiguration } from './entities/QuestionnaireConfiguration';
 import { User } from './entities/User/User';
 import { UserPending } from './entities/User/UserPending';
 
@@ -11,15 +9,8 @@ export class Company implements NamedEntity {
   id: string;
   @Column()
   name: string;
-  @OneToMany(() => User, (user) => user.company)
+  @Column(() => User)
   users: User[];
-  @OneToMany(() => UserPending, (user) => user.company)
+  @Column(() => UserPending)
   pendingUsers: UserPending[];
-  @OneToMany(
-    () => QuestionnaireConfiguration,
-    (questionnaireConfiguration) => questionnaireConfiguration.company,
-  )
-  questionnaireConfigurations: QuestionnaireConfiguration[];
-  @OneToMany(() => Questionnaire, (questionnaire) => questionnaire.company)
-  questionnaires: Questionnaire[];
 }

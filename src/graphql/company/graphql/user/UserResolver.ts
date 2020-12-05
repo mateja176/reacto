@@ -16,6 +16,7 @@ import {
   Query,
   Resolver,
 } from 'type-graphql';
+import { v4 } from 'uuid';
 import { Company } from '../../../../entities/Company/Company';
 import { Role } from '../../../../entities/Company/entities/User/User';
 import { UserPending } from '../../../../entities/Company/entities/User/UserPending';
@@ -115,6 +116,7 @@ export class UserResolver {
     const company = new Company();
     company.id = context.user.company.id;
     const userPending = createEntity(this.userPendingRepository, {
+      id: v4(),
       email: input.email,
       role: input.role,
       company,
@@ -165,6 +167,7 @@ export class UserResolver {
       });
       if (pendingUser) {
         const newUser = createEntity(this.userRepository, {
+          id: v4(),
           email: input.email,
           passwordHash: await hashPassword(input.password),
           name: input.name,

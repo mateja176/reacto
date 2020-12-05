@@ -1,6 +1,5 @@
-import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { NamedEntity } from '../../../../interfaces/Entity';
-import { Company } from '../../Company';
 import { Questionnaire } from '../Questionnaire/Questionnaire';
 import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration';
 
@@ -12,7 +11,7 @@ export enum Role {
 
 @Entity()
 export class User implements NamedEntity {
-  @ObjectIdColumn({ unique: true })
+  @PrimaryColumn({ type: 'uuid' })
   id: string;
   @Column()
   name: string;
@@ -22,16 +21,11 @@ export class User implements NamedEntity {
   passwordHash: string;
   @Column({ type: 'enum', enum: Role })
   role: Role;
-  @ManyToOne(() => Company, (company) => company.users)
-  company: Company;
-  @OneToMany(() => Questionnaire, (questionnaire) => questionnaire.user)
+  @Column(() => Questionnaire)
   questionnaires: Questionnaire[];
   /**
    * only admins may create configurations
    */
-  @OneToMany(
-    () => QuestionnaireConfiguration,
-    (questionnaireConfiguration) => questionnaireConfiguration.user,
-  )
+  @Column(() => QuestionnaireConfiguration)
   questionnaireConfigurations?: QuestionnaireConfiguration[];
 }
