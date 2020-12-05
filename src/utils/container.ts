@@ -1,19 +1,23 @@
 import { ContainerType } from 'type-graphql';
 import Container from 'typedi';
-import { Connection, Repository } from 'typeorm';
+import { Connection, MongoRepository } from 'typeorm';
 import { Company } from '../entities/Company';
 import { User } from '../entities/User/User';
 import { UserPending } from '../entities/User/UserPending';
 
 const configureContainer = (connection: Connection): ContainerType => {
-  Container.set(UserRepository, connection.getRepository(User));
-  Container.set(UserPendingRepository, connection.getRepository(UserPending));
+  Container.set(CompanyRepository, connection.getMongoRepository(Company));
+  Container.set(UserRepository, connection.getMongoRepository(User));
+  Container.set(
+    UserPendingRepository,
+    connection.getMongoRepository(UserPending),
+  );
 
   return Container;
 };
 
 export default configureContainer;
 
-export class CompanyRepository extends Repository<Company> {}
-export class UserRepository extends Repository<User> {}
-export class UserPendingRepository extends Repository<UserPending> {}
+export class CompanyRepository extends MongoRepository<Company> {}
+export class UserRepository extends MongoRepository<User> {}
+export class UserPendingRepository extends MongoRepository<UserPending> {}
