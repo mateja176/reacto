@@ -28,8 +28,8 @@ export class Answer {
   numbers?: number;
   @Column({ array: true, comment: 'Multi-select Numerical' })
   multiNumbers?: number[];
-  @Column({ type: 'bytea', comment: 'File' })
-  file?: Buffer;
-  @Column({ type: 'bytea', array: true, comment: 'Multi-file' })
-  files?: Buffer[];
+  @Column({ comment: 'File URL' })
+  file?: string;
+  @Column({ comment: "File URL's" })
+  files?: string[];
 }
