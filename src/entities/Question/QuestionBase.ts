@@ -1,8 +1,8 @@
 import { Column, ObjectIdColumn } from 'typeorm';
-import { IEntity } from '../../interfaces/Entity';
+import { NamedEntity } from '../../interfaces/Entity';
 import { Ruled } from '../../interfaces/Ruled';
 
-export class QuestionBase implements IEntity, Ruled {
+export class QuestionBase implements NamedEntity, Ruled {
   @ObjectIdColumn({ unique: true })
   id: string;
   @Column()

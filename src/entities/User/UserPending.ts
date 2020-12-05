@@ -4,7 +4,7 @@ import { Company } from '../Company';
 import { Role } from './User';
 
 @Entity()
-export class UserPending implements Pick<IEntity, 'id'> {
+export class UserPending implements IEntity {
   @ObjectIdColumn({ unique: true })
   id: string;
   @Column({ unique: true })

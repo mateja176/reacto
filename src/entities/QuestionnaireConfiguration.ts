@@ -1,11 +1,11 @@
 import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
-import { IEntity } from '../interfaces/Entity';
+import { NamedEntity } from '../interfaces/Entity';
 import { Company } from './Company';
 import { QuestionTemplate } from './Question/QuestionTemplate';
 import { User } from './User/User';
 
 @Entity()
-export class QuestionnaireConfiguration implements IEntity {
+export class QuestionnaireConfiguration implements NamedEntity {
   @ObjectIdColumn({ unique: true })
   id: string;
   @Column()

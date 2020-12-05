@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
-import { IEntity } from '../../interfaces/Entity';
+import { NamedEntity } from '../../interfaces/Entity';
 import { Company } from '../Company';
 import { Questionnaire } from '../Questionnaire';
 import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration';
@@ -10,7 +10,7 @@ export enum Role {
 }
 
 @Entity()
-export class User implements IEntity {
+export class User implements NamedEntity {
   @ObjectIdColumn({ unique: true })
   id: string;
   @Column()

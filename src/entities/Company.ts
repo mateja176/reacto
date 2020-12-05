@@ -1,12 +1,12 @@
 import { Column, Entity, ObjectIdColumn, OneToMany } from 'typeorm';
-import { IEntity } from '../interfaces/Entity';
+import { NamedEntity } from '../interfaces/Entity';
 import { Questionnaire } from './Questionnaire';
 import { QuestionnaireConfiguration } from './QuestionnaireConfiguration';
 import { User } from './User/User';
 import { UserPending } from './User/UserPending';
 
 @Entity()
-export class Company implements IEntity {
+export class Company implements NamedEntity {
   @ObjectIdColumn({ unique: true })
   id: string;
   @Column()
