@@ -27,10 +27,8 @@ export class QuestionBase implements NamedEntity, Ruled {
       'If the array is empty, a switch is displayed. If the array has one member a single checkbox is displayed. If the array has two members two radio buttons are displayed.',
   })
   boolean?: [] | [string] | [string, string];
-  @Column()
+  @Column({ default: false })
   booleanDefault?: boolean;
-  @Column({ comment: 'Textual' })
-  string?: string;
   @Column()
   stringDefault?: string;
   @Column({ array: true, comment: 'Select Textual' })
@@ -41,8 +39,6 @@ export class QuestionBase implements NamedEntity, Ruled {
   multiStrings?: string[];
   @Column({ array: true })
   multiStringsDefault?: string[];
-  @Column({ comment: 'Numerical' })
-  number?: number;
   @Column()
   numberDefault?: number;
   @Column({ array: true, comment: 'Select Numerical' })
