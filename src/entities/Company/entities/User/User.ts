@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { NamedEntity } from '../../../../interfaces/Entity';
 import { Questionnaire } from '../Questionnaire/Questionnaire';
-import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration';
+import { QuestionnaireConfiguration } from './entities/QuestionnaireConfiguration';
 
 export enum Role {
   owner = 'owner',
