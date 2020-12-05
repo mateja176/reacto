@@ -1,8 +1,4 @@
 {
-  "cSpell.words": [
-    "asynciterable",
-    "bytea",
-    "reacto"
-  ],
+  "cSpell.words": ["asynciterable", "bytea", "mailgun", "reacto"],
   "typescript.tsdk": "node_modules/typescript/lib"
 }
