@@ -13,7 +13,7 @@ export class Answer {
   @Column()
   name: string;
   @OneToOne(() => Question, (question) => question.answer)
-  question: Question[];
+  question: Question;
   @Column()
   boolean?: boolean;
   @Column({ comment: 'Textual' })
