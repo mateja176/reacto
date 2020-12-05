@@ -58,7 +58,10 @@ export class UserResolver {
   ) {}
   @Query(() => UserOutput)
   @Authorized()
-  async user(@Arg('id') id: string, @Ctx() context: Context) {
+  async user(
+    @Arg('id') id: string,
+    @Ctx() context: Context,
+  ): Promise<UserOutput> {
     const user = await this.userRepository.findOne(id);
 
     if ([Role.admin].includes(context.user.role)) {
@@ -80,7 +83,7 @@ export class UserResolver {
 
   @Query(() => [UserOutput])
   @Authorized([Role.admin])
-  users(@Args() { skip, take }: UsersArgs) {
+  users(@Args() { skip, take }: UsersArgs): Promise<UserOutput[]> {
     return this.userRepository.find({ skip, take });
   }
 
@@ -119,7 +122,6 @@ export class UserResolver {
       id: v4(),
       email: input.email,
       role: input.role,
-      company,
     });
 
     await this.userPendingRepository.save(userPending);
@@ -173,7 +175,6 @@ export class UserResolver {
           name: input.name,
           role: Role.regular,
           questionnaires: [],
-          company: pendingUser.company,
         });
 
         await this.userRepository.save(newUser);
