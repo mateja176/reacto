@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne, ObjectIdColumn, OneToMany } from 'typeorm';
-import { NamedEntity } from '../interfaces/Entity';
-import { Company } from './Company/Company';
-import { QuestionTemplate } from './Question/QuestionTemplate';
-import { User } from './User/User';
+import { NamedEntity } from '../../../interfaces/Entity';
+import { QuestionTemplate } from '../../Question/QuestionTemplate';
+import { User } from '../../User/User';
+import { Company } from '../Company';
 
 @Entity()
 export class QuestionnaireConfiguration implements NamedEntity {

@@ -1,5 +1,5 @@
 import { Entity, ManyToOne } from 'typeorm';
-import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration';
+import { QuestionnaireConfiguration } from '../Company/entities/QuestionnaireConfiguration';
 import { QuestionBase } from './QuestionBase';
 
 @Entity()
