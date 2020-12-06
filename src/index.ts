@@ -1,7 +1,7 @@
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import jwt from 'express-jwt';
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import { path } from './config/config';
