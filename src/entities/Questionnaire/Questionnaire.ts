@@ -6,6 +6,8 @@ import { User } from '../User/User';
 
 export class Questionnaire implements WithName {
   @prop()
+  public _id: string;
+  @prop()
   public name: string;
   @prop({ ref: Company })
   public company: Company;

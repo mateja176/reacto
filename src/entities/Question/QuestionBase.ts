@@ -4,6 +4,8 @@ import { Ruled } from '../../interfaces/Ruled';
 
 export class QuestionBase implements WithName, Ruled {
   @prop()
+  public _id: string;
+  @prop()
   public name: string;
   @prop({ comment: 'The text of the question.' })
   public label: string;

@@ -9,6 +9,8 @@ import { Question } from '../Question/Question';
  */
 export class Answer implements WithName {
   @prop()
+  public _id: string;
+  @prop()
   public name: string;
   @prop({ ref: Question })
   public question: Ref<Question>;

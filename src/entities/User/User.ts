@@ -11,6 +11,8 @@ export enum Role {
 
 export class User implements WithName {
   @prop()
+  public _id: string;
+  @prop()
   public name: string;
   @prop({ unique: true })
   public email: string;

@@ -6,6 +6,8 @@ import { User } from '../User/User';
 
 export class QuestionnaireConfiguration implements WithName {
   @prop()
+  public _id: string;
+  @prop()
   public name: string;
   @prop({
     comment: 'User defined, for example: E-Commerce, Blog, Social Media',

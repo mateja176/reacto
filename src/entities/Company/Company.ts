@@ -7,6 +7,8 @@ import { UserPending } from '../User/UserPending';
 
 export class Company implements WithName {
   @prop()
+  public _id: string;
+  @prop()
   public name: string;
   @prop({ ref: User })
   public owner: Ref<User>;
