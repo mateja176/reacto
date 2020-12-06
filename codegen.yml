@@ -8,8 +8,8 @@ generates:
       - 'typescript-resolvers'
     config:
       useIndexSignature: true
-  src/generated/mongodb.ts:
-    - 'typescript-mongodb'
+  # src/generated/mongodb.ts:
+  #   - 'typescript-mongodb'
   # ./graphql.schema.json:
   #   plugins:
   #     - 'introspection'
