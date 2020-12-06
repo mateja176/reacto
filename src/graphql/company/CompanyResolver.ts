@@ -17,7 +17,7 @@ export class CompanyResolver {
       [Role.admin].includes(context.user.role) &&
       context.user.company.id === company._id
     ) {
-      return company;
+      return { ...company, id: company._id };
     } else {
       throw new NotFoundError(id);
     }
