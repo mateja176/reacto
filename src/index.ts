@@ -1,14 +1,9 @@
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import jwt from 'express-jwt';
+import * as mongoose from 'mongoose';
 import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
-import {
-  ConnectionOptions,
-  createConnection,
-  getConnectionOptions,
-} from 'typeorm';
-import ormConfig from '../ormconfig';
 import { path } from './config/config';
 import { jwtAlgorithm } from './config/jwt';
 import resolvers from './graphql';
@@ -16,20 +11,16 @@ import { UserOutput } from './graphql/company/graphql/user/types/types';
 import { Context } from './interfaces/Context';
 import env from './services/env';
 import authChecker from './utils/authChecker';
-import configureContainer from './utils/container';
 
 (async () => {
-  const configConnectionOptions = await getConnectionOptions();
-  const connectionOptions = {
-    ...configConnectionOptions,
-    ...ormConfig, // * if the order is changed the options are overridden even if they are no specified in env
-  } as ConnectionOptions;
-  const connection = await createConnection(connectionOptions);
+  await mongoose.connect(env.mongodbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
   const schema = await buildSchema({
     resolvers,
     authChecker,
-    container: () => configureContainer(connection),
   });
 
   const server = new ApolloServer({
@@ -37,7 +28,7 @@ import configureContainer from './utils/container';
     playground: true,
     context: ({ req }) => {
       const context: Context = {
-        connection,
+        connection: mongoose.connection,
         user: (req as express.Request & { user: UserOutput }).user, // `req.user` comes from `express-jwt`
       };
       return context;

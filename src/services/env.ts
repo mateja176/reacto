@@ -3,6 +3,10 @@ import { EnvError } from '../utils/errors';
 
 dotenv.config();
 
+if (!process.env.MONGODB_URI) {
+  throw new EnvError('MONGODB_URI');
+}
+
 if (!process.env.JWT_SECRET) {
   throw new EnvError('JWT_SECRET');
 }
@@ -22,6 +26,7 @@ if (!process.env.APP_EMAIL_PATH) {
 }
 
 const env = {
+  mongodbURI: process.env.MONGODB_URI,
   jwtSecret: process.env.JWT_SECRET,
   mailGunApiKey: process.env.MAIL_GUN_API_KEY,
   mailGunUsername: process.env.MAIL_GUN_USERNAME,

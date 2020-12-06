@@ -1,25 +1,23 @@
-import { Column, Entity, ObjectIdColumn, OneToMany } from 'typeorm';
-import { NamedEntity } from '../../interfaces/Entity';
-import { Questionnaire } from './entities/Questionnaire/Questionnaire';
-import { QuestionnaireConfiguration } from './entities/QuestionnaireConfiguration';
-import { User } from './entities/User/User';
-import { UserPending } from './entities/User/UserPending';
+import { prop, Ref } from '@typegoose/typegoose';
+import { WithName } from '../../interfaces/Entity';
+import { Questionnaire } from '../Questionnaire/Questionnaire';
+import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration/QuestionnaireConfiguration';
+import { User } from '../User/User';
+import { UserPending } from '../User/UserPending';
 
-@Entity()
-export class Company implements NamedEntity {
-  @ObjectIdColumn({ unique: true })
-  id: string;
-  @Column()
-  name: string;
-  @OneToMany(() => User, (user) => user.company)
-  users: User[];
-  @OneToMany(() => UserPending, (user) => user.company)
-  pendingUsers: UserPending[];
-  @OneToMany(
-    () => QuestionnaireConfiguration,
-    (questionnaireConfiguration) => questionnaireConfiguration.company,
-  )
-  questionnaireConfigurations: QuestionnaireConfiguration[];
-  @OneToMany(() => Questionnaire, (questionnaire) => questionnaire.company)
-  questionnaires: Questionnaire[];
+export class Company implements WithName {
+  @prop()
+  public name: string;
+  @prop({ ref: User })
+  public owner: Ref<User>;
+  @prop({ ref: User })
+  public users: Ref<User>[];
+  @prop({ ref: UserPending })
+  public pendingUsers: Ref<UserPending>[];
+  @prop({
+    ref: QuestionnaireConfiguration,
+  })
+  public questionnaireConfigurations: Ref<QuestionnaireConfiguration>[];
+  @prop({ ref: Questionnaire })
+  public questionnaires: Questionnaire[];
 }
