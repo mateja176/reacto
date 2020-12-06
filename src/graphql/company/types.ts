@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from 'type-graphql';
-import { User } from '../../entities/Company/entities/User/User';
 import { NamedEntity } from '../../interfaces/Entity';
-import { UserPendingOutput } from './graphql/user/types/UserPendingOutput';
+import { UserOutput } from '../user/types/types';
+import { UserPendingOutput } from '../user/types/UserPendingOutput';
 
 @ObjectType('Company')
 export class CompanyOutput implements NamedEntity {
@@ -9,8 +9,8 @@ export class CompanyOutput implements NamedEntity {
   id: string;
   @Field()
   name: string;
-  @Field(() => [User])
-  users: User[];
+  @Field(() => [UserOutput])
+  users: UserOutput[];
   @Field(() => UserPendingOutput)
   pendingUsers: UserPendingOutput[];
   // @Field(() => [QuestionnaireConfigurationOutput])

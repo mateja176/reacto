@@ -1,3 +1,3 @@
-import resolvers from './graphql';
+import { CompanyResolver } from './CompanyResolver';
 
-export default resolvers;
+export default [CompanyResolver] as const;

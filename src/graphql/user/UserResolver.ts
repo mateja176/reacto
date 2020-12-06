@@ -16,19 +16,16 @@ import {
   Query,
   Resolver,
 } from 'type-graphql';
-import { Company } from '../../../../entities/Company/Company';
-import { Role } from '../../../../entities/Company/entities/User/User';
-import { UserPending } from '../../../../entities/Company/entities/User/UserPending';
-import { Context } from '../../../../interfaces/Context';
-import createToken from '../../../../services/createToken';
-import env from '../../../../services/env';
-import hashPassword from '../../../../services/hashPassword';
-import {
-  UserPendingRepository,
-  UserRepository,
-} from '../../../../utils/container';
-import { createEntity } from '../../../../utils/createEntity';
-import { NotFoundError } from '../../../../utils/errors';
+import { v4 } from 'uuid';
+import { Company } from '../../entities/Company/Company';
+import { Role } from '../../entities/User/User';
+import { UserPending } from '../../entities/User/UserPending';
+import { Context } from '../../interfaces/Context';
+import createToken from '../../services/createToken';
+import env from '../../services/env';
+import hashPassword from '../../services/hashPassword';
+import { UserModel, UserPendingModel } from '../../services/models';
+import { NotFoundError } from '../../utils/errors';
 import {
   InviteInput,
   LoginInput,
@@ -51,16 +48,12 @@ const nodemailerMailgun = nodemailer.createTransport(mg(auth));
 
 @Resolver(UserOutput)
 export class UserResolver {
-  constructor(
-    private userRepository: UserRepository,
-    private userPendingRepository: UserPendingRepository,
-  ) {}
   @Query(() => UserOutput)
   @Authorized()
   async user(@Arg('id') id: string, @Ctx() context: Context) {
-    const user = await this.userRepository.findOne(id);
+    const user = await UserModel.findById(id);
 
-    if ([Role.admin, Role.owner].includes(context.user.role)) {
+    if ([Role.admin].includes(context.user.role)) {
       if (user) {
         return user;
       } else {
@@ -78,23 +71,27 @@ export class UserResolver {
   }
 
   @Query(() => [UserOutput])
-  @Authorized([Role.admin, Role.owner])
+  @Authorized([Role.admin])
   users(@Args() { skip, take }: UsersArgs) {
-    return this.userRepository.find({ skip, take });
+    return UserModel.find({ skip, take });
   }
 
   @Mutation(() => LoginOutput)
-  async logIn(
-    @Arg('input') { email, password }: LoginInput,
-  ): Promise<LoginOutput> {
-    const userEntity = await this.userRepository.findOne({ where: { email } });
-
+  async logIn(@Arg('input') { email, password }: LoginInput) {
+    const userEntity = await UserModel.findOne({ where: { email } }).populate(
+      'company',
+    );
     if (userEntity) {
-      const { passwordHash, ...user } = userEntity;
-
+      const { passwordHash, _id, ...user } = userEntity;
       const passwordsMatch = await bcrypt.compare(password, passwordHash);
 
-      const token = createToken(user);
+      const company = user.company as Company;
+
+      const token = createToken({
+        ...user,
+        id: _id,
+        company: { id: company._id, name: company.name },
+      });
 
       if (passwordsMatch) {
         return { user, token };
@@ -106,21 +103,18 @@ export class UserResolver {
     }
   }
 
-  @Authorized([Role.admin, Role.owner])
+  @Authorized([Role.admin])
   @Mutation(() => RegisterOutput)
   async invite(
     @Arg('input') input: InviteInput,
     @Ctx() context: Context,
   ): Promise<UserPending> {
-    const company = new Company();
-    company.id = context.user.company.id;
-    const userPending = createEntity(this.userPendingRepository, {
+    const userPending = await UserPendingModel.create({
+      _id: v4(),
       email: input.email,
       role: input.role,
-      company,
+      company: context.user.company.id,
     });
-
-    await this.userPendingRepository.save(userPending);
 
     return new Promise((resolve, reject) =>
       nodemailerMailgun.sendMail(
@@ -150,8 +144,8 @@ export class UserResolver {
     );
   }
   @Mutation(() => RegisterOutput)
-  async register(@Arg('input') input: RegisterInput): Promise<RegisterOutput> {
-    const user = await this.userRepository.findOne({
+  async register(@Arg('input') input: RegisterInput) {
+    const user = await UserModel.findOne({
       where: { email: input.email },
     });
 
@@ -160,11 +154,12 @@ export class UserResolver {
         `User with email "${input.email}" already exists.`,
       );
     } else {
-      const pendingUser = await this.userPendingRepository.findOne({
+      const pendingUser = await UserPendingModel.findOne({
         where: { email: input.email },
       });
       if (pendingUser) {
-        const newUser = createEntity(this.userRepository, {
+        const newUser = await UserModel.create({
+          _id: v4(),
           email: input.email,
           passwordHash: await hashPassword(input.password),
           name: input.name,
@@ -173,12 +168,16 @@ export class UserResolver {
           company: pendingUser.company,
         });
 
-        await this.userRepository.save(newUser);
+        const company = newUser.company as Company;
 
-        const token = createToken(newUser);
+        const token = createToken({
+          ...newUser,
+          id: newUser._id,
+          company: { id: company._id, name: company.name },
+        });
 
         return {
-          user: newUser,
+          user: { ...newUser, id: newUser._id },
           token,
         };
       } else {
