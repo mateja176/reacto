@@ -4,6 +4,7 @@ import {
   UserInputError,
 } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
+import mongoose from 'mongoose';
 import nodemailer from 'nodemailer';
 import mg from 'nodemailer-mailgun-transport';
 import { join } from 'path';
@@ -16,7 +17,6 @@ import {
   Query,
   Resolver,
 } from 'type-graphql';
-import { v4 } from 'uuid';
 import { Company } from '../../entities/Company/Company';
 import { Role } from '../../entities/User/User';
 import { UserPending } from '../../entities/User/UserPending';
@@ -110,7 +110,7 @@ export class UserResolver {
     @Ctx() context: Context,
   ): Promise<UserPending> {
     const userPending = await UserPendingModel.create({
-      _id: v4(),
+      _id: mongoose.Types.ObjectId().toHexString(),
       email: input.email,
       role: input.role,
       company: context.user.company.id,
@@ -159,7 +159,7 @@ export class UserResolver {
       });
       if (pendingUser) {
         const newUser = await UserModel.create({
-          _id: v4(),
+          _id: mongoose.Types.ObjectId().toHexString(),
           email: input.email,
           passwordHash: await hashPassword(input.password),
           name: input.name,
