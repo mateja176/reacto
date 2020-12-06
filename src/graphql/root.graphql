@@ -1,0 +1,4 @@
+type Query {
+  company(id: ID!): Company!
+  user(id: ID!): User!
+}

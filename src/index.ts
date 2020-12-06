@@ -1,16 +1,15 @@
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import jwt from 'express-jwt';
+import * as fs from 'fs-extra';
+import { buildSchema } from 'graphql';
 import mongoose from 'mongoose';
+import { join } from 'path';
 import 'reflect-metadata';
-import { buildSchema } from 'type-graphql';
 import { path } from './config/config';
 import { jwtAlgorithm } from './config/jwt';
-import resolvers from './graphql';
-import { JWTUser } from './graphql/user/types/JWTUser';
 import { Context } from './interfaces/Context';
 import env from './services/env';
-import authChecker from './utils/authChecker';
 
 (async () => {
   await mongoose.connect(env.mongodbURI, {
@@ -18,18 +17,17 @@ import authChecker from './utils/authChecker';
     useUnifiedTopology: true,
   });
 
-  const schema = await buildSchema({
-    resolvers,
-    authChecker,
-  });
+  const schema = await fs.readFile(
+    join(__dirname, 'generated', 'schema.graphql'),
+    { encoding: 'utf-8' },
+  );
 
   const server = new ApolloServer({
-    schema,
+    schema: buildSchema(schema),
     playground: true,
-    context: ({ req }) => {
+    context: () => {
       const context: Context = {
         connection: mongoose.connection,
-        user: (req as express.Request & { user: JWTUser }).user, // `req.user` comes from `express-jwt`
       };
       return context;
     },

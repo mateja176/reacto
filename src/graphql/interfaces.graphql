@@ -1,0 +1,8 @@
+interface Node {
+  id: ID!
+}
+
+interface NamedNode {
+  id: ID!
+  name: String!
+}

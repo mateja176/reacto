@@ -1,0 +1,12 @@
+enum Role {
+  admin
+  regular
+}
+
+type User implements NamedNode {
+  id: ID!
+  email: String!
+  name: String!
+  role: Role!
+  company: Company!
+}
