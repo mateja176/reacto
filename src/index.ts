@@ -11,8 +11,8 @@ import {
 import ormConfig from '../ormconfig';
 import { path } from './config/config';
 import { jwtAlgorithm } from './config/jwt';
+import { User } from './generated/resolvers';
 import resolvers from './graphql';
-import { UserOutput } from './graphql/company/graphql/user/types/types';
 import { Context } from './interfaces/Context';
 import env from './services/env';
 import authChecker from './utils/authChecker';
@@ -38,7 +38,7 @@ import configureContainer from './utils/container';
     context: ({ req }) => {
       const context: Context = {
         connection,
-        user: (req as express.Request & { user: UserOutput }).user, // `req.user` comes from `express-jwt`
+        user: (req as express.Request & { user: User }).user, // `req.user` comes from `express-jwt`
       };
       return context;
     },

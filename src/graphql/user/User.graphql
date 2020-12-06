@@ -1,0 +1,12 @@
+enum Role {
+  admin
+  regular
+}
+
+type User implements NamedEntity {
+  id: ID!
+  name: String!
+  email: String!
+  role: Role!
+  company: Company!
+}

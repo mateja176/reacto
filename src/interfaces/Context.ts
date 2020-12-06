@@ -1,7 +1,7 @@
 import { Connection } from 'typeorm';
-import { UserOutput } from '../graphql/company/graphql/user/types/types';
+import { User } from '../generated/resolvers';
 
 export interface Context {
   connection: Connection;
-  user: UserOutput;
+  user: User;
 }

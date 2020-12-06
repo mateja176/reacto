@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { jwtAlgorithm } from '../config/jwt';
-import { UserOutput } from '../graphql/company/graphql/user/types/types';
+import { User } from '../entities/Company/entities/User/User';
 import env from './env';
 
-const createToken = (user: UserOutput) => {
+const createToken = (user: User) => {
   return jwt.sign({ ...user, id: String(user.id) }, env.jwtSecret, {
     algorithm: jwtAlgorithm,
     expiresIn: '2h',

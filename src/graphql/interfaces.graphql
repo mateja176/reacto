@@ -1,0 +1,4 @@
+interface NamedEntity {
+  id: ID!
+  name: String!
+}

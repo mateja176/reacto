@@ -1,0 +1,5 @@
+type Company implements NamedEntity {
+  id: ID!
+  name: String!
+  owner: User!
+}

@@ -1,5 +1,13 @@
-import companyResolvers from './company';
+import { Resolvers } from '../generated/resolvers';
+import { Context } from '../interfaces/Context';
+import company from './company/company';
+import user from './user/user';
 
-const resolvers = [...companyResolvers] as const;
+const resolvers: Resolvers<Context> = {
+  Query: {
+    company,
+    user,
+  },
+};
 
 export default resolvers;
