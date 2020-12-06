@@ -1,4 +1,4 @@
-import { prop, Ref } from '@typegoose/typegoose';
+import { ModelOptions, prop, Ref, Severity } from '@typegoose/typegoose';
 import { WithName } from '../../interfaces/Entity';
 import { Question } from '../Question/Question';
 
@@ -7,6 +7,7 @@ import { Question } from '../Question/Question';
  * In rare cases where the default question value has changed.
  * This would be inconsistent in relation the to default user was presented with, at the time of answering.
  */
+@ModelOptions({ options: { allowMixed: Severity.ALLOW } })
 export class Answer implements WithName {
   @prop()
   public _id: string;
