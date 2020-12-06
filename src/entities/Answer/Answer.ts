@@ -12,7 +12,7 @@ export class Answer implements WithName {
   public _id: string;
   @prop()
   public name: string;
-  @prop({ ref: Question })
+  @prop({ ref: () => Question })
   public question: Ref<Question>;
   @prop()
   public boolean?: boolean;

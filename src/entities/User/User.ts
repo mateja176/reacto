@@ -20,13 +20,13 @@ export class User implements WithName {
   public passwordHash: string;
   @prop({ enum: Role })
   public role: Role;
-  @prop({ ref: Company })
+  @prop({ ref: () => Company })
   public company: Ref<Company>;
-  @prop({ ref: Questionnaire })
+  @prop({ ref: () => Questionnaire })
   questionnaires: Questionnaire[];
   /**
    * only admins may create configurations
    */
-  @prop({ ref: QuestionnaireConfiguration })
+  @prop({ ref: () => QuestionnaireConfiguration })
   public questionnaireConfigurations?: Ref<QuestionnaireConfiguration>[];
 }

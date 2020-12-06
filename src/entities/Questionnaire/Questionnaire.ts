@@ -9,12 +9,12 @@ export class Questionnaire implements WithName {
   public _id: string;
   @prop()
   public name: string;
-  @prop({ ref: Company })
+  @prop({ ref: () => Company })
   public company: Company;
-  @prop({ ref: User })
+  @prop({ ref: () => User })
   public user: Ref<User>;
-  @prop({ ref: Question })
+  @prop({ ref: () => Question })
   public inheritedQuestions: Question;
-  @prop({ ref: Question })
+  @prop({ ref: () => Question })
   public questions: Question[];
 }

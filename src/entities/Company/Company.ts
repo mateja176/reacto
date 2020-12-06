@@ -10,16 +10,16 @@ export class Company implements WithName {
   public _id: string;
   @prop()
   public name: string;
-  @prop({ ref: User })
+  @prop({ ref: () => User })
   public owner: Ref<User>;
-  @prop({ ref: User })
+  @prop({ ref: () => User })
   public users: Ref<User>[];
-  @prop({ ref: UserPending })
+  @prop({ ref: () => UserPending })
   public pendingUsers: Ref<UserPending>[];
   @prop({
-    ref: QuestionnaireConfiguration,
+    ref: () => QuestionnaireConfiguration,
   })
   public questionnaireConfigurations: Ref<QuestionnaireConfiguration>[];
-  @prop({ ref: Questionnaire })
+  @prop({ ref: () => Questionnaire })
   public questionnaires: Questionnaire[];
 }

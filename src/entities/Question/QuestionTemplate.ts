@@ -4,8 +4,8 @@ import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration/Questi
 import { QuestionBase } from './QuestionBase';
 
 export class QuestionTemplate extends QuestionBase {
-  @prop({ ref: QuestionnaireConfiguration })
+  @prop({ ref: () => QuestionnaireConfiguration })
   public questionnaireConfiguration: Ref<QuestionnaireConfiguration>;
-  @prop({ ref: Answer })
+  @prop({ ref: () => Answer })
   public answers: Ref<Answer>[];
 }

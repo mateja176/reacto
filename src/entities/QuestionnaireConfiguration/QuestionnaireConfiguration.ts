@@ -13,10 +13,10 @@ export class QuestionnaireConfiguration implements WithName {
     comment: 'User defined, for example: E-Commerce, Blog, Social Media',
   })
   public type: string;
-  @prop({ ref: Company })
+  @prop({ ref: () => Company })
   public company: Company;
-  @prop({ ref: User })
+  @prop({ ref: () => User })
   public user: Ref<User>;
-  @prop({ ref: QuestionTemplate })
+  @prop({ ref: () => QuestionTemplate })
   public questionTemplates: Ref<QuestionTemplate>;
 }

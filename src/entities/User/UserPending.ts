@@ -9,6 +9,6 @@ export class UserPending {
   email: string;
   @prop({ enum: Role })
   role: Role;
-  @prop({ ref: Company })
+  @prop({ ref: () => Company })
   company: Ref<Company>;
 }
