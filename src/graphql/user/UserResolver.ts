@@ -78,9 +78,7 @@ export class UserResolver {
 
   @Mutation(() => LoginOutput)
   async logIn(@Arg('input') { email, password }: LoginInput) {
-    const userEntity = await UserModel.findOne({ where: { email } }).populate(
-      'company',
-    );
+    const userEntity = await UserModel.findOne({ email }).populate('company');
     if (userEntity) {
       const { passwordHash, _id, ...user } = userEntity;
       const passwordsMatch = await bcrypt.compare(password, passwordHash);
@@ -146,7 +144,7 @@ export class UserResolver {
   @Mutation(() => RegisterOutput)
   async register(@Arg('input') input: RegisterInput) {
     const user = await UserModel.findOne({
-      where: { email: input.email },
+      email: input.email,
     });
 
     if (user) {
@@ -155,7 +153,7 @@ export class UserResolver {
       );
     } else {
       const pendingUser = await UserPendingModel.findOne({
-        where: { email: input.email },
+        email: input.email,
       });
       if (pendingUser) {
         const newUser = await UserModel.create({
