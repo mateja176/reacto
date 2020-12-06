@@ -46,7 +46,7 @@ const auth: mg.Options = {
 
 const nodemailerMailgun = nodemailer.createTransport(mg(auth));
 
-@Resolver(UserOutput)
+@Resolver()
 export class UserResolver {
   @Query(() => UserOutput)
   @Authorized()
