@@ -1,7 +1,7 @@
 import { Connection } from 'mongoose';
-import { UserOutput } from '../graphql/company/graphql/user/types/types';
+import { JWTUser } from '../graphql/user/types/JWTUser';
 
 export interface Context {
   connection: Connection;
-  user: UserOutput;
+  user: JWTUser;
 }

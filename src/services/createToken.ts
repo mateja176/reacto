@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { jwtAlgorithm } from '../config/jwt';
-import { UserOutput } from '../graphql/company/graphql/user/types/types';
+import { JWTUser } from '../graphql/user/types/JWTUser';
 import env from './env';
 
-const createToken = (user: UserOutput) => {
-  return jwt.sign({ ...user, id: String(user.id) }, env.jwtSecret, {
+const createToken = (user: JWTUser) => {
+  return jwt.sign(user, env.jwtSecret, {
     algorithm: jwtAlgorithm,
     expiresIn: '2h',
   });

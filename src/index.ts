@@ -7,7 +7,7 @@ import { buildSchema } from 'type-graphql';
 import { path } from './config/config';
 import { jwtAlgorithm } from './config/jwt';
 import resolvers from './graphql';
-import { UserOutput } from './graphql/company/graphql/user/types/types';
+import { JWTUser } from './graphql/user/types/JWTUser';
 import { Context } from './interfaces/Context';
 import env from './services/env';
 import authChecker from './utils/authChecker';
@@ -29,7 +29,7 @@ import authChecker from './utils/authChecker';
     context: ({ req }) => {
       const context: Context = {
         connection: mongoose.connection,
-        user: (req as express.Request & { user: UserOutput }).user, // `req.user` comes from `express-jwt`
+        user: (req as express.Request & { user: JWTUser }).user, // `req.user` comes from `express-jwt`
       };
       return context;
     },
