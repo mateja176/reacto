@@ -165,7 +165,7 @@ export class UserResolver {
     } else {
       const pendingUser = await UserPendingModel.findOne({
         email: input.email,
-      });
+      }).populate('company');
       if (pendingUser) {
         const newUser = await UserModel.create({
           _id: mongoose.Types.ObjectId().toHexString(),
