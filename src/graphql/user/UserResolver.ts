@@ -80,15 +80,26 @@ export class UserResolver {
   async logIn(@Arg('input') { email, password }: LoginInput) {
     const userEntity = await UserModel.findOne({ email }).populate('company');
     if (userEntity) {
-      const { passwordHash, _id, ...user } = userEntity;
-      const passwordsMatch = await bcrypt.compare(password, passwordHash);
+      const passwordsMatch = await bcrypt.compare(
+        password,
+        userEntity.passwordHash,
+      );
 
-      const company = user.company as Company;
+      const company = userEntity.company as Company;
+
+      const user = {
+        id: userEntity._id,
+        email: userEntity.email,
+        name: userEntity.name,
+        role: userEntity.role,
+      };
 
       const token = createToken({
         ...user,
-        id: _id,
-        company: { id: company._id, name: company.name },
+        company: {
+          id: company._id,
+          name: company.name,
+        },
       });
 
       if (passwordsMatch) {
@@ -168,14 +179,20 @@ export class UserResolver {
 
         const company = newUser.company as Company;
 
-        const token = createToken({
-          ...newUser,
+        const user = {
           id: newUser._id,
+          email: newUser.email,
+          name: newUser.name,
+          role: newUser.role,
+        };
+
+        const token = createToken({
+          ...user,
           company: { id: company._id, name: company.name },
         });
 
         return {
-          user: { ...newUser, id: newUser._id },
+          user,
           token,
         };
       } else {
