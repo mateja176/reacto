@@ -17,6 +17,16 @@ const interfaceDeclaration = ts.factory.createInterfaceDeclaration(
       undefined,
       ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
     ),
+    ts.factory.createPropertySignature(
+      [],
+      'b',
+      undefined,
+      ts.factory.createFunctionTypeNode(
+        [],
+        [],
+        ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
+      ),
+    ),
   ],
 );
 
