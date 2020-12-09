@@ -24,7 +24,7 @@ const interfaceDeclaration = ts.factory.createInterfaceDeclaration(
       ts.factory.createFunctionTypeNode(
         [],
         [],
-        ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword),
+        ts.factory.createTypeReferenceNode('Test'),
       ),
     ),
   ],
