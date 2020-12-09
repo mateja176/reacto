@@ -1,5 +1,5 @@
 import * as fs from 'fs-extra';
-import { buildSchema } from 'graphql';
+import * as gql from 'graphql';
 import { join } from 'path';
 import prettier from 'prettier';
 import ts from 'typescript';
@@ -8,16 +8,43 @@ import prettierOptions from '../.prettierrc.json';
 const generatedPath = join(__dirname, '..', 'src', 'generated');
 
 (async () => {
-  const types = Object.entries(
-    buildSchema(
-      await fs.readFile(join(generatedPath, 'schema.graphql'), {
-        encoding: 'utf-8',
-      }),
-    ).getTypeMap(),
-  );
-  console.log(types);
+  const types = Object.values(
+    gql
+      .buildSchema(
+        await fs.readFile(join(generatedPath, 'schema.graphql'), {
+          encoding: 'utf-8',
+        }),
+      )
+      .getTypeMap(),
+  ).filter((type) => !gql.isScalarType(type) && !!type.name.startsWith('__'));
 
-  const importClause = ts.factory.createImportDeclaration(
+  const tsTypes = types.map((type) => {
+    if (gql.isInterfaceType(type)) {
+      return ts.factory.createInterfaceDeclaration(
+        [],
+        [],
+        type.name,
+        [],
+        [],
+        Object.entries(type.getFields()).map(([name, fieldType]) =>
+          ts.factory.createPropertySignature(
+            [],
+            name,
+            undefined,
+            // TODO
+            ts.factory.createFunctionTypeNode(
+              [],
+              [],
+              ts.factory.createTypeReferenceNode('Test'),
+            ),
+          ),
+        ),
+      );
+    } else {
+    }
+  });
+
+  const importDeclaration = ts.factory.createImportDeclaration(
     [],
     [],
     ts.factory.createImportClause(
@@ -33,32 +60,6 @@ const generatedPath = join(__dirname, '..', 'src', 'generated');
     ts.factory.createStringLiteral('apollo-server-express'),
   );
 
-  const interfaceDeclaration = ts.factory.createInterfaceDeclaration(
-    [],
-    [],
-    'Test',
-    [],
-    [],
-    [
-      ts.factory.createPropertySignature(
-        [],
-        'a',
-        undefined,
-        ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
-      ),
-      ts.factory.createPropertySignature(
-        [],
-        'b',
-        undefined,
-        ts.factory.createFunctionTypeNode(
-          [],
-          [],
-          ts.factory.createTypeReferenceNode('Test'),
-        ),
-      ),
-    ],
-  );
-
   const exportDeclaration = ts.factory.createExportDeclaration(
     [],
     [],
@@ -69,8 +70,8 @@ const generatedPath = join(__dirname, '..', 'src', 'generated');
   );
 
   const prog = ts.factory.createNodeArray([
-    importClause,
-    interfaceDeclaration,
+    importDeclaration,
+    ...tsTypes.filter((type): type is ts.InterfaceDeclaration => !!type),
     exportDeclaration,
   ]);
 
