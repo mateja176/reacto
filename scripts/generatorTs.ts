@@ -4,6 +4,22 @@ import prettier from 'prettier';
 import ts from 'typescript';
 import prettierOptions from '../.prettierrc.json';
 
+const importClause = ts.factory.createImportDeclaration(
+  [],
+  [],
+  ts.factory.createImportClause(
+    true,
+    undefined,
+    ts.factory.createNamedImports([
+      ts.factory.createImportSpecifier(
+        undefined,
+        ts.factory.createIdentifier('IResolverObject'),
+      ),
+    ]),
+  ),
+  ts.factory.createStringLiteral('apollo-server-express'),
+);
+
 const interfaceDeclaration = ts.factory.createInterfaceDeclaration(
   [],
   [],
@@ -40,6 +56,7 @@ const exportDeclaration = ts.factory.createExportDeclaration(
 );
 
 const prog = ts.factory.createNodeArray([
+  importClause,
   interfaceDeclaration,
   exportDeclaration,
 ]);
