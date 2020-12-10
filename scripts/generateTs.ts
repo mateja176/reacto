@@ -4,6 +4,7 @@ import { join } from 'path';
 import prettier from 'prettier';
 import ts from 'typescript';
 import prettierOptions from '../.prettierrc.json';
+import { helperTypes, mapInterface } from '../src/helpers/generateTs';
 
 const generatedPath = join(__dirname, '..', 'src', 'generated');
 
@@ -16,31 +17,13 @@ const generatedPath = join(__dirname, '..', 'src', 'generated');
         }),
       )
       .getTypeMap(),
-  ).filter((type) => !gql.isScalarType(type) && !!type.name.startsWith('__'));
+  ).filter((type) => !gql.isScalarType(type) && !type.name.startsWith('__'));
 
   const tsTypes = types.map((type) => {
     if (gql.isInterfaceType(type)) {
-      return ts.factory.createInterfaceDeclaration(
-        [],
-        [],
-        type.name,
-        [],
-        [],
-        Object.entries(type.getFields()).map(([name, fieldType]) =>
-          ts.factory.createPropertySignature(
-            [],
-            name,
-            undefined,
-            // TODO
-            ts.factory.createFunctionTypeNode(
-              [],
-              [],
-              ts.factory.createTypeReferenceNode('Test'),
-            ),
-          ),
-        ),
-      );
+      return mapInterface(type);
     } else {
+      return null;
     }
   });
 
@@ -65,12 +48,14 @@ const generatedPath = join(__dirname, '..', 'src', 'generated');
     [],
     true,
     ts.factory.createNamedExports([
-      ts.factory.createExportSpecifier(undefined, 'Test'),
+      // TODO replace placeholder
+      // ts.factory.createExportSpecifier(undefined, 'Test'),
     ]),
   );
 
   const prog = ts.factory.createNodeArray([
     importDeclaration,
+    ...helperTypes,
     ...tsTypes.filter((type): type is ts.InterfaceDeclaration => !!type),
     exportDeclaration,
   ]);
