@@ -53,11 +53,14 @@ const generatedPath = join(__dirname, '..', 'src', 'generated');
     [],
     [],
     true,
-    ts.factory.createNamedExports(
-      tsTypes.map((type) =>
+    ts.factory.createNamedExports([
+      ...helperTypes.map((type) =>
         ts.factory.createExportSpecifier(undefined, type.name),
       ),
-    ),
+      ...tsTypes.map((type) =>
+        ts.factory.createExportSpecifier(undefined, type.name),
+      ),
+    ]),
   );
 
   const prog = ts.factory.createNodeArray([
