@@ -78,11 +78,10 @@ const mapTypeNode = (fieldType: gql.GraphQLField<unknown, unknown>) => {
 // * reference https://graphql.org/learn/schema/#scalar-types
 export const mapPrimitive = (
   type: gql.GraphQLScalarType,
-): ts.KeywordTypeNode => {
-  if (
-    gql.isEqualType(type, gql.GraphQLString) ||
-    gql.isEqualType(type, gql.GraphQLID)
-  ) {
+): ts.KeywordTypeNode | ts.TypeReferenceType => {
+  if (gql.isEqualType(type, gql.GraphQLID)) {
+    return ts.factory.createTypeReferenceNode('ID');
+  } else if (gql.isEqualType(type, gql.GraphQLString)) {
     return ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword);
   } else if (
     gql.isEqualType(type, gql.GraphQLInt) ||
