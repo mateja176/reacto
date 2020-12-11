@@ -30,7 +30,10 @@ const IDType = ts.factory.createTypeAliasDeclaration(
 export const helperTypes = [MaybeType, IDType];
 
 export const mapInterface = (
-  type: gql.GraphQLInterfaceType | gql.GraphQLObjectType,
+  type:
+    | gql.GraphQLInterfaceType
+    | gql.GraphQLObjectType
+    | gql.GraphQLInputObjectType,
 ): ts.InterfaceDeclaration =>
   ts.factory.createInterfaceDeclaration(
     [],

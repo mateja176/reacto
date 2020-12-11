@@ -26,9 +26,11 @@ const generatedPath = join(__dirname, '..', 'src', 'generated');
       return mapInterface(type);
     } else if (gql.isEnumType(type)) {
       return mapEnum(type);
+    } else if (gql.isInputObjectType(type)) {
+      return mapInterface(type);
     } else {
       throw new Error(
-        `Could not map type "${type.name} as it is neither an interact, type or enum."`,
+        `Could not map type "${type.name} as it is neither an interact, type, enum or input."`,
       );
     }
   });

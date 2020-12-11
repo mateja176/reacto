@@ -11,6 +11,21 @@ type User implements NamedNode {
   company: Company!
 }
 
+type UserPending implements NamedNode {
+  id: ID!
+  email: String!
+  role: Role!
+  company: Company!
+}
+
 type Query {
   user(id: ID!): User!
+}
+
+input UserInput {
+  email: String!
+  role: Role!
+}
+type Mutation {
+  invite(input: UserInput): UserPending!
 }
