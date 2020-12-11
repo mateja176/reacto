@@ -10,3 +10,7 @@ type User implements NamedNode {
   role: Role!
   company: Company!
 }
+
+type Query {
+  user(id: ID!): User!
+}

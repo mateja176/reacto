@@ -4,3 +4,7 @@ type Company implements NamedNode {
   owner: User!
   users: [User!]!
 }
+
+type Query {
+  company(id: ID!): Company!
+}
