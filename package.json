@@ -17,8 +17,9 @@
     "dev:server": "nodemon --watch src --ext ts --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts",
     "dev": "npm run dev:server",
     "serve": "node build/index.js",
+    "graphqlgen": "graphqlgen",
     "merge-schema": "ts-node scripts/mergeSchema.ts",
-    "graphqlgen": "graphqlgen"
+    "generate-ts": "ts-node scripts/generateTs.ts"
   },
   "repository": {
     "type": "git",
