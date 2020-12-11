@@ -2,4 +2,5 @@ type Company implements NamedNode {
   id: ID!
   name: String!
   owner: User!
+  users: [User!]!
 }

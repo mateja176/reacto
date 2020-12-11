@@ -30,7 +30,7 @@ const IDType = ts.factory.createTypeAliasDeclaration(
 export const helperTypes = [MaybeType, IDType];
 
 export const mapInterface = (
-  type: gql.GraphQLInterfaceType,
+  type: gql.GraphQLInterfaceType | gql.GraphQLObjectType,
 ): ts.InterfaceDeclaration =>
   ts.factory.createInterfaceDeclaration(
     [],
@@ -91,11 +91,25 @@ export const mapVectorFactory = (
   maybe: boolean = false,
 ): ts.FunctionTypeNode => {
   if (gql.isListType(type)) {
-    throw 'TODO';
-    // const upwrappedType = mapTypeNode(type);
-    // return maybe
-    //   ? createMaybeType(ts.factory.createArrayTypeNode(unwrappedType))
-    //   : ts.factory.createArrayTypeNode();
+    const ofType = type.ofType.toString();
+
+    const typedArray = (() => {
+      if (ofType.endsWith('!')) {
+        const subType = ofType.slice(0, -1);
+
+        return ts.factory.createArrayTypeNode(
+          ts.factory.createTypeReferenceNode(subType),
+        );
+      } else {
+        const maybeSubType = ofType;
+
+        return ts.factory.createArrayTypeNode(
+          createMaybeType(ts.factory.createTypeReferenceNode(maybeSubType)),
+        );
+      }
+    })();
+
+    return createFactory(maybe ? createMaybeType(typedArray) : typedArray);
   } else {
     return createFactory(
       maybe

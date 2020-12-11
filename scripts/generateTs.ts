@@ -22,8 +22,8 @@ const generatedPath = join(__dirname, '..', 'src', 'generated');
   const tsTypes = types.map((type) => {
     if (gql.isInterfaceType(type)) {
       return mapInterface(type);
-    } else {
-      return null;
+    } else if (gql.isObjectType(type)) {
+      return mapInterface(type);
     }
   });
 
