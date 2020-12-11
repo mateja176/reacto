@@ -48,6 +48,19 @@ export const mapInterface = (
     ),
   );
 
+export const mapEnum = (type: gql.GraphQLEnumType): ts.EnumDeclaration =>
+  ts.factory.createEnumDeclaration(
+    [],
+    [],
+    type.name,
+    type
+      .getValues()
+      .map((value) => value.name)
+      .map((name) =>
+        ts.factory.createEnumMember(name, ts.factory.createStringLiteral(name)),
+      ),
+  );
+
 const mapTypeNode = (fieldType: gql.GraphQLField<unknown, unknown>) => {
   const type = fieldType.type;
   if (gql.isNonNullType(type)) {

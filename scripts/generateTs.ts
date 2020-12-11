@@ -4,7 +4,7 @@ import { join } from 'path';
 import prettier from 'prettier';
 import ts from 'typescript';
 import prettierOptions from '../.prettierrc.json';
-import { helperTypes, mapInterface } from '../src/helpers/generateTs';
+import { helperTypes, mapEnum, mapInterface } from '../src/helpers/generateTs';
 
 const generatedPath = join(__dirname, '..', 'src', 'generated');
 
@@ -24,6 +24,12 @@ const generatedPath = join(__dirname, '..', 'src', 'generated');
       return mapInterface(type);
     } else if (gql.isObjectType(type)) {
       return mapInterface(type);
+    } else if (gql.isEnumType(type)) {
+      return mapEnum(type);
+    } else {
+      throw new Error(
+        `Could not map type "${type.name} as it is neither an interact, type or enum."`,
+      );
     }
   });
 
@@ -56,7 +62,7 @@ const generatedPath = join(__dirname, '..', 'src', 'generated');
   const prog = ts.factory.createNodeArray([
     importDeclaration,
     ...helperTypes,
-    ...tsTypes.filter((type): type is ts.InterfaceDeclaration => !!type),
+    ...tsTypes,
     exportDeclaration,
   ]);
 
