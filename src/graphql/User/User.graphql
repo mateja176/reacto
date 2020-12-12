@@ -27,5 +27,5 @@ input UserInput {
   role: Role!
 }
 type Mutation {
-  invite(input: UserInput): UserPending!
+  invite(input: UserInput!): UserPending!
 }

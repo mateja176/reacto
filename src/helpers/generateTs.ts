@@ -30,11 +30,8 @@ const IDType = ts.factory.createTypeAliasDeclaration(
 
 export const helperTypes = [MaybeType, IDType];
 
-export const mapVector = (
-  type:
-    | gql.GraphQLInterfaceType
-    | gql.GraphQLObjectType
-    | gql.GraphQLInputObjectType,
+export const mapInterfaceOrEnum = (
+  type: gql.GraphQLInterfaceType | gql.GraphQLInputObjectType,
 ): ts.InterfaceDeclaration =>
   ts.factory.createInterfaceDeclaration(
     [],
@@ -42,15 +39,47 @@ export const mapVector = (
     type.name,
     [],
     [],
-    Object.values(
-      type.getFields(),
-    ).map(
-      (fieldType: gql.GraphQLField<unknown, Context> | gql.GraphQLInputField) =>
+    Object.values(type.getFields()).map((fieldType: gql.GraphQLInputField) =>
+      ts.factory.createPropertySignature(
+        [],
+        fieldType.name,
+        undefined,
+        mapInput(fieldType.type),
+      ),
+    ),
+  );
+
+export const mapObject = (
+  type: gql.GraphQLObjectType,
+): ts.InterfaceDeclaration =>
+  ts.factory.createInterfaceDeclaration(
+    [],
+    [],
+    type.name,
+    [],
+    [],
+    Object.values(type.getFields()).map(
+      (fieldType: gql.GraphQLField<unknown, Context>) =>
         ts.factory.createPropertySignature(
           [],
           fieldType.name,
           undefined,
-          mapTypeReference(fieldType),
+          fieldType.args.length === 0
+            ? mapFactory(fieldType.type)
+            : ts.factory.createFunctionTypeNode(
+                [],
+                fieldType.args.map((arg) =>
+                  ts.factory.createParameterDeclaration(
+                    [],
+                    [],
+                    undefined,
+                    arg.name,
+                    undefined,
+                    mapInput(arg.type),
+                  ),
+                ),
+                mapInput(fieldType.type),
+              ),
         ),
     ),
   );
@@ -68,23 +97,32 @@ export const mapEnum = (type: gql.GraphQLEnumType): ts.EnumDeclaration =>
       ),
   );
 
-const createType = (isNullable: boolean) => (type: ts.TypeNode) =>
+const createMaybeNullableType = (isNullable: boolean) => (type: ts.TypeNode) =>
   isNullable ? createMaybeType(type) : type;
 
-const mapTypeReference = (
-  fieldType: gql.GraphQLField<unknown, Context> | gql.GraphQLInputField,
-) => {
-  const [type, isNullable] = gql.isNonNullType(fieldType.type)
-    ? [gql.getNullableType(fieldType.type), false]
-    : [fieldType.type, true];
+type ReferenceType =
+  | gql.GraphQLList<gql.GraphQLType>
+  | gql.GraphQLInterfaceType
+  | gql.GraphQLUnionType
+  | gql.GraphQLInputObjectType
+  | gql.GraphQLObjectType;
 
-  const createTypeReference = createType(isNullable);
+const mapType = (
+  mapVectorType: (reference: ReferenceType, isNullable: boolean) => ts.TypeNode,
+) => (
+  typeNode: gql.GraphQLScalarType | gql.GraphQLEnumType | ReferenceType,
+) => {
+  const [type, isNullable] = gql.isNonNullType(typeNode)
+    ? [gql.getNullableType(typeNode), false]
+    : [typeNode, true];
+
+  const createType = createMaybeNullableType(isNullable);
   if (gql.isScalarType(type)) {
-    return createTypeReference(mapPrimitive(type));
+    return createType(mapPrimitive(type));
   } else if (gql.isEnumType(type)) {
-    return createTypeReference(mapEnumReference(type));
+    return createType(mapEnumReference(type));
   } else {
-    return mapReferenceFactory(type, isNullable);
+    return mapVectorType(type, isNullable);
   }
 };
 
@@ -110,15 +148,10 @@ export const mapEnumReference = (
   type: gql.GraphQLEnumType,
 ): ts.TypeReferenceType => ts.factory.createTypeReferenceNode(type.name);
 
-export const mapReferenceFactory = (
-  type:
-    | gql.GraphQLList<gql.GraphQLType>
-    | gql.GraphQLInterfaceType
-    | gql.GraphQLUnionType
-    | gql.GraphQLInputObjectType
-    | gql.GraphQLObjectType,
+export const mapReference = (transform: (type: ts.TypeNode) => ts.TypeNode) => (
+  type: ReferenceType,
   isNullable: boolean = false,
-): ts.FunctionTypeNode => {
+) => {
   if (gql.isListType(type)) {
     const ofType = type.ofType.toString();
 
@@ -138,9 +171,9 @@ export const mapReferenceFactory = (
       }
     })();
 
-    return createFactory(isNullable ? createMaybeType(typedArray) : typedArray);
+    return transform(isNullable ? createMaybeType(typedArray) : typedArray);
   } else {
-    return createFactory(
+    return transform(
       isNullable
         ? createMaybeType(ts.factory.createTypeReferenceNode(type.name))
         : ts.factory.createTypeReferenceNode(type.name),
@@ -150,3 +183,9 @@ export const mapReferenceFactory = (
 export const createFactory = (type: ts.TypeNode): ts.FunctionTypeNode => {
   return ts.factory.createFunctionTypeNode([], [], type);
 };
+
+const mapIdentityReference = mapReference((a) => a);
+const mapFactoryReference = mapReference(createFactory);
+
+const mapInput = mapType(mapIdentityReference);
+const mapFactory = mapType(mapFactoryReference);

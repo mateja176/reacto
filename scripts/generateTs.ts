@@ -4,7 +4,12 @@ import { join } from 'path';
 import prettier from 'prettier';
 import ts from 'typescript';
 import prettierOptions from '../.prettierrc.json';
-import { helperTypes, mapEnum, mapVector } from '../src/helpers/generateTs';
+import {
+  helperTypes,
+  mapEnum,
+  mapInterfaceOrEnum,
+  mapObject,
+} from '../src/helpers/generateTs';
 
 const srcPath = join(__dirname, '..', 'src');
 const generatedPath = join(srcPath, 'generated');
@@ -23,12 +28,10 @@ const printer = ts.createPrinter();
   ).filter((type) => !gql.isScalarType(type) && !type.name.startsWith('__'));
 
   const tsTypes = types.map((type) => {
-    if (
-      gql.isInterfaceType(type) ||
-      gql.isObjectType(type) ||
-      gql.isInputObjectType(type)
-    ) {
-      return mapVector(type);
+    if (gql.isInterfaceType(type) || gql.isInputObjectType(type)) {
+      return mapInterfaceOrEnum(type);
+    } else if (gql.isObjectType(type)) {
+      return mapObject(type);
     } else if (gql.isEnumType(type)) {
       return mapEnum(type);
     } else {
