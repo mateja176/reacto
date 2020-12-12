@@ -8,7 +8,7 @@ import { join } from 'path';
 import 'reflect-metadata';
 import { path } from './config/config';
 import { jwtAlgorithm } from './config/jwt';
-import { Context } from './interfaces/Context';
+import { Context } from './Context';
 import env from './services/env';
 
 (async () => {
