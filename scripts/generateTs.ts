@@ -6,7 +6,10 @@ import ts from 'typescript';
 import prettierOptions from '../.prettierrc.json';
 import { helperTypes, mapEnum, mapInterface } from '../src/helpers/generateTs';
 
-const generatedPath = join(__dirname, '..', 'src', 'generated');
+const srcPath = join(__dirname, '..', 'src');
+const generatedPath = join(srcPath, 'generated');
+
+const printer = ts.createPrinter();
 
 (async () => {
   const types = Object.values(
@@ -71,8 +74,6 @@ const generatedPath = join(__dirname, '..', 'src', 'generated');
     ...tsTypes,
     exportDeclaration,
   ]);
-
-  const printer = ts.createPrinter();
 
   const source = printer.printList(
     ts.ListFormat.None,
