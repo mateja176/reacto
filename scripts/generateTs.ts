@@ -53,6 +53,21 @@ const printer = ts.createPrinter();
     ),
     ts.factory.createStringLiteral('apollo-server-express'),
   );
+  const contextImport = ts.factory.createImportDeclaration(
+    [],
+    [],
+    ts.factory.createImportClause(
+      true,
+      undefined,
+      ts.factory.createNamedImports([
+        ts.factory.createImportSpecifier(
+          undefined,
+          ts.factory.createIdentifier('Context'),
+        ),
+      ]),
+    ),
+    ts.factory.createStringLiteral(join('..', 'Context')),
+  );
 
   const exportDeclaration = ts.factory.createExportDeclaration(
     [],
@@ -70,6 +85,7 @@ const printer = ts.createPrinter();
 
   const prog = ts.factory.createNodeArray([
     importDeclaration,
+    contextImport,
     ...helperTypes,
     ...tsTypes,
     exportDeclaration,
