@@ -9,6 +9,7 @@ import 'reflect-metadata';
 import { path } from './config/config';
 import { jwtAlgorithm } from './config/jwt';
 import { Context } from './Context';
+import { JWTUser } from './interfaces/JWTUser';
 import env from './services/env';
 
 (async () => {
@@ -25,9 +26,10 @@ import env from './services/env';
   const server = new ApolloServer({
     schema: buildSchema(schema),
     playground: true,
-    context: () => {
+    context: ({ req }) => {
       const context: Context = {
         connection: mongoose.connection,
+        user: (req as express.Request & { user: JWTUser }).user,
       };
       return context;
     },
