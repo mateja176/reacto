@@ -134,6 +134,19 @@ export const mapEnum = (type: gql.GraphQLEnumType): ts.EnumDeclaration =>
       ),
   );
 
+export const mapUnion = (type: gql.GraphQLUnionType): ts.TypeAliasDeclaration =>
+  ts.factory.createTypeAliasDeclaration(
+    [],
+    [],
+    type.name,
+    [],
+    ts.factory.createUnionTypeNode(
+      type
+        .getTypes()
+        .map((subtype) => ts.factory.createTypeReferenceNode(subtype.name)),
+    ),
+  );
+
 const createMaybeNullableType = (isNullable: boolean) => (type: ts.TypeNode) =>
   isNullable ? createMaybeType(type) : type;
 

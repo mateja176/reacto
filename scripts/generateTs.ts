@@ -9,6 +9,7 @@ import {
   mapEnum,
   mapInterfaceOrEnum,
   mapObject,
+  mapUnion,
 } from '../src/helpers/generateTs';
 
 const srcPath = join(__dirname, '..', 'src');
@@ -34,9 +35,11 @@ const printer = ts.createPrinter();
       return mapObject(type);
     } else if (gql.isEnumType(type)) {
       return mapEnum(type);
+    } else if (gql.isUnionType(type)) {
+      return mapUnion(type);
     } else {
       throw new Error(
-        `Could not map type "${type.name} as it is neither an interact, type, enum or input."`,
+        `Could not map type "${type.name} as it is neither an interface, type, enum, union or input."`,
       );
     }
   });
