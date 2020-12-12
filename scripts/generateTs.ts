@@ -56,6 +56,21 @@ const printer = ts.createPrinter();
     ),
     ts.factory.createStringLiteral('apollo-server-express'),
   );
+  const infoImport = ts.factory.createImportDeclaration(
+    [],
+    [],
+    ts.factory.createImportClause(
+      true,
+      undefined,
+      ts.factory.createNamedImports([
+        ts.factory.createImportSpecifier(
+          undefined,
+          ts.factory.createIdentifier('GraphQLResolveInfo'),
+        ),
+      ]),
+    ),
+    ts.factory.createStringLiteral('graphql'),
+  );
   const contextImport = ts.factory.createImportDeclaration(
     [],
     [],
@@ -71,6 +86,7 @@ const printer = ts.createPrinter();
     ),
     ts.factory.createStringLiteral(join('..', 'Context')),
   );
+  const imports = [importDeclaration, infoImport, contextImport];
 
   const exportDeclaration = ts.factory.createExportDeclaration(
     [],
@@ -87,8 +103,7 @@ const printer = ts.createPrinter();
   );
 
   const prog = ts.factory.createNodeArray([
-    importDeclaration,
-    contextImport,
+    ...imports,
     ...helperTypes,
     ...tsTypes,
     exportDeclaration,

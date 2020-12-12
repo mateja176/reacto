@@ -74,6 +74,14 @@ export const mapObject = (
                   [],
                   [],
                   undefined,
+                  'source',
+                  undefined,
+                  ts.factory.createKeywordTypeNode(ts.SyntaxKind.NeverKeyword),
+                ),
+                ts.factory.createParameterDeclaration(
+                  [],
+                  [],
+                  undefined,
                   'args',
                   undefined,
                   ts.factory.createTypeLiteralNode(
@@ -86,6 +94,22 @@ export const mapObject = (
                       ),
                     ),
                   ),
+                ),
+                ts.factory.createParameterDeclaration(
+                  [],
+                  [],
+                  undefined,
+                  'context',
+                  undefined,
+                  ts.factory.createTypeReferenceNode('Context'),
+                ),
+                ts.factory.createParameterDeclaration(
+                  [],
+                  [],
+                  undefined,
+                  'info',
+                  undefined,
+                  ts.factory.createTypeReferenceNode('GraphQLResolveInfo'),
                 ),
               ],
               ts.factory.createExpressionWithTypeArguments(
