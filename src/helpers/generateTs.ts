@@ -58,32 +58,42 @@ export const mapObject = (
     type.name,
     [],
     [],
-    Object.values(type.getFields()).map(
-      (fieldType: gql.GraphQLField<unknown, Context>) =>
-        ts.factory.createPropertySignature(
-          [],
-          fieldType.name,
-          undefined,
-          fieldType.args.length === 0
-            ? mapFactory(fieldType.type)
-            : ts.factory.createFunctionTypeNode(
-                [],
-                fieldType.args.map((arg) =>
-                  ts.factory.createParameterDeclaration(
-                    [],
-                    [],
-                    undefined,
-                    arg.name,
-                    undefined,
-                    mapInput(arg.type),
+    Object.values(
+      type.getFields(),
+    ).map((fieldType: gql.GraphQLField<unknown, Context>) =>
+      ts.factory.createPropertySignature(
+        [],
+        fieldType.name,
+        undefined,
+        fieldType.args.length === 0
+          ? mapFactory(fieldType.type)
+          : ts.factory.createFunctionTypeNode(
+              [],
+              [
+                ts.factory.createParameterDeclaration(
+                  [],
+                  [],
+                  undefined,
+                  'args',
+                  undefined,
+                  ts.factory.createTypeLiteralNode(
+                    fieldType.args.map((arg) =>
+                      ts.factory.createPropertySignature(
+                        [],
+                        arg.name,
+                        undefined,
+                        mapInput(arg.type),
+                      ),
+                    ),
                   ),
                 ),
-                ts.factory.createExpressionWithTypeArguments(
-                  ts.factory.createIdentifier('Promise'),
-                  [mapInput(fieldType.type)],
-                ),
+              ],
+              ts.factory.createExpressionWithTypeArguments(
+                ts.factory.createIdentifier('Promise'),
+                [mapInput(fieldType.type)],
               ),
-        ),
+            ),
+      ),
     ),
   );
 
