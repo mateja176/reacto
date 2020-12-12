@@ -1,5 +1,6 @@
 import * as gql from 'graphql';
 import ts from 'typescript';
+import { Context } from '../Context';
 
 const MaybeType = ts.factory.createTypeAliasDeclaration(
   [],
@@ -29,7 +30,7 @@ const IDType = ts.factory.createTypeAliasDeclaration(
 
 export const helperTypes = [MaybeType, IDType];
 
-export const mapInterface = (
+export const mapVector = (
   type:
     | gql.GraphQLInterfaceType
     | gql.GraphQLObjectType
@@ -41,13 +42,16 @@ export const mapInterface = (
     type.name,
     [],
     [],
-    Object.values(type.getFields()).map((fieldType) =>
-      ts.factory.createPropertySignature(
-        [],
-        fieldType.name,
-        undefined,
-        mapTypeReference(fieldType),
-      ),
+    Object.values(
+      type.getFields(),
+    ).map(
+      (fieldType: gql.GraphQLField<unknown, Context> | gql.GraphQLInputField) =>
+        ts.factory.createPropertySignature(
+          [],
+          fieldType.name,
+          undefined,
+          mapTypeReference(fieldType),
+        ),
     ),
   );
 
@@ -67,7 +71,9 @@ export const mapEnum = (type: gql.GraphQLEnumType): ts.EnumDeclaration =>
 const createType = (isNullable: boolean) => (type: ts.TypeNode) =>
   isNullable ? createMaybeType(type) : type;
 
-const mapTypeReference = (fieldType: gql.GraphQLField<unknown, unknown>) => {
+const mapTypeReference = (
+  fieldType: gql.GraphQLField<unknown, Context> | gql.GraphQLInputField,
+) => {
   const [type, isNullable] = gql.isNonNullType(fieldType.type)
     ? [gql.getNullableType(fieldType.type), false]
     : [fieldType.type, true];
@@ -109,6 +115,7 @@ export const mapReferenceFactory = (
     | gql.GraphQLList<gql.GraphQLType>
     | gql.GraphQLInterfaceType
     | gql.GraphQLUnionType
+    | gql.GraphQLInputObjectType
     | gql.GraphQLObjectType,
   isNullable: boolean = false,
 ): ts.FunctionTypeNode => {
