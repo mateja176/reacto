@@ -78,7 +78,10 @@ export const mapObject = (
                     mapInput(arg.type),
                   ),
                 ),
-                mapInput(fieldType.type),
+                ts.factory.createExpressionWithTypeArguments(
+                  ts.factory.createIdentifier('Promise'),
+                  [mapInput(fieldType.type)],
+                ),
               ),
         ),
     ),
@@ -181,7 +184,14 @@ export const mapReference = (transform: (type: ts.TypeNode) => ts.TypeNode) => (
   }
 };
 export const createFactory = (type: ts.TypeNode): ts.FunctionTypeNode => {
-  return ts.factory.createFunctionTypeNode([], [], type);
+  return ts.factory.createFunctionTypeNode(
+    [],
+    [],
+    ts.factory.createExpressionWithTypeArguments(
+      ts.factory.createIdentifier('Promise'),
+      [type],
+    ),
+  );
 };
 
 const mapIdentityReference = mapReference((a) => a);
