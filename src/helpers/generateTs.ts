@@ -46,7 +46,7 @@ export const mapInterface = (
         [],
         fieldType.name,
         undefined,
-        mapTypeNode(fieldType),
+        mapTypeReference(fieldType),
       ),
     ),
   );
@@ -64,17 +64,21 @@ export const mapEnum = (type: gql.GraphQLEnumType): ts.EnumDeclaration =>
       ),
   );
 
-const mapTypeNode = (fieldType: gql.GraphQLField<unknown, unknown>) => {
-  const type = fieldType.type;
-  if (gql.isNonNullType(type)) {
-    const nullableType = gql.getNullableType(type);
-    return gql.isScalarType(nullableType)
-      ? mapPrimitive(nullableType)
-      : mapVectorFactory(nullableType);
+const createType = (isNullable: boolean) => (type: ts.TypeNode) =>
+  isNullable ? createMaybeType(type) : type;
+
+const mapTypeReference = (fieldType: gql.GraphQLField<unknown, unknown>) => {
+  const [type, isNullable] = gql.isNonNullType(fieldType.type)
+    ? [gql.getNullableType(fieldType.type), false]
+    : [fieldType.type, true];
+
+  const createTypeReference = createType(isNullable);
+  if (gql.isScalarType(type)) {
+    return createTypeReference(mapPrimitive(type));
+  } else if (gql.isEnumType(type)) {
+    return createTypeReference(mapEnumReference(type));
   } else {
-    return gql.isScalarType(type)
-      ? createMaybeType(mapPrimitive(type))
-      : mapVectorFactory(type, true);
+    return mapReferenceFactory(type, isNullable);
   }
 };
 
@@ -96,14 +100,17 @@ export const mapPrimitive = (
   }
 };
 
-export const mapVectorFactory = (
+export const mapEnumReference = (
+  type: gql.GraphQLEnumType,
+): ts.TypeReferenceType => ts.factory.createTypeReferenceNode(type.name);
+
+export const mapReferenceFactory = (
   type:
     | gql.GraphQLList<gql.GraphQLType>
     | gql.GraphQLInterfaceType
     | gql.GraphQLUnionType
-    | gql.GraphQLEnumType
     | gql.GraphQLObjectType,
-  maybe: boolean = false,
+  isNullable: boolean = false,
 ): ts.FunctionTypeNode => {
   if (gql.isListType(type)) {
     const ofType = type.ofType.toString();
@@ -124,10 +131,10 @@ export const mapVectorFactory = (
       }
     })();
 
-    return createFactory(maybe ? createMaybeType(typedArray) : typedArray);
+    return createFactory(isNullable ? createMaybeType(typedArray) : typedArray);
   } else {
     return createFactory(
-      maybe
+      isNullable
         ? createMaybeType(ts.factory.createTypeReferenceNode(type.name))
         : ts.factory.createTypeReferenceNode(type.name),
     );
