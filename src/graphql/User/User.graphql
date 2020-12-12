@@ -9,6 +9,8 @@ type User implements NamedNode {
   name: String!
   role: Role!
   company: Company!
+  questionnaires: [Questionnaire!]!
+  questionnaireConfigurations: [QuestionnaireConfiguration!]
 }
 
 type UserPending implements Node {

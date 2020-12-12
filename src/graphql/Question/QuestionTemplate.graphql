@@ -1,0 +1,81 @@
+type YesNoQuestionTemplate implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  default: Boolean
+}
+type StringQuestionTemplate implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  default: String
+}
+type StringsQuestionTemplate implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  default: String
+}
+type MultiStringsQuestionTemplate implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  default: [String!]
+}
+type NumberQuestionTemplate implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  default: Float
+}
+type NumbersQuestionTemplate implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  default: Float
+}
+type MultiNumbersQuestionTemplate implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  default: [Float!]
+}
+type FileQuestionTemplate implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+}
+type FilesQuestionTemplate implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+}
+
+union QuestionTemplate =
+    YesNoQuestionTemplate
+  | StringQuestionTemplate
+  | StringsQuestionTemplate
+  | MultiStringsQuestionTemplate
+  | NumberQuestionTemplate
+  | NumbersQuestionTemplate
+  | MultiNumbersQuestionTemplate
+  | FileQuestionTemplate
+  | FilesQuestionTemplate

@@ -1,0 +1,90 @@
+type YesNoQuestion implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  answer: YesNoAnswer!
+  default: Boolean
+}
+type StringQuestion implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  answer: StringAnswer!
+  default: String
+}
+type StringsQuestion implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  answer: StringsAnswer!
+  default: String
+}
+type MultiStringsQuestion implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  answer: MultiStringsAnswer!
+  default: [String!]
+}
+type NumberQuestion implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  answer: NumberAnswer!
+  default: Float
+}
+type NumbersQuestion implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  answer: NumbersAnswer!
+  default: Float
+}
+type MultiNumbersQuestion implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  answer: MultiNumbersAnswer!
+  default: [Float!]
+}
+type FileQuestion implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  answer: FileAnswer!
+}
+type FilesQuestion implements QuestionBase {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  answer: FilesAnswer!
+}
+
+union Question =
+    YesNoQuestion
+  | StringQuestion
+  | StringsQuestion
+  | MultiStringsQuestion
+  | NumberQuestion
+  | NumbersQuestion
+  | MultiNumbersQuestion
+  | FileQuestion
+  | FilesQuestion

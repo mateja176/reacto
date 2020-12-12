@@ -3,6 +3,8 @@ type Company implements NamedNode {
   name: String!
   owner: User!
   users: [User!]!
+  questionnaires: [Questionnaire!]!
+  questionnaireConfigurations: [QuestionnaireConfiguration!]!
 }
 
 type Query {

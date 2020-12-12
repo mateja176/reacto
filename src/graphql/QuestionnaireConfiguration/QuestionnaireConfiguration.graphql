@@ -1,0 +1,8 @@
+type QuestionnaireConfiguration implements NamedNode {
+  id: ID!
+  name: String!
+  type: String!
+  company: Company!
+  user: User!
+  questionTemplates: QuestionTemplate!
+}
