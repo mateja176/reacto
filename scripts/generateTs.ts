@@ -12,6 +12,10 @@ import {
   mapUnion,
 } from '../src/helpers/generateTs';
 
+const resolversName = 'Resolvers';
+const queryName = 'Query';
+const mutationName = 'Mutation';
+
 const srcPath = join(__dirname, '..', 'src');
 const generatedPath = join(srcPath, 'generated');
 
@@ -102,6 +106,7 @@ const printer = ts.createPrinter();
       ...tsTypes.map((type) =>
         ts.factory.createExportSpecifier(undefined, type.name),
       ),
+      ts.factory.createExportSpecifier(undefined, resolversName),
     ]),
   );
 
@@ -109,6 +114,27 @@ const printer = ts.createPrinter();
     ...imports,
     ...helperTypes,
     ...tsTypes,
+    ts.factory.createInterfaceDeclaration(
+      [],
+      [],
+      resolversName,
+      [],
+      undefined,
+      [
+        ts.factory.createPropertySignature(
+          [],
+          queryName,
+          undefined,
+          ts.factory.createTypeReferenceNode(queryName),
+        ),
+        ts.factory.createPropertySignature(
+          [],
+          mutationName,
+          undefined,
+          ts.factory.createTypeReferenceNode(mutationName),
+        ),
+      ],
+    ),
     exportDeclaration,
   ]);
 
