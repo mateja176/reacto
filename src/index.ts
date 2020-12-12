@@ -25,7 +25,6 @@ import env from './services/env';
 
   const server = new ApolloServer({
     schema: buildSchema(schema),
-    playground: true,
     context: ({ req }) => {
       const context: Context = {
         connection: mongoose.connection,
@@ -33,6 +32,7 @@ import env from './services/env';
       };
       return context;
     },
+    playground: true,
     tracing: process.env.NODE_ENV !== 'production',
   });
 
