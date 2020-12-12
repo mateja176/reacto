@@ -21,14 +21,8 @@ export class QuestionBase implements WithName, Ruled {
       'The corresponding questionnaire may be complete with having an answer for the respective optional question.',
   })
   public optional: boolean;
-  @prop({
-    comment:
-      'If the array is empty, a switch is displayed. If the array has one member a single checkbox is displayed. If the array has two members two radio buttons are displayed.',
-  })
-  public boolean?: {
-    value: [] | [string] | [string, string];
-    default?: boolean;
-  };
+  @prop()
+  public booleanDefault?: boolean;
   @prop()
   public stringDefault?: string;
   @prop({ comment: 'Select Textual' })
