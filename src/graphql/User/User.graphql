@@ -1,17 +1,28 @@
-enum Role {
-  admin
-  regular
-}
-
-type User implements NamedNode {
+interface IUser implements NamedNode {
   id: ID!
   email: String!
   name: String!
-  role: Role!
   company: Company!
   questionnaires: [Questionnaire!]!
-  questionnaireConfigurations: [QuestionnaireConfiguration!]
 }
+
+type RegularUser implements IUser {
+  id: ID!
+  email: String!
+  name: String!
+  company: Company!
+  questionnaires: [Questionnaire!]!
+}
+type AdminUser implements IUser {
+  id: ID!
+  email: String!
+  name: String!
+  company: Company!
+  questionnaires: [Questionnaire!]!
+  questionnaireConfigurations: [QuestionnaireConfiguration!]!
+}
+
+union User = RegularUser | AdminUser
 
 type UserPending implements Node {
   id: ID!
