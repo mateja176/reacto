@@ -2,7 +2,7 @@ interface Node {
   id: ID!
 }
 
-interface NamedNode {
+interface NamedNode implements Node {
   id: ID!
   name: String!
 }
