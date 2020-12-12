@@ -48,21 +48,6 @@ const printer = ts.createPrinter();
     }
   });
 
-  const importDeclaration = ts.factory.createImportDeclaration(
-    [],
-    [],
-    ts.factory.createImportClause(
-      true,
-      undefined,
-      ts.factory.createNamedImports([
-        ts.factory.createImportSpecifier(
-          undefined,
-          ts.factory.createIdentifier('IResolverObject'),
-        ),
-      ]),
-    ),
-    ts.factory.createStringLiteral('apollo-server-express'),
-  );
   const infoImport = ts.factory.createImportDeclaration(
     [],
     [],
@@ -93,7 +78,7 @@ const printer = ts.createPrinter();
     ),
     ts.factory.createStringLiteral(join('..', 'Context')),
   );
-  const imports = [importDeclaration, infoImport, contextImport];
+  const imports = [infoImport, contextImport];
 
   const exportDeclaration = ts.factory.createExportDeclaration(
     [],
