@@ -189,8 +189,12 @@ export const mapPrimitive = (
     gql.isEqualType(type, gql.GraphQLFloat)
   ) {
     return ts.factory.createKeywordTypeNode(ts.SyntaxKind.NumberKeyword);
-  } else {
+  } else if (gql.isEqualType(type, gql.GraphQLBoolean)) {
     return ts.factory.createKeywordTypeNode(ts.SyntaxKind.BooleanKeyword);
+  } else {
+    throw new Error(
+      `There is currently no support for custom scalar types: ${type.name}`,
+    );
   }
 };
 
