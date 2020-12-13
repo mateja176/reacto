@@ -1,15 +1,16 @@
-import { prop, Ref } from '@typegoose/typegoose';
+import { ModelOptions, prop, Ref } from '@typegoose/typegoose';
 import { WithName } from '../../interfaces/Entity';
-import { Company } from '../Company/Company';
-import { Questionnaire } from '../Questionnaire/Questionnaire';
-import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration/QuestionnaireConfiguration';
+import { CompanyClass } from '../Company/Company';
+import { QuestionnaireClass } from '../Questionnaire/Questionnaire';
+import { QuestionnaireConfigurationClass } from '../QuestionnaireConfiguration/QuestionnaireConfiguration';
 
 export enum Role {
   admin = 'admin',
   regular = 'regular',
 }
 
-export class User implements WithName {
+@ModelOptions({ options: { customName: 'User' } })
+export class UserClass implements WithName {
   @prop()
   public _id: string;
   @prop()
@@ -20,13 +21,13 @@ export class User implements WithName {
   public passwordHash: string;
   @prop({ enum: Role })
   public role: Role;
-  @prop({ ref: () => Company })
-  public company: Ref<Company>;
-  @prop({ ref: () => Questionnaire })
-  questionnaires: Questionnaire[];
+  @prop({ ref: () => CompanyClass })
+  public company: Ref<CompanyClass>;
+  @prop({ ref: () => QuestionnaireClass })
+  questionnaires: QuestionnaireClass[];
   /**
    * only admins may create configurations
    */
-  @prop({ ref: () => QuestionnaireConfiguration })
-  public questionnaireConfigurations?: Ref<QuestionnaireConfiguration>[];
+  @prop({ ref: () => QuestionnaireConfigurationClass })
+  public questionnaireConfigurations?: Ref<QuestionnaireConfigurationClass>[];
 }

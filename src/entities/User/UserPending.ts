@@ -1,14 +1,15 @@
-import { prop, Ref } from '@typegoose/typegoose';
-import { Company } from '../Company/Company';
+import { ModelOptions, prop, Ref } from '@typegoose/typegoose';
+import { CompanyClass } from '../Company/Company';
 import { Role } from './User';
 
-export class UserPending {
+@ModelOptions({ options: { customName: 'UserPending' } })
+export class UserPendingClass {
   @prop()
   public _id: string;
   @prop({ unique: true })
   email: string;
   @prop({ enum: Role })
   role: Role;
-  @prop({ ref: () => Company })
-  company: Ref<Company>;
+  @prop({ ref: () => CompanyClass })
+  company: Ref<CompanyClass>;
 }

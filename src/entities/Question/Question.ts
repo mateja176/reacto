@@ -1,11 +1,12 @@
-import { prop, Ref } from '@typegoose/typegoose';
-import { Answer } from '../Answer/Answer';
-import { Questionnaire } from '../Questionnaire/Questionnaire';
+import { ModelOptions, prop, Ref } from '@typegoose/typegoose';
+import { AnswerClass } from '../Answer/Answer';
+import { QuestionnaireClass } from '../Questionnaire/Questionnaire';
 import { QuestionBase } from './QuestionBase';
 
-export class Question extends QuestionBase {
-  @prop({ ref: () => Questionnaire })
-  public questionnaire: Ref<Questionnaire>;
-  @prop({ ref: () => Answer })
-  public answers: Ref<Answer>[];
+@ModelOptions({ options: { customName: 'Question' } })
+export class QuestionClass extends QuestionBase {
+  @prop({ ref: () => QuestionnaireClass })
+  public questionnaire: Ref<QuestionnaireClass>;
+  @prop({ ref: () => AnswerClass })
+  public answers: Ref<AnswerClass>[];
 }

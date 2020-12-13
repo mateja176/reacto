@@ -1,20 +1,20 @@
 import { getModelForClass } from '@typegoose/typegoose';
-import { Answer } from '../entities/Answer/Answer';
-import { Company } from '../entities/Company/Company';
-import { Question } from '../entities/Question/Question';
-import { QuestionTemplate } from '../entities/Question/QuestionTemplate';
-import { Questionnaire } from '../entities/Questionnaire/Questionnaire';
-import { QuestionnaireConfiguration } from '../entities/QuestionnaireConfiguration/QuestionnaireConfiguration';
-import { User } from '../entities/User/User';
-import { UserPending } from '../entities/User/UserPending';
+import { AnswerClass } from '../entities/Answer/Answer';
+import { CompanyClass } from '../entities/Company/Company';
+import { QuestionClass } from '../entities/Question/Question';
+import { QuestionTemplateClass } from '../entities/Question/QuestionTemplate';
+import { QuestionnaireClass } from '../entities/Questionnaire/Questionnaire';
+import { QuestionnaireConfigurationClass } from '../entities/QuestionnaireConfiguration/QuestionnaireConfiguration';
+import { UserClass } from '../entities/User/User';
+import { UserPendingClass } from '../entities/User/UserPending';
 
-export const CompanyModel = getModelForClass(Company);
-export const UserModel = getModelForClass(User);
-export const UserPendingModel = getModelForClass(UserPending);
+export const CompanyModel = getModelForClass(CompanyClass);
+export const UserModel = getModelForClass(UserClass);
+export const UserPendingModel = getModelForClass(UserPendingClass);
 export const QuestionnaireConfigurationModel = getModelForClass(
-  QuestionnaireConfiguration,
+  QuestionnaireConfigurationClass,
 );
-export const QuestionnaireModel = getModelForClass(Questionnaire);
-export const QuestionModel = getModelForClass(Question);
-export const QuestionTemplateModel = getModelForClass(QuestionTemplate);
-export const AnswerModel = getModelForClass(Answer);
+export const QuestionnaireModel = getModelForClass(QuestionnaireClass);
+export const QuestionModel = getModelForClass(QuestionClass);
+export const QuestionTemplateModel = getModelForClass(QuestionTemplateClass);
+export const AnswerModel = getModelForClass(AnswerClass);

@@ -1,20 +1,20 @@
 import { ModelOptions, prop, Ref, Severity } from '@typegoose/typegoose';
 import { WithName } from '../../interfaces/Entity';
-import { Question } from '../Question/Question';
+import { QuestionClass } from '../Question/Question';
 
 /**
  * Answer values are saved even in case of questions with default values.
  * In rare cases where the default question value has changed.
  * This would be inconsistent in relation the to default user was presented with, at the time of answering.
  */
-@ModelOptions({ options: { allowMixed: Severity.ALLOW } })
-export class Answer implements WithName {
+@ModelOptions({ options: { customName: 'Answer', allowMixed: Severity.ALLOW } })
+export class AnswerClass implements WithName {
   @prop()
   public _id: string;
   @prop()
   public name: string;
-  @prop({ ref: () => Question })
-  public question: Ref<Question>;
+  @prop({ ref: () => QuestionClass })
+  public question: Ref<QuestionClass>;
   @prop()
   public boolean?: boolean;
   @prop({ comment: 'Textual' })

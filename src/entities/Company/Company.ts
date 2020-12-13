@@ -1,25 +1,26 @@
-import { prop, Ref } from '@typegoose/typegoose';
+import { ModelOptions, prop, Ref } from '@typegoose/typegoose';
 import { WithName } from '../../interfaces/Entity';
-import { Questionnaire } from '../Questionnaire/Questionnaire';
-import { QuestionnaireConfiguration } from '../QuestionnaireConfiguration/QuestionnaireConfiguration';
-import { User } from '../User/User';
-import { UserPending } from '../User/UserPending';
+import { QuestionnaireClass } from '../Questionnaire/Questionnaire';
+import { QuestionnaireConfigurationClass } from '../QuestionnaireConfiguration/QuestionnaireConfiguration';
+import { UserClass } from '../User/User';
+import { UserPendingClass } from '../User/UserPending';
 
-export class Company implements WithName {
+@ModelOptions({ options: { customName: 'Company' } })
+export class CompanyClass implements WithName {
   @prop()
   public _id: string;
   @prop()
   public name: string;
-  @prop({ ref: () => User })
-  public owner: Ref<User>;
-  @prop({ ref: () => User })
-  public users: Ref<User>[];
-  @prop({ ref: () => UserPending })
-  public pendingUsers: Ref<UserPending>[];
+  @prop({ ref: () => UserClass })
+  public owner: Ref<UserClass>;
+  @prop({ ref: () => UserClass })
+  public users: Ref<UserClass>[];
+  @prop({ ref: () => UserPendingClass })
+  public pendingUsers: Ref<UserPendingClass>[];
   @prop({
-    ref: () => QuestionnaireConfiguration,
+    ref: () => QuestionnaireConfigurationClass,
   })
-  public questionnaireConfigurations: Ref<QuestionnaireConfiguration>[];
-  @prop({ ref: () => Questionnaire })
-  public questionnaires: Questionnaire[];
+  public questionnaireConfigurations: Ref<QuestionnaireConfigurationClass>[];
+  @prop({ ref: () => QuestionnaireClass })
+  public questionnaires: QuestionnaireClass[];
 }
