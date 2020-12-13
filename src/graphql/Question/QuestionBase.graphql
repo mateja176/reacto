@@ -2,6 +2,5 @@ interface QuestionBase implements NamedNode {
   id: ID!
   name: String!
   label: String!
-  rule: String
   optional: Boolean!
 }

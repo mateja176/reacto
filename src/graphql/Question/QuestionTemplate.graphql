@@ -2,7 +2,6 @@ type YesNoQuestionTemplate implements QuestionBase {
   id: ID!
   name: String!
   label: String!
-  rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: Boolean
@@ -11,7 +10,6 @@ type StringQuestionTemplate implements QuestionBase {
   id: ID!
   name: String!
   label: String!
-  rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: String
@@ -20,7 +18,6 @@ type StringsQuestionTemplate implements QuestionBase {
   id: ID!
   name: String!
   label: String!
-  rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: String
@@ -29,7 +26,6 @@ type MultiStringsQuestionTemplate implements QuestionBase {
   id: ID!
   name: String!
   label: String!
-  rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: [String!]
@@ -38,7 +34,6 @@ type NumberQuestionTemplate implements QuestionBase {
   id: ID!
   name: String!
   label: String!
-  rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: Float
@@ -47,7 +42,6 @@ type NumbersQuestionTemplate implements QuestionBase {
   id: ID!
   name: String!
   label: String!
-  rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: Float
@@ -56,7 +50,6 @@ type MultiNumbersQuestionTemplate implements QuestionBase {
   id: ID!
   name: String!
   label: String!
-  rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: [Float!]
@@ -65,7 +58,6 @@ type FileQuestionTemplate implements QuestionBase {
   id: ID!
   name: String!
   label: String!
-  rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
 }
@@ -73,7 +65,6 @@ type FilesQuestionTemplate implements QuestionBase {
   id: ID!
   name: String!
   label: String!
-  rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
 }
