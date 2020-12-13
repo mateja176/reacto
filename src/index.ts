@@ -1,4 +1,4 @@
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, IResolvers } from 'apollo-server-express';
 import express from 'express';
 import jwt from 'express-jwt';
 import * as fs from 'fs-extra';
@@ -9,6 +9,7 @@ import 'reflect-metadata';
 import { path } from './config/config';
 import { jwtAlgorithm } from './config/jwt';
 import { Context } from './Context';
+import resolvers from './graphql';
 import { JWTUser } from './interfaces/JWTUser';
 import env from './services/env';
 
@@ -25,6 +26,7 @@ import env from './services/env';
 
   const server = new ApolloServer({
     schema: buildSchema(schema),
+    resolvers: (resolvers as unknown) as IResolvers,
     context: ({ req }) => {
       const context: Context = {
         user: (req as express.Request & { user?: JWTUser }).user ?? null,
