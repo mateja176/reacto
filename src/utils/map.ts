@@ -1,8 +1,6 @@
 import { DocumentType } from '@typegoose/typegoose';
+import { Class } from '../interfaces/Class';
 
-interface Class {
-  _id: string;
-}
 export type MapClass<C extends Class> = Omit<C, '_id'> & { id: C['_id'] };
 export const mapDoc = <C extends Class>(doc: DocumentType<C>): MapClass<C> => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

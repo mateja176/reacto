@@ -1,9 +1,9 @@
 import { ModelOptions, prop, Severity } from '@typegoose/typegoose';
-import { WithName } from '../../interfaces/Entity';
+import { NamedClass } from '../../interfaces/Class';
 import { Ruled } from '../../interfaces/Ruled';
 
 @ModelOptions({ options: { allowMixed: Severity.ALLOW } })
-export class QuestionBase implements WithName, Ruled {
+export class QuestionBase implements NamedClass, Ruled {
   @prop()
   public _id: string;
   @prop()
