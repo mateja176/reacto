@@ -5,7 +5,7 @@ type YesNoQuestion implements QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answer: YesNoAnswer!
+  answers: [YesNoAnswer!]!
   default: Boolean
 }
 type StringQuestion implements QuestionBase {
@@ -15,7 +15,7 @@ type StringQuestion implements QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answer: StringAnswer!
+  answers: [StringAnswer!]!
   default: String
 }
 type StringsQuestion implements QuestionBase {
@@ -25,7 +25,7 @@ type StringsQuestion implements QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answer: StringsAnswer!
+  answers: [StringsAnswer!]!
   default: String
 }
 type MultiStringsQuestion implements QuestionBase {
@@ -35,7 +35,7 @@ type MultiStringsQuestion implements QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answer: MultiStringsAnswer!
+  answers: [MultiStringsAnswer!]!
   default: [String!]
 }
 type NumberQuestion implements QuestionBase {
@@ -45,7 +45,7 @@ type NumberQuestion implements QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answer: NumberAnswer!
+  answers: [NumberAnswer!]!
   default: Float
 }
 type NumbersQuestion implements QuestionBase {
@@ -55,7 +55,7 @@ type NumbersQuestion implements QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answer: NumbersAnswer!
+  answers: [NumbersAnswer!]!
   default: Float
 }
 type MultiNumbersQuestion implements QuestionBase {
@@ -65,7 +65,7 @@ type MultiNumbersQuestion implements QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answer: MultiNumbersAnswer!
+  answers: [MultiNumbersAnswer!]!
   default: [Float!]
 }
 type FileQuestion implements QuestionBase {
@@ -75,7 +75,7 @@ type FileQuestion implements QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answer: FileAnswer!
+  answers: [FileAnswer!]!
 }
 type FilesQuestion implements QuestionBase {
   id: ID!
@@ -84,7 +84,7 @@ type FilesQuestion implements QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answer: FilesAnswer!
+  answers: [FilesAnswer!]!
 }
 
 union Question =
