@@ -1,7 +1,5 @@
-import { Connection } from 'mongoose';
-import { JWTUser } from './interfaces/JWTUser';
+import { MaybeJWTUser } from './interfaces/JWTUser';
 
 export interface Context {
-  connection: Connection;
-  user: JWTUser;
+  user: MaybeJWTUser;
 }

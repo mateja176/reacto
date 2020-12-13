@@ -7,3 +7,5 @@ export interface JWTUser
   > {
   company: Pick<Company, 'id' | 'name'>;
 }
+
+export type MaybeJWTUser = JWTUser | null;

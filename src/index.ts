@@ -27,8 +27,7 @@ import env from './services/env';
     schema: buildSchema(schema),
     context: ({ req }) => {
       const context: Context = {
-        connection: mongoose.connection,
-        user: (req as express.Request & { user: JWTUser }).user,
+        user: (req as express.Request & { user?: JWTUser }).user ?? null,
       };
       return context;
     },
