@@ -83,7 +83,7 @@ const printer = ts.createPrinter();
   const exportDeclaration = ts.factory.createExportDeclaration(
     [],
     [],
-    true,
+    false,
     ts.factory.createNamedExports([
       ...helperTypes.map((type) =>
         ts.factory.createExportSpecifier(undefined, type.name),
