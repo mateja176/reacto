@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Role } from '../src/entities/User/User';
+import { Role } from '../src/classes/User/User';
 import env from '../src/services/env';
 import hashPassword from '../src/services/hashPassword';
 import { CompanyModel, UserModel } from '../src/services/models';

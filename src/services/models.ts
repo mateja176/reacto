@@ -1,12 +1,12 @@
 import { getModelForClass } from '@typegoose/typegoose';
-import { AnswerClass } from '../entities/Answer/Answer';
-import { CompanyClass } from '../entities/Company/Company';
-import { QuestionClass } from '../entities/Question/Question';
-import { QuestionTemplateClass } from '../entities/Question/QuestionTemplate';
-import { QuestionnaireClass } from '../entities/Questionnaire/Questionnaire';
-import { QuestionnaireConfigurationClass } from '../entities/QuestionnaireConfiguration/QuestionnaireConfiguration';
-import { UserClass } from '../entities/User/User';
-import { UserPendingClass } from '../entities/User/UserPending';
+import { AnswerClass } from '../classes/Answer/Answer';
+import { CompanyClass } from '../classes/Company/Company';
+import { QuestionClass } from '../classes/Question/Question';
+import { QuestionTemplateClass } from '../classes/Question/QuestionTemplate';
+import { QuestionnaireClass } from '../classes/Questionnaire/Questionnaire';
+import { QuestionnaireConfigurationClass } from '../classes/QuestionnaireConfiguration/QuestionnaireConfiguration';
+import { UserClass } from '../classes/User/User';
+import { UserPendingClass } from '../classes/User/UserPending';
 
 export const CompanyModel = getModelForClass(CompanyClass);
 export const UserModel = getModelForClass(UserClass);
