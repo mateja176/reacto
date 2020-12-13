@@ -35,4 +35,8 @@ export class QuestionBase implements NamedClass, Ruled {
   public numbers?: { value: number[]; default: number };
   @prop({ comment: 'Multi-select Numerical' })
   public multiNumbers?: { value: number[]; default: number[] };
+  @prop()
+  public fileDefault?: string;
+  @prop()
+  public filesDefault?: string[];
 }

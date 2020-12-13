@@ -76,6 +76,7 @@ type FileQuestion implements QuestionBase {
   optional: Boolean!
   questionnaire: Questionnaire!
   answers: [FileAnswer!]!
+  default: String
 }
 type FilesQuestion implements QuestionBase {
   id: ID!
@@ -85,6 +86,7 @@ type FilesQuestion implements QuestionBase {
   optional: Boolean!
   questionnaire: Questionnaire!
   answers: [FilesAnswer!]!
+  default: [String!]
 }
 
 union Question =
