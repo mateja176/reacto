@@ -7,7 +7,7 @@ export class EnvError extends Error {
 }
 
 export class NotFoundError extends ApolloError {
-  constructor(public id: string) {
-    super(`Entity with id "${id}" not found.`);
+  constructor() {
+    super('Not found.');
   }
 }
