@@ -15,7 +15,7 @@ export class QuestionnaireClass implements NamedClass {
   @prop({ ref: () => UserClass })
   public user: Ref<UserClass>;
   @prop({ ref: () => QuestionClass })
-  public inheritedQuestions: QuestionClass;
+  public inheritedQuestions: QuestionClass[];
   @prop({ ref: () => QuestionClass })
   public questions: QuestionClass[];
 }

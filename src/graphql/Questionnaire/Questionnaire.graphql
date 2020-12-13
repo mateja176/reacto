@@ -3,6 +3,6 @@ type Questionnaire implements NamedNode {
   name: String!
   company: Company!
   user: User!
-  inheritedQuestions: Question!
+  inheritedQuestions: [Question!]!
   questions: [Question!]!
 }
