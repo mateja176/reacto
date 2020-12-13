@@ -1,61 +1,51 @@
-interface IAnswer implements NamedNode {
+interface IAnswer implements Node {
   id: String!
-  name: String!
   question: Question!
 }
 
 type YesNoAnswer implements IAnswer {
   id: String!
-  name: String!
   question: Question!
   answer: Boolean!
 }
 type StringAnswer implements IAnswer {
   id: String!
-  name: String!
   question: Question!
   answer: String!
 }
 type StringsAnswer implements IAnswer {
   id: String!
-  name: String!
   question: Question!
   answer: String!
 }
 type MultiStringsAnswer implements IAnswer {
   id: String!
-  name: String!
   question: Question!
   answer: [String!]!
 }
 type NumberAnswer implements IAnswer {
   id: String!
-  name: String!
   question: Question!
   answer: Float!
 }
 type NumbersAnswer implements IAnswer {
   id: String!
-  name: String!
   question: Question!
   answer: Float!
 }
 type MultiNumbersAnswer implements IAnswer {
   id: String!
-  name: String!
   question: Question!
   answer: [Float!]!
 }
 type FileAnswer implements IAnswer {
   id: String!
-  name: String!
   question: Question!
   "Absolute URL to media resource"
   answer: String!
 }
 type FilesAnswer implements IAnswer {
   id: String!
-  name: String!
   question: Question!
   "Absolute URL's to media resource"
   answer: [String!]!
