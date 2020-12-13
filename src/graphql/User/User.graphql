@@ -1,3 +1,14 @@
+enum Role {
+  regular
+  admin
+}
+enum RegularRole {
+  regular
+}
+enum AdminRole {
+  admin
+}
+
 interface IUser implements NamedNode {
   id: ID!
   email: String!
@@ -10,6 +21,7 @@ type RegularUser implements IUser {
   id: ID!
   email: String!
   name: String!
+  role: RegularRole!
   company: Company!
   questionnaires: [Questionnaire!]!
 }
@@ -17,6 +29,7 @@ type AdminUser implements IUser {
   id: ID!
   email: String!
   name: String!
+  role: AdminRole!
   company: Company!
   questionnaires: [Questionnaire!]!
   questionnaireConfigurations: [QuestionnaireConfiguration!]!
@@ -35,10 +48,20 @@ type Query {
   user(id: ID!): User!
 }
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+type LoginOutput {
+  token: String!
+  user: User!
+}
+
 input InviteInput {
   email: String!
   role: Role!
 }
 type Mutation {
+  logIn(input: LoginInput!): LoginOutput!
   invite(input: InviteInput!): PendingUser!
 }
