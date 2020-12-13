@@ -260,7 +260,6 @@ export const createFactory: CreateFactory = (type) => {
   );
   return ts.factory.createUnionTypeNode([
     type,
-    expression,
     ts.factory.createFunctionTypeNode([], [], expression),
   ]);
 };
