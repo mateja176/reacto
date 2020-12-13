@@ -11,3 +11,9 @@ export class NotFoundError extends ApolloError {
     super('Not found.');
   }
 }
+
+export class AlreadyExistsError extends ApolloError {
+  constructor() {
+    super('Already exists.');
+  }
+}
