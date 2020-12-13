@@ -1,17 +1,19 @@
-import * as yup from 'yup';
+import joi from 'joi';
 
-export const idSchema = yup.string().required();
+export const idSchema = joi.string().required();
 
-export const passwordSchema = yup
+export const passwordSchema = joi
   .string()
   .required()
-  .test(
-    'Password',
-    'The password must be at least 8 characters long and must contain an upper case letter, and a number or a special character.',
-    (string?: string) =>
-      !!string &&
-      string.length > 8 &&
-      /[A-Z]/.test(string) &&
-      [/[0-9]/, /[\W\D]/].map((regex) => regex.test(string)).filter(Boolean)
-        .length >= 1,
-  );
+  .custom((value: string, helper) => {
+    return (
+      (!!value &&
+        value.length > 8 &&
+        /[A-Z]/.test(value) &&
+        [/[0-9]/, /[\W\D]/].map((regex) => regex.test(value)).filter(Boolean)
+          .length >= 1) ||
+      helper.message({
+        invalidPassword: 'Password must be at least 8 characters long',
+      })
+    );
+  });
