@@ -1,8 +1,17 @@
+import commander from 'commander';
 import mongoose from 'mongoose';
 import { Role } from '../src/classes/User/User';
 import env from '../src/services/env';
 import hashPassword from '../src/services/hashPassword';
 import { CompanyModel, UserModel } from '../src/services/models';
+
+const { userName, email, password } = commander
+  .option('-n, --user-name <name>', "User's name")
+  .option('-e, --email <email>', "User's email")
+  .option('-p, --password <password>', "User's password")
+  .parse(process.argv);
+
+const name = userName;
 
 (async () => {
   await mongoose.connect(env.mongodbURI, {
@@ -21,23 +30,6 @@ import { CompanyModel, UserModel } from '../src/services/models';
     questionnaireConfigurations: [],
     questionnaires: [],
   });
-
-  const [, , name, email, password] = process.argv;
-  if (!name) {
-    throw new Error(
-      'The first parameter is required and represents the owner name',
-    );
-  }
-  if (!email) {
-    throw new Error(
-      'The second parameter is required and represents the owner email',
-    );
-  }
-  if (!password) {
-    throw new Error(
-      'The third parameter is required and represents the owner password',
-    );
-  }
 
   await UserModel.create({
     _id: userId,
