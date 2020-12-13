@@ -5,12 +5,12 @@ import { QuestionClass } from '../classes/Question/Question';
 import { QuestionTemplateClass } from '../classes/Question/QuestionTemplate';
 import { QuestionnaireClass } from '../classes/Questionnaire/Questionnaire';
 import { QuestionnaireConfigurationClass } from '../classes/QuestionnaireConfiguration/QuestionnaireConfiguration';
+import { PendingUserClass } from '../classes/User/PendingUser';
 import { UserClass } from '../classes/User/User';
-import { UserPendingClass } from '../classes/User/UserPending';
 
 export const CompanyModel = getModelForClass(CompanyClass);
 export const UserModel = getModelForClass(UserClass);
-export const UserPendingModel = getModelForClass(UserPendingClass);
+export const PendingUserModel = getModelForClass(PendingUserClass);
 export const QuestionnaireConfigurationModel = getModelForClass(
   QuestionnaireConfigurationClass,
 );

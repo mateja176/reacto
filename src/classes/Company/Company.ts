@@ -2,8 +2,8 @@ import { ModelOptions, prop, Ref } from '@typegoose/typegoose';
 import { WithName } from '../../interfaces/Entity';
 import { QuestionnaireClass } from '../Questionnaire/Questionnaire';
 import { QuestionnaireConfigurationClass } from '../QuestionnaireConfiguration/QuestionnaireConfiguration';
+import { PendingUserClass } from '../User/PendingUser';
 import { UserClass } from '../User/User';
-import { UserPendingClass } from '../User/UserPending';
 
 @ModelOptions({ options: { customName: 'Company' } })
 export class CompanyClass implements WithName {
@@ -15,8 +15,8 @@ export class CompanyClass implements WithName {
   public owner: Ref<UserClass>;
   @prop({ ref: () => UserClass })
   public users: Ref<UserClass>[];
-  @prop({ ref: () => UserPendingClass })
-  public pendingUsers: Ref<UserPendingClass>[];
+  @prop({ ref: () => PendingUserClass })
+  public pendingUsers: Ref<PendingUserClass>[];
   @prop({
     ref: () => QuestionnaireConfigurationClass,
   })

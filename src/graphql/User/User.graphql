@@ -24,7 +24,7 @@ type AdminUser implements IUser {
 
 union User = RegularUser | AdminUser
 
-type UserPending implements Node {
+type PendingUser implements Node {
   id: ID!
   email: String!
   role: Role!
@@ -40,5 +40,5 @@ input InviteInput {
   role: Role!
 }
 type Mutation {
-  invite(input: InviteInput!): UserPending!
+  invite(input: InviteInput!): PendingUser!
 }
