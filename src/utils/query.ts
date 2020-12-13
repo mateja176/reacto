@@ -31,6 +31,7 @@ export const createFindMany = <C extends Class>(
 ) => <N extends Node>(map: (cls: DocumentType<C>) => N) => (
   refs: Ref<C>[],
 ) => async () => {
+  // * reference https://stackoverflow.com/questions/32264225/how-to-get-multiple-document-using-array-of-mongodb-id
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const docs = await Model.find({ _id: { $in: refs } } as any);
 
