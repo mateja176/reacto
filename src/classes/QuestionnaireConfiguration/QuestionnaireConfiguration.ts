@@ -19,5 +19,5 @@ export class QuestionnaireConfigurationClass implements NamedClass {
   @prop({ ref: () => UserClass })
   public user: Ref<UserClass>;
   @prop({ ref: () => QuestionTemplateClass })
-  public questionTemplates: Ref<QuestionTemplateClass>;
+  public questionTemplates: Ref<QuestionTemplateClass>[];
 }
