@@ -218,7 +218,12 @@ export const mapEnumReference = (
   type: gql.GraphQLEnumType,
 ): ts.TypeReferenceType => ts.factory.createTypeReferenceNode(type.name);
 
-export const mapReference = (transform: (type: ts.TypeNode) => ts.TypeNode) => (
+type FactoryType =
+  | ts.ExpressionWithTypeArguments
+  | ts.TypeReferenceType
+  | ts.ArrayTypeNode;
+type CreateFactory = (type: FactoryType) => FactoryType | ts.UnionTypeNode;
+export const mapReference = (createFactory: CreateFactory) => (
   type: ReferenceType,
   isNullable: boolean = false,
 ) => {
@@ -239,24 +244,25 @@ export const mapReference = (transform: (type: ts.TypeNode) => ts.TypeNode) => (
 
     const maybeType = isNullable ? createMaybeType(array) : array;
 
-    return isScalar ? maybeType : transform(maybeType);
+    return isScalar ? maybeType : createFactory(maybeType);
   } else {
-    return transform(
+    return createFactory(
       isNullable
         ? createMaybeType(ts.factory.createTypeReferenceNode(type.name))
         : ts.factory.createTypeReferenceNode(type.name),
     );
   }
 };
-export const createFactory = (type: ts.TypeNode): ts.FunctionTypeNode => {
-  return ts.factory.createFunctionTypeNode(
-    [],
-    [],
-    ts.factory.createExpressionWithTypeArguments(
-      ts.factory.createIdentifier('Promise'),
-      [type],
-    ),
+export const createFactory: CreateFactory = (type) => {
+  const expression = ts.factory.createExpressionWithTypeArguments(
+    ts.factory.createIdentifier('Promise'),
+    [type],
   );
+  return ts.factory.createUnionTypeNode([
+    type,
+    expression,
+    ts.factory.createFunctionTypeNode([], [], expression),
+  ]);
 };
 
 const mapIdentityReference = mapReference((a) => a);
