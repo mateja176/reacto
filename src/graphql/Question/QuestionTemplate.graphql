@@ -4,6 +4,7 @@ type YesNoQuestionTemplate implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaireConfiguration: QuestionnaireConfiguration!
   default: Boolean
 }
 type StringQuestionTemplate implements QuestionBase {
@@ -12,6 +13,7 @@ type StringQuestionTemplate implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaireConfiguration: QuestionnaireConfiguration!
   default: String
 }
 type StringsQuestionTemplate implements QuestionBase {
@@ -20,6 +22,7 @@ type StringsQuestionTemplate implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaireConfiguration: QuestionnaireConfiguration!
   default: String
 }
 type MultiStringsQuestionTemplate implements QuestionBase {
@@ -28,6 +31,7 @@ type MultiStringsQuestionTemplate implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaireConfiguration: QuestionnaireConfiguration!
   default: [String!]
 }
 type NumberQuestionTemplate implements QuestionBase {
@@ -36,6 +40,7 @@ type NumberQuestionTemplate implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaireConfiguration: QuestionnaireConfiguration!
   default: Float
 }
 type NumbersQuestionTemplate implements QuestionBase {
@@ -44,6 +49,7 @@ type NumbersQuestionTemplate implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaireConfiguration: QuestionnaireConfiguration!
   default: Float
 }
 type MultiNumbersQuestionTemplate implements QuestionBase {
@@ -52,6 +58,7 @@ type MultiNumbersQuestionTemplate implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaireConfiguration: QuestionnaireConfiguration!
   default: [Float!]
 }
 type FileQuestionTemplate implements QuestionBase {
@@ -60,6 +67,7 @@ type FileQuestionTemplate implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaireConfiguration: QuestionnaireConfiguration!
 }
 type FilesQuestionTemplate implements QuestionBase {
   id: ID!
@@ -67,6 +75,7 @@ type FilesQuestionTemplate implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaireConfiguration: QuestionnaireConfiguration!
 }
 
 union QuestionTemplate =
