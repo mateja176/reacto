@@ -176,6 +176,22 @@ const mapType = (
   }
 };
 
+const scalarTypeNames = ['String', 'Int', 'Float', 'Boolean', 'ID'] as const;
+type ScalarTypeName = typeof scalarTypeNames[number];
+const isScalarType = (typeName: string): typeName is ScalarTypeName =>
+  scalarTypeNames.includes(typeName as ScalarTypeName);
+const getKind = (typeName: Exclude<ScalarTypeName, 'ID'>) => {
+  switch (typeName) {
+    case 'String':
+      return ts.SyntaxKind.StringKeyword;
+    case 'Int':
+    case 'Float':
+      return ts.SyntaxKind.NumberKeyword;
+    case 'Boolean':
+      return ts.SyntaxKind.BooleanKeyword;
+  }
+};
+
 // * reference https://graphql.org/learn/schema/#scalar-types
 export const mapPrimitive = (
   type: gql.GraphQLScalarType,
@@ -209,23 +225,21 @@ export const mapReference = (transform: (type: ts.TypeNode) => ts.TypeNode) => (
   if (gql.isListType(type)) {
     const ofType = type.ofType.toString();
 
-    const typedArray = (() => {
-      if (ofType.endsWith('!')) {
-        const subType = ofType.slice(0, -1);
+    const typeName = ofType.endsWith('!') ? ofType.slice(0, -1) : ofType;
 
-        return ts.factory.createArrayTypeNode(
-          ts.factory.createTypeReferenceNode(subType),
-        );
-      } else {
-        const maybeSubType = ofType;
+    const isScalar = isScalarType(typeName);
 
-        return ts.factory.createArrayTypeNode(
-          createMaybeType(ts.factory.createTypeReferenceNode(maybeSubType)),
-        );
-      }
-    })();
+    const array = ts.factory.createArrayTypeNode(
+      isScalarType(typeName)
+        ? typeName === 'ID'
+          ? ts.factory.createTypeReferenceNode(typeName)
+          : ts.factory.createKeywordTypeNode(getKind(typeName))
+        : ts.factory.createTypeReferenceNode(typeName),
+    );
 
-    return transform(isNullable ? createMaybeType(typedArray) : typedArray);
+    const maybeType = isNullable ? createMaybeType(array) : array;
+
+    return isScalar ? maybeType : transform(maybeType);
   } else {
     return transform(
       isNullable
