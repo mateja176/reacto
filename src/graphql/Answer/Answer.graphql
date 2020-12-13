@@ -3,48 +3,48 @@ interface IAnswer implements Node {
   question: Question!
 }
 
-type YesNoAnswer implements IAnswer {
+type YesNoAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
   answer: Boolean!
 }
-type StringAnswer implements IAnswer {
+type StringAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
   answer: String!
 }
-type StringsAnswer implements IAnswer {
+type StringsAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
   answer: String!
 }
-type MultiStringsAnswer implements IAnswer {
+type MultiStringsAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
   answer: [String!]!
 }
-type NumberAnswer implements IAnswer {
+type NumberAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
   answer: Float!
 }
-type NumbersAnswer implements IAnswer {
+type NumbersAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
   answer: Float!
 }
-type MultiNumbersAnswer implements IAnswer {
+type MultiNumbersAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
   answer: [Float!]!
 }
-type FileAnswer implements IAnswer {
+type FileAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
   "Absolute URL to media resource"
   answer: String!
 }
-type FilesAnswer implements IAnswer {
+type FilesAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
   "Absolute URL's to media resource"

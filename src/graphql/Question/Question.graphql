@@ -1,4 +1,4 @@
-type YesNoQuestion implements QuestionBase {
+type YesNoQuestion implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -8,7 +8,7 @@ type YesNoQuestion implements QuestionBase {
   answers: [YesNoAnswer!]!
   default: Boolean
 }
-type StringQuestion implements QuestionBase {
+type StringQuestion implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -18,7 +18,7 @@ type StringQuestion implements QuestionBase {
   answers: [StringAnswer!]!
   default: String
 }
-type StringsQuestion implements QuestionBase {
+type StringsQuestion implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -28,7 +28,7 @@ type StringsQuestion implements QuestionBase {
   answers: [StringsAnswer!]!
   default: String
 }
-type MultiStringsQuestion implements QuestionBase {
+type MultiStringsQuestion implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -38,7 +38,7 @@ type MultiStringsQuestion implements QuestionBase {
   answers: [MultiStringsAnswer!]!
   default: [String!]
 }
-type NumberQuestion implements QuestionBase {
+type NumberQuestion implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -48,7 +48,7 @@ type NumberQuestion implements QuestionBase {
   answers: [NumberAnswer!]!
   default: Float
 }
-type NumbersQuestion implements QuestionBase {
+type NumbersQuestion implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -58,7 +58,7 @@ type NumbersQuestion implements QuestionBase {
   answers: [NumbersAnswer!]!
   default: Float
 }
-type MultiNumbersQuestion implements QuestionBase {
+type MultiNumbersQuestion implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -68,7 +68,7 @@ type MultiNumbersQuestion implements QuestionBase {
   answers: [MultiNumbersAnswer!]!
   default: [Float!]
 }
-type FileQuestion implements QuestionBase {
+type FileQuestion implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -78,7 +78,7 @@ type FileQuestion implements QuestionBase {
   answers: [FileAnswer!]!
   default: String
 }
-type FilesQuestion implements QuestionBase {
+type FilesQuestion implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!

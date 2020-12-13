@@ -9,7 +9,7 @@ enum AdminRole {
   admin
 }
 
-interface IUser implements NamedNode {
+interface IUser implements Node & NamedNode {
   id: ID!
   email: String!
   name: String!
@@ -17,7 +17,7 @@ interface IUser implements NamedNode {
   questionnaires: [Questionnaire!]!
 }
 
-type RegularUser implements IUser {
+type RegularUser implements Node & NamedNode & IUser {
   id: ID!
   email: String!
   name: String!
@@ -25,7 +25,7 @@ type RegularUser implements IUser {
   company: Company!
   questionnaires: [Questionnaire!]!
 }
-type AdminUser implements IUser {
+type AdminUser implements Node & NamedNode & IUser {
   id: ID!
   email: String!
   name: String!

@@ -1,4 +1,4 @@
-interface QuestionBase implements NamedNode {
+interface QuestionBase implements Node & NamedNode {
   id: ID!
   name: String!
   label: String!

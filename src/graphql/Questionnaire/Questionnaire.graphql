@@ -1,5 +1,5 @@
-type Questionnaire implements NamedNode {
-  id: String!
+type Questionnaire implements Node & NamedNode {
+  id: ID!
   name: String!
   company: Company!
   user: User!

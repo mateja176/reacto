@@ -1,4 +1,4 @@
-type YesNoQuestionTemplate implements QuestionBase {
+type YesNoQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -6,7 +6,7 @@ type YesNoQuestionTemplate implements QuestionBase {
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: Boolean
 }
-type StringQuestionTemplate implements QuestionBase {
+type StringQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -14,7 +14,7 @@ type StringQuestionTemplate implements QuestionBase {
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: String
 }
-type StringsQuestionTemplate implements QuestionBase {
+type StringsQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -22,7 +22,7 @@ type StringsQuestionTemplate implements QuestionBase {
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: String
 }
-type MultiStringsQuestionTemplate implements QuestionBase {
+type MultiStringsQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -30,7 +30,7 @@ type MultiStringsQuestionTemplate implements QuestionBase {
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: [String!]
 }
-type NumberQuestionTemplate implements QuestionBase {
+type NumberQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -38,7 +38,7 @@ type NumberQuestionTemplate implements QuestionBase {
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: Float
 }
-type NumbersQuestionTemplate implements QuestionBase {
+type NumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -46,7 +46,7 @@ type NumbersQuestionTemplate implements QuestionBase {
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: Float
 }
-type MultiNumbersQuestionTemplate implements QuestionBase {
+type MultiNumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -54,14 +54,14 @@ type MultiNumbersQuestionTemplate implements QuestionBase {
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: [Float!]
 }
-type FileQuestionTemplate implements QuestionBase {
+type FileQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
 }
-type FilesQuestionTemplate implements QuestionBase {
+type FilesQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!

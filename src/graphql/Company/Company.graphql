@@ -1,4 +1,4 @@
-type Company implements NamedNode {
+type Company implements Node & NamedNode {
   id: ID!
   name: String!
   owner: User!

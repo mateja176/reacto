@@ -1,4 +1,4 @@
-type QuestionnaireConfiguration implements NamedNode {
+type QuestionnaireConfiguration implements Node & NamedNode {
   id: ID!
   name: String!
   type: String!
