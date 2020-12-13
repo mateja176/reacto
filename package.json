@@ -52,6 +52,7 @@
     "@types/prettier": "^2.1.5",
     "@types/ramda": "^0.27.32",
     "@types/uuid": "^8.3.0",
+    "@types/yup": "^0.29.10",
     "@typescript-eslint/eslint-plugin": "^4.8.1",
     "@typescript-eslint/parser": "^4.8.1",
     "commander": "^2.20.3",
@@ -74,7 +75,6 @@
     "@typegoose/typegoose": "^7.4.5",
     "apollo-server-express": "^2.19.0",
     "bcrypt": "^5.0.0",
-    "class-validator": "^0.12.2",
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
     "fs-extra": "^9.0.1",
@@ -88,6 +88,7 @@
     "ramda": "^0.27.1",
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.8.0",
-    "uuid": "^8.3.1"
+    "uuid": "^8.3.1",
+    "yup": "^0.32.8"
   }
 }
