@@ -18,6 +18,7 @@
     "dev": "npm run dev:server",
     "serve": "node build/index.js",
     "graphqlgen": "graphqlgen",
+    "seed": "ts-node scripts/seed.ts",
     "merge-schema": "ts-node scripts/mergeSchema.ts",
     "generate-ts": "ts-node scripts/generateTs.ts"
   },
