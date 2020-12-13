@@ -4,6 +4,7 @@ type YesNoQuestion implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaire: Questionnaire!
   answer: YesNoAnswer!
   default: Boolean
 }
@@ -13,6 +14,7 @@ type StringQuestion implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaire: Questionnaire!
   answer: StringAnswer!
   default: String
 }
@@ -22,6 +24,7 @@ type StringsQuestion implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaire: Questionnaire!
   answer: StringsAnswer!
   default: String
 }
@@ -31,6 +34,7 @@ type MultiStringsQuestion implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaire: Questionnaire!
   answer: MultiStringsAnswer!
   default: [String!]
 }
@@ -40,6 +44,7 @@ type NumberQuestion implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaire: Questionnaire!
   answer: NumberAnswer!
   default: Float
 }
@@ -49,6 +54,7 @@ type NumbersQuestion implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaire: Questionnaire!
   answer: NumbersAnswer!
   default: Float
 }
@@ -58,6 +64,7 @@ type MultiNumbersQuestion implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaire: Questionnaire!
   answer: MultiNumbersAnswer!
   default: [Float!]
 }
@@ -67,6 +74,7 @@ type FileQuestion implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaire: Questionnaire!
   answer: FileAnswer!
 }
 type FilesQuestion implements QuestionBase {
@@ -75,6 +83,7 @@ type FilesQuestion implements QuestionBase {
   label: String!
   rule: String
   optional: Boolean!
+  questionnaire: Questionnaire!
   answer: FilesAnswer!
 }
 
