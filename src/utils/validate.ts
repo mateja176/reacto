@@ -1,7 +1,10 @@
 import * as yup from 'yup';
 
+export const idSchema = yup.string().required();
+
 export const passwordSchema = yup
   .string()
+  .required()
   .test(
     'Password',
     'The password must be at least 8 characters long and must contain an upper case letter, and a number or a special character.',
