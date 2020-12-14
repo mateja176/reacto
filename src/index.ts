@@ -1,8 +1,7 @@
-import { ApolloServer, IResolvers } from 'apollo-server-express';
+import { ApolloServer, gql, IResolvers } from 'apollo-server-express';
 import express from 'express';
 import jwt from 'express-jwt';
 import * as fs from 'fs-extra';
-import { buildSchema } from 'graphql';
 import mongoose from 'mongoose';
 import { join } from 'path';
 import 'reflect-metadata';
@@ -25,7 +24,8 @@ import env from './services/env';
   );
 
   const server = new ApolloServer({
-    schema: buildSchema(schema),
+    // * https://www.apollographql.com/docs/apollo-server/api/apollo-server/#options
+    typeDefs: gql(schema),
     resolvers: (resolvers as unknown) as IResolvers,
     context: ({ req }) => {
       const context: Context = {
