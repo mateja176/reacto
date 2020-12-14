@@ -18,7 +18,7 @@ export class AnswerClass implements Class {
   @prop({ comment: 'Textual' })
   public string?: string;
   @prop({ array: true, comment: 'Select Textual' })
-  public strings?: string[];
+  public strings?: string;
   @prop({ array: true, comment: 'Multi-select Textual' })
   public multiStrings?: string[];
   @prop({ comment: 'Numerical' })
