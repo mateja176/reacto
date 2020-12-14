@@ -58,67 +58,79 @@ export const mapObject = (
     type.name,
     [],
     [],
-    Object.values(
-      type.getFields(),
-    ).map((fieldType: gql.GraphQLField<unknown, Context>) =>
+    [
       ts.factory.createPropertySignature(
         [],
-        fieldType.name,
+        '__typename',
         undefined,
-        fieldType.args.length === 0
-          ? mapFactory(fieldType.type)
-          : ts.factory.createFunctionTypeNode(
-              [],
-              [
-                ts.factory.createParameterDeclaration(
-                  [],
-                  [],
-                  undefined,
-                  'source',
-                  undefined,
-                  ts.factory.createKeywordTypeNode(ts.SyntaxKind.NeverKeyword),
-                ),
-                ts.factory.createParameterDeclaration(
-                  [],
-                  [],
-                  undefined,
-                  'args',
-                  undefined,
-                  ts.factory.createTypeLiteralNode(
-                    fieldType.args.map((arg) =>
-                      ts.factory.createPropertySignature(
-                        [],
-                        arg.name,
-                        undefined,
-                        mapInput(arg.type),
+        ts.factory.createLiteralTypeNode(
+          ts.factory.createStringLiteral(type.name),
+        ),
+      ),
+      ...Object.values(
+        type.getFields(),
+      ).map((fieldType: gql.GraphQLField<unknown, Context>) =>
+        ts.factory.createPropertySignature(
+          [],
+          fieldType.name,
+          undefined,
+          fieldType.args.length === 0
+            ? mapFactory(fieldType.type)
+            : ts.factory.createFunctionTypeNode(
+                [],
+                [
+                  ts.factory.createParameterDeclaration(
+                    [],
+                    [],
+                    undefined,
+                    'source',
+                    undefined,
+                    ts.factory.createKeywordTypeNode(
+                      ts.SyntaxKind.NeverKeyword,
+                    ),
+                  ),
+                  ts.factory.createParameterDeclaration(
+                    [],
+                    [],
+                    undefined,
+                    'args',
+                    undefined,
+                    ts.factory.createTypeLiteralNode(
+                      fieldType.args.map((arg) =>
+                        ts.factory.createPropertySignature(
+                          [],
+                          arg.name,
+                          undefined,
+                          mapInput(arg.type),
+                        ),
                       ),
                     ),
                   ),
+                  ts.factory.createParameterDeclaration(
+                    [],
+                    [],
+                    undefined,
+                    'context',
+                    undefined,
+                    ts.factory.createTypeReferenceNode('Context'),
+                  ),
+                  ts.factory.createParameterDeclaration(
+                    [],
+                    [],
+                    undefined,
+                    'info',
+                    undefined,
+                    ts.factory.createTypeReferenceNode('GraphQLResolveInfo'),
+                  ),
+                ],
+                ts.factory.createExpressionWithTypeArguments(
+                  ts.factory.createIdentifier('Promise'),
+                  [mapInput(fieldType.type)],
                 ),
-                ts.factory.createParameterDeclaration(
-                  [],
-                  [],
-                  undefined,
-                  'context',
-                  undefined,
-                  ts.factory.createTypeReferenceNode('Context'),
-                ),
-                ts.factory.createParameterDeclaration(
-                  [],
-                  [],
-                  undefined,
-                  'info',
-                  undefined,
-                  ts.factory.createTypeReferenceNode('GraphQLResolveInfo'),
-                ),
-              ],
-              ts.factory.createExpressionWithTypeArguments(
-                ts.factory.createIdentifier('Promise'),
-                [mapInput(fieldType.type)],
               ),
-            ),
+        ),
       ),
-    ),
+    ],
   );
 
 export const mapEnum = (type: gql.GraphQLEnumType): ts.EnumDeclaration =>
