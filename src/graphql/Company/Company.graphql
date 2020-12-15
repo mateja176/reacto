@@ -1,7 +1,7 @@
 type Company implements Node & NamedNode {
   id: ID!
   name: String!
-  owner: User!
+  owner: AdminUser!
   users: [User!]!
   questionnaires: [Questionnaire!]!
   questionnaireConfigurations: [QuestionnaireConfiguration!]!
