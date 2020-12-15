@@ -14,4 +14,9 @@ const schema = buildASTSchema(documentNode);
 
 const stringSchema = printSchema(schema);
 
-fs.writeFile(join(srcPath, 'generated', 'schema.graphql'), stringSchema);
+(async () => {
+  await fs.writeFile(
+    join(srcPath, 'generated', 'schema.graphql'),
+    stringSchema,
+  );
+})();
