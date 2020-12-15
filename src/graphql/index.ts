@@ -1,5 +1,6 @@
 import { Resolvers } from '../generated/graphql';
 import { companyMutation, companyQuery } from './Company/resolve';
+import { questionnaireConfigurationMutation } from './QuestionnaireConfiguration/resolve';
 import { userMutation, userQuery } from './User/resolve';
 
 const resolvers: Resolvers = {
@@ -12,6 +13,7 @@ const resolvers: Resolvers = {
     __typename: 'Mutation',
     ...userMutation,
     ...companyMutation,
+    ...questionnaireConfigurationMutation,
   },
 };
 

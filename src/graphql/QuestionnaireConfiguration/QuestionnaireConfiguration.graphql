@@ -6,3 +6,14 @@ type QuestionnaireConfiguration implements Node & NamedNode {
   user: User!
   questionTemplates: [QuestionTemplate!]!
 }
+
+input CreateQuestionnaireConfigurationInput {
+  name: String!
+  type: String!
+}
+
+type Mutation {
+  createQuestionnaireConfiguration(
+    input: CreateQuestionnaireConfigurationInput!
+  ): QuestionnaireConfiguration!
+}
