@@ -11,11 +11,11 @@ export class QuestionnaireClass implements NamedClass {
   @prop()
   public name: string;
   @prop({ ref: () => CompanyClass })
-  public company: CompanyClass;
+  public company: Ref<CompanyClass>;
   @prop({ ref: () => UserClass })
   public user: Ref<UserClass>;
   @prop({ ref: () => QuestionClass })
-  public inheritedQuestions: QuestionClass[];
+  public inheritedQuestions: Ref<QuestionClass>[];
   @prop({ ref: () => QuestionClass })
-  public questions: QuestionClass[];
+  public questions: Ref<QuestionClass>[];
 }

@@ -22,5 +22,5 @@ export class CompanyClass implements NamedClass {
   })
   public questionnaireConfigurations: Ref<QuestionnaireConfigurationClass>[];
   @prop({ ref: () => QuestionnaireClass })
-  public questionnaires: QuestionnaireClass[];
+  public questionnaires: Ref<QuestionnaireClass>[];
 }

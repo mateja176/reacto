@@ -15,7 +15,7 @@ export class QuestionnaireConfigurationClass implements NamedClass {
   })
   public type: string;
   @prop({ ref: () => CompanyClass })
-  public company: CompanyClass;
+  public company: Ref<CompanyClass>;
   @prop({ ref: () => UserClass })
   public user: Ref<UserClass>;
   @prop({ ref: () => QuestionTemplateClass })
