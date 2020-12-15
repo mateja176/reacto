@@ -23,6 +23,7 @@ export const mapQuestionnaire = (
   } = mapDoc(doc);
 
   return {
+    __typename: 'Questionnaire',
     ...questionnaire,
     company: createFindCompany(mapCompany)(company),
     user: createFindUser(mapUser)(user),

@@ -10,7 +10,7 @@ import {
 } from '../../utils/query';
 import { mapQuestionnaire } from '../Questionnaire/map';
 import { mapQuestionnaireConfiguration } from '../QuestionnaireConfiguration/map';
-import { mapUser } from '../User/map';
+import { mapAdminUser, mapUser } from '../User/map';
 
 export const mapCompany = (companyDoc: DocumentType<CompanyClass>): Company => {
   const {
@@ -22,8 +22,9 @@ export const mapCompany = (companyDoc: DocumentType<CompanyClass>): Company => {
   } = mapDoc(companyDoc);
 
   return {
+    __typename: 'Company',
     ...company,
-    owner: createFindUser(mapUser)(owner),
+    owner: createFindUser(mapAdminUser)(owner),
     users: createFindUsers(mapUser)(users),
     questionnaires: createFindQuestionnaires(mapQuestionnaire)(questionnaires),
     questionnaireConfigurations: createFindQuestionnaireConfigurations(

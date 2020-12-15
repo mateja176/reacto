@@ -4,10 +4,12 @@ import { userMutation, userQuery } from './User/resolve';
 
 const resolvers: Resolvers = {
   Query: {
+    __typename: 'Query',
     ...userQuery,
     ...companyQuery,
   },
   Mutation: {
+    __typename: 'Mutation',
     ...userMutation,
     ...companyMutation,
   },

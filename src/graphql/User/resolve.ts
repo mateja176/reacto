@@ -82,7 +82,7 @@ const logIn: Mutation['logIn'] = async (_, args) => {
     },
   });
 
-  return { user, token };
+  return { __typename: 'LoginOutput', user, token };
 };
 
 const invite: Mutation['invite'] = async (_, args, context) => {
