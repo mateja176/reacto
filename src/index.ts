@@ -1,4 +1,9 @@
-import { ApolloServer, gql, IResolvers } from 'apollo-server-express';
+import {
+  ApolloServer,
+  gql,
+  IResolvers,
+  makeExecutableSchema,
+} from 'apollo-server-express';
 import express from 'express';
 import jwt from 'express-jwt';
 import * as fs from 'fs-extra';
@@ -23,10 +28,14 @@ import env from './services/env';
     { encoding: 'utf-8' },
   );
 
-  const server = new ApolloServer({
-    // * https://www.apollographql.com/docs/apollo-server/api/apollo-server/#options
+  const executableSchema = makeExecutableSchema({
     typeDefs: gql(schema),
     resolvers: (resolvers as unknown) as IResolvers,
+    resolverValidationOptions: { requireResolversForResolveType: false },
+  });
+
+  const server = new ApolloServer({
+    schema: executableSchema,
     context: ({ req }) => {
       const context: Context = {
         user: (req as express.Request & { user?: JWTUser }).user ?? null,
