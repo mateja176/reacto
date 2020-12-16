@@ -13,14 +13,14 @@
     "lint": "eslint src/**/*.ts",
     "ci": "cross-env CI=true concurrently --kill-others-on-fail --names format,lint,type-check,test --prefix-colors yellow,cyan,blue,green npm:format npm:lint npm:type-check npm:test",
     "start": "ts-node src/index.ts",
-    "codegen:watch": "nodemon --watch src --ext graphql --exec 'ts-node' scripts/codegen.ts",
     "dev:server": "nodemon --watch src --ext ts --ignore 'src/**/*.spec.ts' --exec 'ts-node' src/index.ts",
-    "dev": "npm run dev:server",
+    "dev": "concurrently --kill-others-on-fail --names server,merge-and-generate --prefix-colors cyan,blue npm:merge-and-generate:watch npm:dev:server",
     "serve": "node build/index.js",
-    "graphqlgen": "graphqlgen",
     "seed": "ts-node scripts/seed.ts",
     "merge-schema": "ts-node scripts/mergeSchema.ts",
-    "generate-ts": "ts-node scripts/generateTs.ts"
+    "generate-ts": "ts-node scripts/generateTs.ts",
+    "merge-and-generate": "npm run merge-schema && npm run generate-ts",
+    "merge-and-generate:watch": "nodemon --watch src --ext graphql --ignore src/generated/schema.graphql --exec 'npm run merge-and-generate'"
   },
   "repository": {
     "type": "git",
