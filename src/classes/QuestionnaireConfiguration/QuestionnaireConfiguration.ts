@@ -1,13 +1,11 @@
 import { ModelOptions, prop, Ref } from '@typegoose/typegoose';
-import { NamedClass } from '../../interfaces/Class';
+import { Named } from '../../interfaces/Class';
 import { CompanyClass } from '../Company/Company';
 import { QuestionTemplateClass } from '../Question/QuestionTemplate';
 import { UserClass } from '../User/User';
 
 @ModelOptions({ options: { customName: 'QuestionnaireConfiguration' } })
-export class QuestionnaireConfigurationClass implements NamedClass {
-  @prop()
-  public _id: string;
+export class QuestionnaireConfigurationClass implements Named {
   @prop()
   public name: string;
   @prop({

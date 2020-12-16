@@ -4,8 +4,6 @@ import { Role } from './User';
 
 @ModelOptions({ options: { customName: 'PendingUser' } })
 export class PendingUserClass {
-  @prop()
-  public _id: string;
   @prop({ unique: true })
   email: string;
   @prop({ enum: Role })

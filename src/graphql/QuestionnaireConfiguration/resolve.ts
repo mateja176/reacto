@@ -1,4 +1,3 @@
-import { mongoose } from '@typegoose/typegoose';
 import { ForbiddenError } from 'apollo-server-express';
 import { AdminRole, Mutation } from '../../generated/graphql';
 import { QuestionnaireConfigurationModel } from '../../services/models';
@@ -18,7 +17,6 @@ const createQuestionnaireConfiguration: Mutation['createQuestionnaireConfigurati
 
   const questionnaireConfiguration = await QuestionnaireConfigurationModel.create(
     {
-      _id: mongoose.Types.ObjectId().toHexString(),
       name: args.input.name,
       type: args.input.type,
       company: context.user.company.id,

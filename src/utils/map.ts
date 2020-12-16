@@ -1,8 +1,8 @@
 import { DocumentType } from '@typegoose/typegoose';
-import { Class } from '../interfaces/Class';
 
-export type MapClass<C extends Class> = Omit<C, '_id'> & { id: C['_id'] };
-export const mapDoc = <C extends Class>(doc: DocumentType<C>): MapClass<C> => {
+//* https://stackoverflow.com/questions/12495891/what-is-the-v-field-in-mongoose
+export type MapClass<C> = Omit<C, '_id' | '__v'> & { id: string };
+export const mapDoc = <C>(doc: DocumentType<C>): MapClass<C> => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { _id, __v, ...cls } = doc.toJSON();
   return { ...cls, id: _id };

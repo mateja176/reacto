@@ -1,4 +1,4 @@
-import { DocumentType, mongoose } from '@typegoose/typegoose';
+import { DocumentType } from '@typegoose/typegoose';
 import { AuthenticationError, ForbiddenError } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
 import { join } from 'path';
@@ -32,7 +32,7 @@ const user: Query['user'] = async (_, args, context) => {
   const user = mapUser(userDoc);
   if (
     context.user.role === AdminRole.admin &&
-    context.user.company.id === userDoc.company
+    context.user.company.id === String(userDoc.company)
   ) {
     return user;
   } else {
@@ -53,7 +53,7 @@ const logIn: Mutation['logIn'] = async (_, args) => {
   const userDoc = (await UserModel.findOne({
     email: args.input.email,
   }).populate('company')) as DocumentType<
-    Omit<UserClass, 'company'> & { company: CompanyClass }
+    Omit<UserClass, 'company'> & { company: DocumentType<CompanyClass> }
   >;
 
   if (!userDoc) {
@@ -99,7 +99,6 @@ const invite: Mutation['invite'] = async (_, args, context) => {
   }
 
   const pendingUserDoc = await PendingUserModel.create({
-    _id: mongoose.Types.ObjectId().toHexString(),
     email: args.input.email,
     role: args.input.role,
     company: context.user.id,

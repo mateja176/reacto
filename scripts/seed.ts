@@ -19,10 +19,10 @@ const name = userName;
     useUnifiedTopology: true,
   });
 
-  const userId = mongoose.Types.ObjectId().toHexString();
+  const userId = mongoose.Types.ObjectId();
 
   const reacto = await CompanyModel.create({
-    _id: mongoose.Types.ObjectId().toHexString(),
+    _id: mongoose.Types.ObjectId(),
     name: 'Reacto',
     owner: userId,
     pendingUsers: [],

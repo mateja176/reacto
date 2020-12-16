@@ -1,5 +1,5 @@
 import { ModelOptions, prop, Ref } from '@typegoose/typegoose';
-import { NamedClass } from '../../interfaces/Class';
+import { Named } from '../../interfaces/Class';
 import { CompanyClass } from '../Company/Company';
 import { QuestionnaireClass } from '../Questionnaire/Questionnaire';
 import { QuestionnaireConfigurationClass } from '../QuestionnaireConfiguration/QuestionnaireConfiguration';
@@ -10,9 +10,7 @@ export enum Role {
 }
 
 @ModelOptions({ options: { customName: 'User' } })
-export class UserClass implements NamedClass {
-  @prop()
-  public _id: string;
+export class UserClass implements Named {
   @prop()
   public name: string;
   @prop({ unique: true })

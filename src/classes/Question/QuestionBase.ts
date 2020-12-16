@@ -1,11 +1,9 @@
 import { ModelOptions, prop, Severity } from '@typegoose/typegoose';
-import { NamedClass } from '../../interfaces/Class';
+import { Named } from '../../interfaces/Class';
 import { Ruled } from '../../interfaces/Ruled';
 
 @ModelOptions({ options: { allowMixed: Severity.ALLOW } })
-export class QuestionBase implements NamedClass, Ruled {
-  @prop()
-  public _id: string;
+export class QuestionBase implements Named, Ruled {
   @prop()
   public name: string;
   @prop({ comment: 'The text of the question.' })

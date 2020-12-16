@@ -1,5 +1,4 @@
 import { ModelOptions, prop, Ref, Severity } from '@typegoose/typegoose';
-import { Class } from '../../interfaces/Class';
 import { QuestionClass } from '../Question/Question';
 
 /**
@@ -8,9 +7,7 @@ import { QuestionClass } from '../Question/Question';
  * This would be inconsistent in relation the to default user was presented with, at the time of answering.
  */
 @ModelOptions({ options: { customName: 'Answer', allowMixed: Severity.ALLOW } })
-export class AnswerClass implements Class {
-  @prop()
-  public _id: string;
+export class AnswerClass {
   @prop({ ref: () => QuestionClass })
   public question: Ref<QuestionClass>;
   @prop()
