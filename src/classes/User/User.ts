@@ -24,7 +24,7 @@ export class UserClass implements NamedClass {
   @prop({ ref: () => CompanyClass })
   public company: Ref<CompanyClass>;
   @prop({ ref: () => QuestionnaireClass })
-  questionnaires: QuestionnaireClass[];
+  questionnaires: Ref<QuestionnaireClass>[];
   /**
    * only admins may create configurations
    */
