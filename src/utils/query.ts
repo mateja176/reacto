@@ -1,7 +1,6 @@
 import { DocumentType, Ref, ReturnModelType } from '@typegoose/typegoose';
 import { AnyParamConstructor } from '@typegoose/typegoose/lib/types';
 import { Node } from '../generated/graphql';
-import { Class } from '../interfaces/Class';
 import {
   AnswerModel,
   CompanyModel,
@@ -14,7 +13,7 @@ import {
 } from '../services/models';
 import { NotFoundError } from './errors';
 
-export const createFind = <C extends Class>(
+export const createFind = <C>(
   Model: ReturnModelType<AnyParamConstructor<C>>,
 ) => <N extends Node>(map: (cls: DocumentType<C>) => N) => (
   ref: Ref<C>,
@@ -26,7 +25,7 @@ export const createFind = <C extends Class>(
 
   return map(doc);
 };
-export const createFindMany = <C extends Class>(
+export const createFindMany = <C>(
   Model: ReturnModelType<AnyParamConstructor<C>>,
 ) => <N extends Node>(map: (cls: DocumentType<C>) => N) => (
   refs: Ref<C>[],
