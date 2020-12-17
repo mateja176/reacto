@@ -3,16 +3,25 @@ import { QuestionClass } from '../../classes/Question/Question';
 import { QuestionTemplateClass } from '../../classes/Question/QuestionTemplate';
 import {
   FileQuestion,
+  FileQuestionTemplate,
   FilesQuestion,
+  FilesQuestionTemplate,
   MultiNumbersQuestion,
+  MultiNumbersQuestionTemplate,
   MultiStringsQuestion,
+  MultiStringsQuestionTemplate,
   NumberQuestion,
+  NumberQuestionTemplate,
   NumbersQuestion,
+  NumbersQuestionTemplate,
   Question,
   QuestionTemplate,
   StringQuestion,
+  StringQuestionTemplate,
   StringsQuestion,
+  StringsQuestionTemplate,
   YesNoQuestion,
+  YesNoQuestionTemplate,
 } from '../../generated/graphql';
 import { MapClass, mapDoc } from '../../utils/map';
 import {
@@ -34,29 +43,237 @@ import {
 import { mapQuestionnaire } from '../Questionnaire/map';
 import { mapQuestionnaireConfiguration } from '../QuestionnaireConfiguration/map';
 
+export class InvalidQuestionTemplateError extends Error {
+  constructor() {
+    super('Invalid question template.');
+  }
+}
+type Base = Pick<Question, 'id' | 'label' | 'name' | 'rule' | 'optional'>;
+
+type QuestionTemplateBase = Base &
+  Pick<QuestionTemplate, 'questionnaireConfiguration'>;
+
+export const mapQuestionTemplateDoc = <Q extends QuestionTemplate>(
+  map: (cls: MapClass<QuestionTemplateClass>, base: QuestionTemplateBase) => Q,
+) => (doc: DocumentType<QuestionTemplateClass>): Q => {
+  const cls = mapDoc(doc);
+  const { id, label, name, rule, optional, questionnaireConfiguration } = cls;
+  return map(cls, {
+    id,
+    label,
+    name,
+    rule: rule ?? null,
+    optional,
+    questionnaireConfiguration: createFindQuestionnaireConfiguration(
+      mapQuestionnaireConfiguration,
+    )(questionnaireConfiguration),
+  });
+};
+
+const mapYesNoQuestionTemplateClass = (
+  cls: MapClass<QuestionTemplateClass>,
+  base: QuestionTemplateBase,
+): YesNoQuestionTemplate => {
+  if (cls.booleanDefault) {
+    return {
+      __typename: 'YesNoQuestionTemplate',
+      ...base,
+      default: cls.booleanDefault,
+    };
+  } else {
+    throw new InvalidQuestionTemplateError();
+  }
+};
+export const mapYesNoQuestionTemplate = mapQuestionTemplateDoc(
+  mapYesNoQuestionTemplateClass,
+);
+const mapStringQuestionTemplateClass = (
+  cls: MapClass<QuestionTemplateClass>,
+  base: QuestionTemplateBase,
+): StringQuestionTemplate => {
+  if (cls.stringDefault) {
+    return {
+      __typename: 'StringQuestionTemplate',
+      ...base,
+      default: cls.stringDefault,
+    };
+  } else {
+    throw new InvalidQuestionTemplateError();
+  }
+};
+export const mapStringQuestionTemplate = mapQuestionTemplateDoc(
+  mapStringQuestionTemplateClass,
+);
+const mapStringsQuestionTemplateClass = (
+  cls: MapClass<QuestionTemplateClass>,
+  base: QuestionTemplateBase,
+): StringsQuestionTemplate => {
+  if (cls.strings) {
+    return {
+      __typename: 'StringsQuestionTemplate',
+      ...base,
+      default: cls.strings.default ?? null,
+    };
+  } else {
+    throw new InvalidQuestionTemplateError();
+  }
+};
+export const mapStringsQuestionTemplate = mapQuestionTemplateDoc(
+  mapStringsQuestionTemplateClass,
+);
+const mapMultiStringsQuestionTemplateClass = (
+  cls: MapClass<QuestionTemplateClass>,
+  base: QuestionTemplateBase,
+): MultiStringsQuestionTemplate => {
+  if (cls.multiStrings) {
+    return {
+      __typename: 'MultiStringsQuestionTemplate',
+      ...base,
+      default: cls.multiStrings.default ?? null,
+    };
+  } else {
+    throw new InvalidQuestionTemplateError();
+  }
+};
+export const mapMultiStringsQuestionTemplate = mapQuestionTemplateDoc(
+  mapMultiStringsQuestionTemplateClass,
+);
+const mapNumberQuestionTemplateClass = (
+  cls: MapClass<QuestionTemplateClass>,
+  base: QuestionTemplateBase,
+): NumberQuestionTemplate => {
+  if (cls.numberDefault) {
+    return {
+      __typename: 'NumberQuestionTemplate',
+      ...base,
+      default: cls.numberDefault,
+    };
+  } else {
+    throw new InvalidQuestionTemplateError();
+  }
+};
+export const mapNumberQuestionTemplate = mapQuestionTemplateDoc(
+  mapNumberQuestionTemplateClass,
+);
+const mapNumbersQuestionTemplateClass = (
+  cls: MapClass<QuestionTemplateClass>,
+  base: QuestionTemplateBase,
+): NumbersQuestionTemplate => {
+  if (cls.numbers) {
+    return {
+      __typename: 'NumbersQuestionTemplate',
+      ...base,
+      default: cls.numbers.default,
+    };
+  } else {
+    throw new InvalidQuestionTemplateError();
+  }
+};
+export const mapNumbersQuestionTemplate = mapQuestionTemplateDoc(
+  mapNumbersQuestionTemplateClass,
+);
+const mapMultiNumbersQuestionTemplateClass = (
+  cls: MapClass<QuestionTemplateClass>,
+  base: QuestionTemplateBase,
+): MultiNumbersQuestionTemplate => {
+  if (cls.multiNumbers) {
+    return {
+      __typename: 'MultiNumbersQuestionTemplate',
+      ...base,
+      default: cls.multiNumbers.default,
+    };
+  } else {
+    throw new InvalidQuestionTemplateError();
+  }
+};
+export const mapMultiNumbersQuestionTemplate = mapQuestionTemplateDoc(
+  mapMultiNumbersQuestionTemplateClass,
+);
+const mapFileQuestionTemplateClass = (
+  cls: MapClass<QuestionTemplateClass>,
+  base: QuestionTemplateBase,
+): FileQuestionTemplate => {
+  if (cls.fileDefault) {
+    return {
+      __typename: 'FileQuestionTemplate',
+      ...base,
+      default: cls.fileDefault ?? null,
+    };
+  } else {
+    throw new InvalidQuestionTemplateError();
+  }
+};
+export const mapFileQuestionTemplate = mapQuestionTemplateDoc(
+  mapFileQuestionTemplateClass,
+);
+const mapFilesQuestionTemplateClass = (
+  cls: MapClass<QuestionTemplateClass>,
+  base: QuestionTemplateBase,
+): FilesQuestionTemplate => {
+  if (cls.filesDefault) {
+    return {
+      __typename: 'FilesQuestionTemplate',
+      ...base,
+      default: cls.filesDefault ?? null,
+    };
+  } else {
+    throw new InvalidQuestionTemplateError();
+  }
+};
+export const mapFilesQuestionTemplate = mapQuestionTemplateDoc(
+  mapFilesQuestionTemplateClass,
+);
+
 export const mapQuestionTemplate = (
   doc: DocumentType<QuestionTemplateClass>,
 ): QuestionTemplate => {
-  const { questionnaireConfiguration, ...questionTemplate } = mapDoc(doc);
+  const cls = mapDoc(doc);
+  const { id, label, name, rule, optional, questionnaireConfiguration } = cls;
 
-  return {
-    __typename: 'FileQuestionTemplate',
-    ...questionTemplate,
+  const base: QuestionTemplateBase = {
+    id,
+    label,
+    name,
+    rule: rule ?? null,
+    optional,
     questionnaireConfiguration: createFindQuestionnaireConfiguration(
       mapQuestionnaireConfiguration,
     )(questionnaireConfiguration),
   };
+
+  if (cls.booleanDefault) {
+    return mapYesNoQuestionTemplateClass(cls, base);
+  } else if (cls.stringDefault) {
+    return mapStringQuestionTemplateClass(cls, base);
+  } else if (cls.strings) {
+    return mapStringsQuestionTemplateClass(cls, base);
+  } else if (cls.multiStrings) {
+    return mapMultiStringsQuestionTemplateClass(cls, base);
+  } else if (cls.numberDefault) {
+    return mapNumberQuestionTemplateClass(cls, base);
+  } else if (cls.numbers) {
+    return mapNumbersQuestionTemplateClass(cls, base);
+  } else if (cls.multiNumbers) {
+    return mapMultiStringsQuestionTemplateClass(cls, base);
+  } else if (cls.fileDefault) {
+    return mapFileQuestionTemplateClass(cls, base);
+  } else if (cls.filesDefault) {
+    return mapFilesQuestionTemplateClass(cls, base);
+  } else {
+    throw new InvalidQuestionError();
+  }
 };
+
+// QUESTION
 
 export class InvalidQuestionError extends Error {
   constructor() {
     super('Invalid question.');
   }
 }
-type QuestionBase = Pick<
-  Question,
-  'id' | 'label' | 'name' | 'rule' | 'optional' | 'questionnaire'
->;
+
+type QuestionBase = Base & Pick<Question, 'questionnaire'>;
+
 export const mapQuestionDoc = <Q extends Question>(
   map: (cls: MapClass<QuestionClass>, base: QuestionBase) => Q,
 ) => (doc: DocumentType<QuestionClass>) => {

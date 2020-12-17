@@ -60,6 +60,7 @@ type FileQuestionTemplate implements Node & NamedNode & QuestionBase {
   label: String!
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
+  default: String!
 }
 type FilesQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
@@ -67,6 +68,7 @@ type FilesQuestionTemplate implements Node & NamedNode & QuestionBase {
   label: String!
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
+  default: [String!]
 }
 
 union QuestionTemplate =
@@ -79,3 +81,96 @@ union QuestionTemplate =
   | MultiNumbersQuestionTemplate
   | FileQuestionTemplate
   | FilesQuestionTemplate
+
+input CreateYesNoQuestionTemplateInput {
+  name: String!
+  label: String!
+  optional: Boolean!
+  questionnaireConfigurationId: ID!
+  default: Boolean
+}
+input CreateStringQuestionTemplateInput {
+  name: String!
+  label: String!
+  optional: Boolean!
+  questionnaireConfigurationId: ID!
+  default: String
+}
+input CreateStringsQuestionTemplateInput {
+  name: String!
+  label: String!
+  optional: Boolean!
+  questionnaireConfigurationId: ID!
+  default: String
+}
+input CreateMultiStringsQuestionTemplateInput {
+  name: String!
+  label: String!
+  optional: Boolean!
+  questionnaireConfigurationId: ID!
+  default: [String!]
+}
+input CreateNumberQuestionTemplateInput {
+  name: String!
+  label: String!
+  optional: Boolean!
+  questionnaireConfigurationId: ID!
+  default: Float
+}
+input CreateNumbersQuestionTemplateInput {
+  name: String!
+  label: String!
+  optional: Boolean!
+  questionnaireConfigurationId: ID!
+  default: Float
+}
+input CreateMultiNumbersQuestionTemplateInput {
+  name: String!
+  label: String!
+  optional: Boolean!
+  questionnaireConfigurationId: ID!
+  default: [Float!]
+}
+input CreateFileQuestionTemplateInput {
+  name: String!
+  label: String!
+  optional: Boolean!
+  questionnaireConfigurationId: ID!
+  default: String
+}
+input CreateFilesQuestionTemplateInput {
+  name: String!
+  label: String!
+  optional: Boolean!
+  questionnaireConfigurationId: ID!
+  default: [String!]
+}
+type Mutation {
+  createYesNoQuestionTemplate(
+    input: CreateYesNoQuestionTemplateInput!
+  ): YesNoQuestionTemplate!
+  createStringQuestionTemplate(
+    input: CreateStringQuestionTemplateInput!
+  ): StringQuestionTemplate!
+  createStringsQuestionTemplate(
+    input: CreateStringsQuestionTemplateInput!
+  ): StringsQuestionTemplate!
+  createMultiStringsQuestionTemplate(
+    input: CreateMultiStringsQuestionTemplateInput!
+  ): MultiStringsQuestionTemplate!
+  createNumberQuestionTemplate(
+    input: CreateNumberQuestionTemplateInput!
+  ): NumberQuestionTemplate!
+  createNumbersQuestionTemplate(
+    input: CreateNumbersQuestionTemplateInput!
+  ): NumbersQuestionTemplate!
+  createMultiNumbersQuestionTemplate(
+    input: CreateMultiNumbersQuestionTemplateInput!
+  ): MultiNumbersQuestionTemplate!
+  createFileQuestionTemplate(
+    input: CreateFileQuestionTemplateInput!
+  ): FileQuestionTemplate!
+  createFilesQuestionTemplate(
+    input: CreateFilesQuestionTemplateInput!
+  ): FilesQuestionTemplate!
+}
