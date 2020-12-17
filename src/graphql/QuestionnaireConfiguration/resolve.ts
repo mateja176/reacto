@@ -11,7 +11,7 @@ const createQuestionnaireConfiguration: Mutation['createQuestionnaireConfigurati
 ) => {
   await createQuestionnaireConfigurationSchema.validateAsync(args.input);
 
-  if (!context.user || context.user.role !== AdminRole.admin) {
+  if (context.user?.role !== AdminRole.admin) {
     throw new ForbiddenError('Forbidden');
   }
 

@@ -88,7 +88,7 @@ const logIn: Mutation['logIn'] = async (_, args) => {
 const invite: Mutation['invite'] = async (_, args, context) => {
   await inviteInputSchema.validateAsync(args.input);
 
-  if (!context.user || context.user?.role !== AdminRole.admin) {
+  if (context.user?.role !== AdminRole.admin) {
     throw new ForbiddenError('Forbidden');
   }
 
