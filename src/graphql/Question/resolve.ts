@@ -127,7 +127,7 @@ export const createCreateQuestionTemplate = <
   await schema.validateAsync(args.input);
 
   const {
-    input: { questionnaireConfigurationId, ...questionBase },
+    input: { rule, questionnaireConfigurationId, ...questionBase },
   } = args;
 
   if (context.user?.role !== AdminRole.admin) {
@@ -144,6 +144,7 @@ export const createCreateQuestionTemplate = <
 
   const doc = await QuestionTemplateModel.create({
     ...questionBase,
+    rule: rule ?? undefined,
     questionnaireConfiguration: questionnaireConfigurationId,
   });
 
