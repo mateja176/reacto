@@ -142,7 +142,7 @@ input CreateNumberQuestionInput {
   rule: String
   optional: Boolean!
   questionnaireId: ID!
-  default: Float!
+  default: Float
 }
 input CreateNumbersQuestionInput {
   name: String!
@@ -150,7 +150,7 @@ input CreateNumbersQuestionInput {
   rule: String
   optional: Boolean!
   questionnaireId: ID!
-  default: Float!
+  default: Float
 }
 input CreateMultiNumbersQuestionInput {
   name: String!
