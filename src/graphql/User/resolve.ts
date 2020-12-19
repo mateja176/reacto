@@ -1,5 +1,5 @@
 import { DocumentType } from '@typegoose/typegoose';
-import { AuthenticationError, ForbiddenError } from 'apollo-server-express';
+import { AuthenticationError } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
 import { join } from 'path';
 import { CompanyClass } from '../../classes/Company/Company';
@@ -29,22 +29,22 @@ const user: Query['user'] = async (_, args, context) => {
   }
 
   const userDoc = await UserModel.findById(args.id);
+
   if (!userDoc) {
     throw new NotFoundError();
   }
 
-  const user = mapUser(userDoc);
   if (
-    context.user.role === AdminRole.admin &&
-    context.user.company.id === String(userDoc.company)
+    context.user.id !== args.id ||
+    (context.user.role === AdminRole.admin &&
+      context.user.company.id === String(userDoc.company))
   ) {
-    return user;
-  } else {
-    if (context.user.id !== user.id) {
-      throw new ForbiddenError('Forbidden.');
-    }
-    return user;
+    throw new Forbidden();
   }
+
+  const user = mapUser(userDoc);
+
+  return user;
 };
 
 export const userQuery = {
