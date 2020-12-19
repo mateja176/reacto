@@ -61,3 +61,55 @@ union Answer =
   | MultiNumbersAnswer
   | FileAnswer
   | FilesAnswer
+
+input CreateYesNoAnswerInput {
+  questionId: ID!
+  answer: Boolean
+}
+input CreateStringAnswerInput {
+  questionId: ID!
+  answer: String
+}
+input CreateStringsAnswerInput {
+  questionId: ID!
+  answer: String
+}
+input CreateMultiStringsAnswerInput {
+  questionId: ID!
+  answer: [String!]
+}
+input CreateNumberAnswerInput {
+  questionId: ID!
+  answer: Float!
+}
+input CreateNumbersAnswerInput {
+  questionId: ID!
+  answer: Float!
+}
+input CreateMultiNumbersAnswerInput {
+  questionId: ID!
+  answer: [Float!]
+}
+input CreateFileAnswerInput {
+  questionId: ID!
+  answer: String
+}
+input CreateFilesAnswerInput {
+  questionId: ID!
+  answer: [String!]
+}
+type Mutation {
+  createYesNoAnswer(input: CreateYesNoAnswerInput!): YesNoAnswer!
+  createStringAnswer(input: CreateStringAnswerInput!): StringAnswer!
+  createStringsAnswer(input: CreateStringsAnswerInput!): StringsAnswer!
+  createMultiStringsAnswer(
+    input: CreateMultiStringsAnswerInput!
+  ): MultiStringsAnswer!
+  createNumberAnswer(input: CreateNumberAnswerInput!): NumberAnswer!
+  createNumbersAnswer(input: CreateNumbersAnswerInput!): NumbersAnswer!
+  createMultiNumbersAnswer(
+    input: CreateMultiNumbersAnswerInput!
+  ): MultiNumbersAnswer!
+  createFileAnswer(input: CreateFileAnswerInput!): FileAnswer!
+  createFilesAnswer(input: CreateFilesAnswerInput!): FilesAnswer!
+}
