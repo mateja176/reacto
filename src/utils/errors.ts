@@ -1,4 +1,4 @@
-import { ApolloError } from 'apollo-server-express';
+import { ApolloError, AuthenticationError } from 'apollo-server-express';
 
 export class EnvError extends Error {
   constructor(name: string) {
@@ -15,5 +15,11 @@ export class NotFoundError extends ApolloError {
 export class AlreadyExistsError extends ApolloError {
   constructor() {
     super('Already exists.');
+  }
+}
+
+export class NotAuthenticatedError extends AuthenticationError {
+  constructor() {
+    super('You need to be authenticated to perform this action.');
   }
 }

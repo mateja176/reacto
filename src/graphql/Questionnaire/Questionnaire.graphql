@@ -6,3 +6,12 @@ type Questionnaire implements Node & NamedNode {
   inheritedQuestions: [Question!]!
   questions: [Question!]!
 }
+
+input CreateQuestionnaireInput {
+  name: String!
+  questionnaireConfigurationId: ID!
+}
+
+type Mutation {
+  createQuestionnaire(input: CreateQuestionnaireInput!): Questionnaire!
+}
