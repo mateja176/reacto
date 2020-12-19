@@ -12,6 +12,10 @@ input CreateQuestionnaireInput {
   questionnaireConfigurationId: ID!
 }
 
+type Query {
+  questionnaires(input: FilterInput!): [Questionnaire!]!
+}
+
 type Mutation {
   createQuestionnaire(input: CreateQuestionnaireInput!): Questionnaire!
 }
