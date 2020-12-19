@@ -1,0 +1,4 @@
+input FilterInput {
+  skip: Int
+  limit: Int
+}

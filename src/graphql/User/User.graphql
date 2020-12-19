@@ -46,6 +46,7 @@ type PendingUser implements Node {
 
 type Query {
   user(id: ID!): User!
+  users(input: FilterInput!): [User!]!
 }
 
 input LoginInput {
