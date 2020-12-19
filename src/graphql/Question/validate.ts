@@ -21,6 +21,7 @@ const createQuestionBaseSchemaMap: joi.SchemaMap<
   label: joi.string().required(),
   optional: joi.boolean().required(),
   questionnaireConfigurationId: idSchema,
+  rule: joi.string(), // TODO create parser
 };
 
 export const createYesNoQuestionTemplateSchema = joi
