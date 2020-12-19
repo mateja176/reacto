@@ -1,5 +1,6 @@
 import { DocumentType } from '@typegoose/typegoose';
 import { ApolloError } from 'apollo-server-express';
+import mongoose from 'mongoose';
 import { Context } from 'vm';
 import { QuestionClass } from '../../classes/Question/Question';
 import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
@@ -25,7 +26,7 @@ import {
   YesNoAnswer,
 } from '../../generated/graphql';
 import { AnswerModel, QuestionModel } from '../../services/models';
-import { NotAuthenticatedError } from '../../utils/errors';
+import { Forbidden, NotAuthenticatedError } from '../../utils/errors';
 import {
   mapFileAnswer,
   mapFilesAnswer,
@@ -131,8 +132,21 @@ export const createCreateAnswer = <
     input: { questionId, ...answerBase },
   } = args;
 
-  const questionDoc = (await QuestionModel.findById(
-    args.input.questionId,
+  if (!context.user) {
+    throw new NotAuthenticatedError();
+  }
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  const doc = await AnswerModel.create({
+    ...answerBase,
+    question: questionId,
+  });
+
+  const questionDoc = (await QuestionModel.findOneAndUpdate(
+    { _id: args.input.questionId },
+    { answer: doc._id },
   ).populate('questionnaire')) as DocumentType<
     Omit<QuestionClass, 'questionnaire'> & {
       questionnaire: DocumentType<QuestionnaireClass>;
@@ -143,21 +157,20 @@ export const createCreateAnswer = <
     throw new ApolloError('Question not found.');
   }
 
-  if (!context.user) {
-    throw new NotAuthenticatedError();
-  }
-
+  // * if the user is not permitted to perform this action the transaction is never going to be committed
   if (
     context.user.id !== questionDoc.questionnaire.user ||
-    context.user.role !== AdminRole.admin
+    !(
+      context.user.role === AdminRole.admin &&
+      context.user.company.id === String(questionDoc.questionnaire.company)
+    )
   ) {
-    throw new NotAuthenticatedError();
+    throw new Forbidden();
   }
 
-  const doc = await AnswerModel.create({
-    ...answerBase,
-    question: questionId,
-  });
+  await session.commitTransaction();
+
+  session.endSession();
 
   const output = map(doc);
 
