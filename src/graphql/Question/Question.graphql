@@ -103,3 +103,91 @@ union Question =
   | MultiNumbersQuestion
   | FileQuestion
   | FilesQuestion
+
+input CreateYesNoQuestionInput {
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  questionnaireId: ID!
+  default: Boolean
+}
+input CreateStringQuestionInput {
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  questionnaireId: ID!
+  default: String
+}
+input CreateStringsQuestionInput {
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  questionnaireId: ID!
+  default: String
+}
+input CreateMultiStringsQuestionInput {
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  questionnaireId: ID!
+  default: [String!]
+}
+input CreateNumberQuestionInput {
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  questionnaireId: ID!
+  default: [Float!]
+}
+input CreateNumbersQuestionInput {
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  questionnaireId: ID!
+  default: [Float!]
+}
+input CreateMultiNumbersQuestionInput {
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  questionnaireId: ID!
+  default: [Float!]
+}
+input CreateFileQuestionInput {
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  questionnaireId: ID!
+  default: String
+}
+input CreateFilesQuestionInput {
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  questionnaireId: ID!
+  default: [String!]
+}
+type Mutation {
+  createYesNoQuestion(input: CreateYesNoQuestionInput!): YesNoQuestion!
+  createStringQuestion(input: CreateStringQuestionInput!): StringQuestion!
+  createStringsQuestion(input: CreateStringsQuestionInput!): StringsQuestion!
+  createMultiStringsQuestion(
+    input: CreateMultiStringsQuestionInput!
+  ): MultiStringsQuestion!
+  createNumberQuestion(input: CreateNumberQuestionInput!): NumberQuestion!
+  createNumbersQuestion(input: CreateNumbersQuestionInput!): NumbersQuestion!
+  createMultiNumbersQuestion(
+    input: CreateMultiNumbersQuestionInput!
+  ): MultiNumbersQuestion!
+  createFileQuestion(input: CreateFileQuestionInput!): FileQuestion!
+  createFilesQuestion(input: CreateFilesQuestionInput!): FilesQuestion!
+}

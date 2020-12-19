@@ -1,50 +1,88 @@
 import { Context } from 'vm';
 import {
   AdminRole,
+  CreateFileQuestionInput,
   CreateFileQuestionTemplateInput,
+  CreateFilesQuestionInput,
   CreateFilesQuestionTemplateInput,
+  CreateMultiNumbersQuestionInput,
   CreateMultiNumbersQuestionTemplateInput,
+  CreateMultiStringsQuestionInput,
   CreateMultiStringsQuestionTemplateInput,
+  CreateNumberQuestionInput,
   CreateNumberQuestionTemplateInput,
+  CreateNumbersQuestionInput,
   CreateNumbersQuestionTemplateInput,
+  CreateStringQuestionInput,
   CreateStringQuestionTemplateInput,
+  CreateStringsQuestionInput,
   CreateStringsQuestionTemplateInput,
+  CreateYesNoQuestionInput,
   CreateYesNoQuestionTemplateInput,
+  FileQuestion,
   FileQuestionTemplate,
+  FilesQuestion,
   FilesQuestionTemplate,
+  MultiNumbersQuestion,
   MultiNumbersQuestionTemplate,
+  MultiStringsQuestion,
   MultiStringsQuestionTemplate,
+  NumberQuestion,
   NumberQuestionTemplate,
+  NumbersQuestion,
   NumbersQuestionTemplate,
+  StringQuestion,
   StringQuestionTemplate,
+  StringsQuestion,
   StringsQuestionTemplate,
+  YesNoQuestion,
   YesNoQuestionTemplate,
 } from '../../generated/graphql';
 import {
+  QuestionModel,
   QuestionnaireConfigurationModel,
+  QuestionnaireModel,
   QuestionTemplateModel,
 } from '../../services/models';
 import { Forbidden } from '../../utils/errors';
 import {
+  mapFileQuestion,
   mapFileQuestionTemplate,
+  mapFilesQuestion,
   mapFilesQuestionTemplate,
+  mapMultiNumbersQuestion,
   mapMultiNumbersQuestionTemplate,
+  mapMultiStringsQuestion,
   mapMultiStringsQuestionTemplate,
+  mapNumberQuestion,
   mapNumberQuestionTemplate,
+  mapNumbersQuestion,
   mapNumbersQuestionTemplate,
+  mapStringQuestion,
   mapStringQuestionTemplate,
+  mapStringsQuestion,
   mapStringsQuestionTemplate,
+  mapYesNoQuestion,
   mapYesNoQuestionTemplate,
 } from './map';
 import {
+  createFileQuestionSchema,
   createFileQuestionTemplateSchema,
+  createFilesQuestionSchema,
   createFilesQuestionTemplateSchema,
+  createMultiNumbersQuestionSchema,
   createMultiNumbersQuestionTemplateSchema,
+  createMultiStringsQuestionSchema,
   createMultiStringsQuestionTemplateSchema,
+  createNumberQuestionSchema,
   createNumberQuestionTemplateSchema,
+  createNumbersQuestionSchema,
   createNumbersQuestionTemplateSchema,
+  createStringQuestionSchema,
   createStringQuestionTemplateSchema,
+  createStringsQuestionSchema,
   createStringsQuestionTemplateSchema,
+  createYesNoQuestionSchema,
   createYesNoQuestionTemplateSchema,
 } from './validate';
 
@@ -189,5 +227,148 @@ export const questionTemplateMutation = {
   createFilesQuestionTemplate: createCreateQuestionTemplate<FilesQuestionTemplateConfig>(
     createFilesQuestionTemplateSchema,
     mapFilesQuestionTemplate,
+  ),
+};
+
+type YesNoQuestionConfig = [
+  typeof createYesNoQuestionSchema,
+  typeof mapYesNoQuestion,
+  CreateYesNoQuestionInput,
+  YesNoQuestion,
+];
+type StringQuestionConfig = [
+  typeof createStringsQuestionSchema,
+  typeof mapStringQuestion,
+  CreateStringQuestionInput,
+  StringQuestion,
+];
+type StringsQuestionConfig = [
+  typeof createStringsQuestionSchema,
+  typeof mapStringsQuestion,
+  CreateStringsQuestionInput,
+  StringsQuestion,
+];
+type MultiStringsQuestionConfig = [
+  typeof createMultiStringsQuestionSchema,
+  typeof mapMultiStringsQuestion,
+  CreateMultiStringsQuestionInput,
+  MultiStringsQuestion,
+];
+type NumberQuestionConfig = [
+  typeof createNumberQuestionSchema,
+  typeof mapNumberQuestion,
+  CreateNumberQuestionInput,
+  NumberQuestion,
+];
+type NumbersQuestionConfig = [
+  typeof createNumbersQuestionSchema,
+  typeof mapNumbersQuestion,
+  CreateNumbersQuestionInput,
+  NumbersQuestion,
+];
+type MultiNumbersQuestionConfig = [
+  typeof createMultiNumbersQuestionSchema,
+  typeof mapMultiNumbersQuestion,
+  CreateMultiNumbersQuestionInput,
+  MultiNumbersQuestion,
+];
+type FileQuestionConfig = [
+  typeof createFileQuestionSchema,
+  typeof mapFileQuestion,
+  CreateFileQuestionInput,
+  FileQuestion,
+];
+type FilesQuestionConfig = [
+  typeof createFilesQuestionSchema,
+  typeof mapFilesQuestion,
+  CreateFilesQuestionInput,
+  FilesQuestion,
+];
+
+export const createCreateQuestion = <
+  Config extends
+    | YesNoQuestionConfig
+    | StringQuestionConfig
+    | StringsQuestionConfig
+    | MultiStringsQuestionConfig
+    | NumberQuestionConfig
+    | NumbersQuestionConfig
+    | MultiNumbersQuestionConfig
+    | FileQuestionConfig
+    | FilesQuestionConfig
+>(
+  schema: Config[0],
+  map: Config[1],
+) => async (
+  _: never,
+  args: {
+    input: Config[2];
+  },
+  context: Context,
+): Promise<Config[3]> => {
+  await schema.validateAsync(args.input);
+
+  const {
+    input: { questionnaireId, ...questionBase },
+  } = args;
+
+  if (context.user?.role !== AdminRole.admin) {
+    throw new Forbidden();
+  }
+
+  const questionnaire = await QuestionnaireModel.findById(questionnaireId);
+
+  if (!questionnaire) {
+    throw new Error();
+  }
+
+  const doc = await QuestionModel.create({
+    ...questionBase,
+    rule: args.input.rule ?? undefined,
+    questionnaire: questionnaireId,
+    answers: [],
+  });
+
+  const output = map(doc);
+
+  return output;
+};
+
+export const questionMutation = {
+  createYesNoQuestion: createCreateQuestion<YesNoQuestionConfig>(
+    createYesNoQuestionSchema,
+    mapYesNoQuestion,
+  ),
+  createStringQuestion: createCreateQuestion<StringQuestionConfig>(
+    createStringQuestionSchema,
+    mapStringQuestion,
+  ),
+  createStringsQuestion: createCreateQuestion<StringsQuestionConfig>(
+    createStringsQuestionSchema,
+    mapStringsQuestion,
+  ),
+  createMultiStringsQuestion: createCreateQuestion<MultiStringsQuestionConfig>(
+    createMultiStringsQuestionSchema,
+    mapMultiStringsQuestion,
+  ),
+  createNumberQuestion: createCreateQuestion<NumberQuestionConfig>(
+    createNumberQuestionSchema,
+    mapNumberQuestion,
+  ),
+  createNumbersQuestion: createCreateQuestion<NumbersQuestionConfig>(
+    createNumbersQuestionSchema,
+    mapNumbersQuestion,
+  ),
+  createMultiNumbersQuestion: createCreateQuestion<MultiNumbersQuestionConfig>(
+    createMultiNumbersQuestionSchema,
+    mapMultiNumbersQuestion,
+  ),
+  createFileQuestion: createCreateQuestion<FileQuestionConfig>(
+    createFileQuestionSchema,
+    mapFileQuestion,
+  ),
+  createFilesQuestion: createCreateQuestion<FilesQuestionConfig>(
+    createFilesQuestionSchema,
+    mapFilesQuestion,
   ),
 };
