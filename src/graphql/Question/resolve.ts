@@ -1,5 +1,5 @@
 import { ApolloError } from 'apollo-server-express';
-import { Context } from 'vm';
+import { Context } from '../../Context';
 import {
   AdminRole,
   CreateFileQuestionInput,
@@ -45,7 +45,7 @@ import {
   QuestionnaireModel,
   QuestionTemplateModel,
 } from '../../services/models';
-import { Forbidden } from '../../utils/errors';
+import { Forbidden, NotAuthenticatedError } from '../../utils/errors';
 import {
   mapFileQuestion,
   mapFileQuestionTemplate,
@@ -169,7 +169,11 @@ export const createCreateQuestionTemplate = <
     input: { rule, questionnaireConfigurationId, ...questionBase },
   } = args;
 
-  if (context.user?.role !== AdminRole.admin) {
+  if (!context.user) {
+    throw new NotAuthenticatedError();
+  }
+
+  if (context.user.role !== AdminRole.admin) {
     throw new Forbidden();
   }
 
@@ -313,7 +317,11 @@ export const createCreateQuestion = <
     input: { questionnaireId, ...questionBase },
   } = args;
 
-  if (context.user?.role !== AdminRole.admin) {
+  if (!context.user) {
+    throw new NotAuthenticatedError();
+  }
+
+  if (context.user.role !== AdminRole.admin) {
     throw new Forbidden();
   }
 
