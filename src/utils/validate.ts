@@ -1,5 +1,7 @@
 import joi from 'joi';
 
+export const idSchema = joi.string().required();
+
 export const passwordSchema = joi
   .string()
   .required()

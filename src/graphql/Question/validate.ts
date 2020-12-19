@@ -11,11 +11,16 @@ import {
   CreateYesNoQuestionTemplateInput,
   QuestionBase,
 } from '../../generated/graphql';
+import { idSchema } from '../../utils/validate';
 
-const createQuestionBaseSchemaMap: joi.SchemaMap<QuestionBase> = {
+const createQuestionBaseSchemaMap: joi.SchemaMap<
+  Omit<QuestionBase, 'id'> &
+    Pick<CreateYesNoQuestionTemplateInput, 'questionnaireConfigurationId'>
+> = {
   name: joi.string().required(),
   label: joi.string().required(),
   optional: joi.boolean().required(),
+  questionnaireConfigurationId: idSchema,
 };
 
 export const createYesNoQuestionTemplateSchema = joi
