@@ -32,6 +32,7 @@ import {
   NumberQuestionTemplate,
   NumbersQuestion,
   NumbersQuestionTemplate,
+  Query,
   StringQuestion,
   StringQuestionTemplate,
   StringsQuestion,
@@ -46,6 +47,7 @@ import {
   QuestionTemplateModel,
 } from '../../services/models';
 import { Forbidden, NotAuthenticatedError } from '../../utils/errors';
+import { filterInputSchema, ValidatedFilterInput } from '../../utils/validate';
 import {
   mapFileQuestion,
   mapFileQuestionTemplate,
@@ -59,6 +61,7 @@ import {
   mapNumberQuestionTemplate,
   mapNumbersQuestion,
   mapNumbersQuestionTemplate,
+  mapQuestionTemplate,
   mapStringQuestion,
   mapStringQuestionTemplate,
   mapStringsQuestion,
@@ -86,6 +89,33 @@ import {
   createYesNoQuestionSchema,
   createYesNoQuestionTemplateSchema,
 } from './validate';
+
+const questionTemplates: Query['questionTemplates'] = async (
+  _,
+  args,
+  context,
+) => {
+  const {
+    skip,
+    limit,
+  }: ValidatedFilterInput = await filterInputSchema.validateAsync(args.input);
+
+  if (!context.user) {
+    throw new NotAuthenticatedError();
+  }
+
+  const questionTemplateDocs = await QuestionTemplateModel.find({
+    company: context.user.company.id,
+  })
+    .skip(skip)
+    .limit(limit);
+
+  return questionTemplateDocs.map(mapQuestionTemplate);
+};
+
+export const questionTemplateQuery = {
+  questionTemplates,
+};
 
 type YesNoQuestionTemplateConfig = [
   typeof createYesNoQuestionTemplateSchema,

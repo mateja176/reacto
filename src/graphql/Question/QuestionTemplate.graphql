@@ -91,6 +91,10 @@ union QuestionTemplate =
   | FileQuestionTemplate
   | FilesQuestionTemplate
 
+type Query {
+  questionTemplates(input: FilterInput!): [QuestionTemplate!]!
+}
+
 input CreateYesNoQuestionTemplateInput {
   name: String!
   label: String!
