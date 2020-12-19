@@ -1,6 +1,8 @@
 import joi from 'joi';
+import { DeepNonNullable } from 'utility-types';
 import { FilterInput } from '../generated/graphql';
 
+export type ValidatedFilterInput = DeepNonNullable<FilterInput>;
 // * in regards to `empty(null)` https://github.com/sideway/joi/issues/1684
 export const filterInputSchema = joi
   .object<FilterInput>({

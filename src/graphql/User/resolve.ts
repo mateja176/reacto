@@ -2,13 +2,11 @@ import { DocumentType } from '@typegoose/typegoose';
 import { AuthenticationError } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
 import { join } from 'path';
-import { DeepNonNullable } from 'utility-types';
 import { CompanyClass } from '../../classes/Company/Company';
 import { Role, UserClass } from '../../classes/User/User';
 import mailgun from '../../config/mailgun';
 import {
   AdminRole,
-  FilterInput,
   Mutation,
   Query,
   RegularRole,
@@ -23,7 +21,7 @@ import {
   NotFoundError,
 } from '../../utils/errors';
 import { mapDoc } from '../../utils/map';
-import { filterInputSchema } from '../../utils/validate';
+import { filterInputSchema, ValidatedFilterInput } from '../../utils/validate';
 import { mapPendingUser, mapUser, mapUserClass } from './map';
 import { inviteInputSchema, loginArgsSchema } from './validate';
 
@@ -55,9 +53,7 @@ const users: Query['users'] = async (_, args, context) => {
   const {
     skip,
     limit,
-  }: DeepNonNullable<FilterInput> = await filterInputSchema.validateAsync(
-    args.input,
-  );
+  }: ValidatedFilterInput = await filterInputSchema.validateAsync(args.input);
 
   if (!context.user) {
     throw new NotAuthenticatedError();
