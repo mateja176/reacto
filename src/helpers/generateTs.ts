@@ -261,7 +261,11 @@ type FactoryType =
   | ts.TypeReferenceType
   | ts.ArrayTypeNode;
 type CreateFactory = (type: FactoryType) => FactoryType | ts.UnionTypeNode;
-export const mapReference = (createFactory: CreateFactory) => (
+export const mapReference = (
+  createMaybeTypeOrNullableType: (
+    type: ts.TypeNode,
+  ) => ts.ExpressionWithTypeArguments,
+) => (createFactory: CreateFactory) => (
   type: ReferenceType,
   isNullable: boolean = false,
 ) => {
@@ -280,13 +284,17 @@ export const mapReference = (createFactory: CreateFactory) => (
         : ts.factory.createTypeReferenceNode(typeName),
     );
 
-    const nullableType = isNullable ? createNullableType(array) : array;
+    const nullableType = isNullable
+      ? createMaybeTypeOrNullableType(array)
+      : array;
 
     return isScalar ? nullableType : createFactory(nullableType);
   } else {
     return createFactory(
       isNullable
-        ? createNullableType(ts.factory.createTypeReferenceNode(type.name))
+        ? createMaybeTypeOrNullableType(
+            ts.factory.createTypeReferenceNode(type.name),
+          )
         : ts.factory.createTypeReferenceNode(type.name),
     );
   }
@@ -302,8 +310,8 @@ export const createFactory: CreateFactory = (type) => {
   ]);
 };
 
-const mapIdentityReference = mapReference((a) => a);
-const mapFactoryReference = mapReference(createFactory);
+const mapIdentityReference = mapReference(createMaybeType)((a) => a);
+const mapFactoryReference = mapReference(createNullableType)(createFactory);
 
 const mapInput = mapType(createMaybeTypeOrType)(mapIdentityReference);
 const mapFactory = mapType(createNullableTypeOrType)(mapFactoryReference);
