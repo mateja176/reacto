@@ -14,9 +14,27 @@ const MaybeType = ts.factory.createTypeAliasDeclaration(
     ),
   ]),
 );
+const MaybeUndefinedType = ts.factory.createTypeAliasDeclaration(
+  [],
+  [],
+  'MaybeUndefined',
+  [ts.factory.createTypeParameterDeclaration('A')],
+  ts.factory.createUnionTypeNode([
+    ts.factory.createTypeReferenceNode('A'),
+    ts.factory.createKeywordTypeNode(
+      ts.SyntaxKind.NullKeyword as ts.KeywordTypeSyntaxKind,
+    ),
+    ts.factory.createKeywordTypeNode(ts.SyntaxKind.UndefinedKeyword),
+  ]),
+);
 const createMaybeType = (type: ts.TypeNode) =>
   ts.factory.createExpressionWithTypeArguments(
     ts.factory.createIdentifier('Maybe'),
+    [type],
+  );
+const createMaybeUndefinedType = (type: ts.TypeNode) =>
+  ts.factory.createExpressionWithTypeArguments(
+    ts.factory.createIdentifier('MaybeUndefined'),
     [type],
   );
 
@@ -28,7 +46,7 @@ const IDType = ts.factory.createTypeAliasDeclaration(
   ts.factory.createKeywordTypeNode(ts.SyntaxKind.StringKeyword),
 );
 
-export const helperTypes = [MaybeType, IDType];
+export const helperTypes = [MaybeType, MaybeUndefinedType, IDType];
 
 export const mapInterfaceOrEnum = (
   type: gql.GraphQLInterfaceType | gql.GraphQLInputObjectType,
@@ -159,8 +177,15 @@ export const mapUnion = (type: gql.GraphQLUnionType): ts.TypeAliasDeclaration =>
     ),
   );
 
-const createMaybeNullableType = (isNullable: boolean) => (type: ts.TypeNode) =>
+type CreateNullableType = (
+  isNullable: boolean,
+) => (type: ts.TypeNode) => ts.TypeNode;
+
+const createMaybeNullableType: CreateNullableType = (isNullable) => (type) =>
   isNullable ? createMaybeType(type) : type;
+const createMaybeNullableUndefinedType: CreateNullableType = (isNullable) => (
+  type,
+) => (isNullable ? createMaybeUndefinedType(type) : type);
 
 type ReferenceType =
   | gql.GraphQLList<gql.GraphQLType>
@@ -169,7 +194,7 @@ type ReferenceType =
   | gql.GraphQLInputObjectType
   | gql.GraphQLObjectType;
 
-const mapType = (
+const mapType = (createNullableType: CreateNullableType) => (
   mapVectorType: (reference: ReferenceType, isNullable: boolean) => ts.TypeNode,
 ) => (
   typeNode: gql.GraphQLScalarType | gql.GraphQLEnumType | ReferenceType,
@@ -178,7 +203,7 @@ const mapType = (
     ? [gql.getNullableType(typeNode), false]
     : [typeNode, true];
 
-  const createType = createMaybeNullableType(isNullable);
+  const createType = createNullableType(isNullable);
   if (gql.isScalarType(type)) {
     return createType(mapPrimitive(type));
   } else if (gql.isEnumType(type)) {
@@ -279,5 +304,7 @@ export const createFactory: CreateFactory = (type) => {
 const mapIdentityReference = mapReference((a) => a);
 const mapFactoryReference = mapReference(createFactory);
 
-const mapInput = mapType(mapIdentityReference);
-const mapFactory = mapType(mapFactoryReference);
+const mapInput = mapType(createMaybeNullableUndefinedType)(
+  mapIdentityReference,
+);
+const mapFactory = mapType(createMaybeNullableType)(mapFactoryReference);
