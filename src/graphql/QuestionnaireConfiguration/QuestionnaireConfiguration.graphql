@@ -12,6 +12,12 @@ input CreateQuestionnaireConfigurationInput {
   type: String!
 }
 
+type Query {
+  questionnaireConfigurations(
+    input: FilterInput!
+  ): [QuestionnaireConfiguration!]!
+}
+
 type Mutation {
   createQuestionnaireConfiguration(
     input: CreateQuestionnaireConfigurationInput!
