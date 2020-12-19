@@ -64,19 +64,19 @@ union Answer =
 
 input CreateYesNoAnswerInput {
   questionId: ID!
-  answer: Boolean
+  answer: Boolean!
 }
 input CreateStringAnswerInput {
   questionId: ID!
-  answer: String
+  answer: String!
 }
 input CreateStringsAnswerInput {
   questionId: ID!
-  answer: String
+  answer: String!
 }
 input CreateMultiStringsAnswerInput {
   questionId: ID!
-  answer: [String!]
+  answer: [String!]!
 }
 input CreateNumberAnswerInput {
   questionId: ID!
@@ -88,15 +88,15 @@ input CreateNumbersAnswerInput {
 }
 input CreateMultiNumbersAnswerInput {
   questionId: ID!
-  answer: [Float!]
+  answer: [Float!]!
 }
 input CreateFileAnswerInput {
   questionId: ID!
-  answer: String
+  answer: String!
 }
 input CreateFilesAnswerInput {
   questionId: ID!
-  answer: [String!]
+  answer: [String!]!
 }
 type Mutation {
   createYesNoAnswer(input: CreateYesNoAnswerInput!): YesNoAnswer!
