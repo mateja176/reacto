@@ -18,6 +18,12 @@ export class AlreadyExistsError extends ApolloError {
   }
 }
 
+export class Forbidden extends AuthenticationError {
+  constructor() {
+    super('The current user is not authorized to perform this action.');
+  }
+}
+
 export class NotAuthenticatedError extends AuthenticationError {
   constructor() {
     super('You need to be authenticated to perform this action.');

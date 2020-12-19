@@ -1,6 +1,6 @@
-import { ForbiddenError } from 'apollo-server-express';
 import { AdminRole, Mutation } from '../../generated/graphql';
 import { QuestionnaireConfigurationModel } from '../../services/models';
+import { Forbidden } from '../../utils/errors';
 import { mapQuestionnaireConfiguration } from './map';
 import { createQuestionnaireConfigurationSchema } from './validate';
 
@@ -12,7 +12,7 @@ const createQuestionnaireConfiguration: Mutation['createQuestionnaireConfigurati
   await createQuestionnaireConfigurationSchema.validateAsync(args.input);
 
   if (context.user?.role !== AdminRole.admin) {
-    throw new ForbiddenError('Forbidden');
+    throw new Forbidden();
   }
 
   const questionnaireConfiguration = await QuestionnaireConfigurationModel.create(

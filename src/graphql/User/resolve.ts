@@ -14,7 +14,11 @@ import {
 import createToken from '../../services/createToken';
 import env from '../../services/env';
 import { PendingUserModel, UserModel } from '../../services/models';
-import { AlreadyExistsError, NotFoundError } from '../../utils/errors';
+import {
+  AlreadyExistsError,
+  Forbidden,
+  NotFoundError,
+} from '../../utils/errors';
 import { mapDoc } from '../../utils/map';
 import { mapPendingUser, mapUser, mapUserClass } from './map';
 import { inviteInputSchema, loginArgsSchema } from './validate';
@@ -89,7 +93,7 @@ const invite: Mutation['invite'] = async (_, args, context) => {
   await inviteInputSchema.validateAsync(args.input);
 
   if (context.user?.role !== AdminRole.admin) {
-    throw new ForbiddenError('Forbidden');
+    throw new Forbidden();
   }
 
   const userDoc = UserModel.findOne({ email: args.input.email });

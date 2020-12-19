@@ -1,4 +1,3 @@
-import { ForbiddenError } from 'apollo-server-express';
 import { Context } from 'vm';
 import {
   AdminRole,
@@ -25,6 +24,7 @@ import {
   QuestionnaireConfigurationModel,
   QuestionTemplateModel,
 } from '../../services/models';
+import { Forbidden } from '../../utils/errors';
 import {
   mapFileQuestionTemplate,
   mapFilesQuestionTemplate,
@@ -131,7 +131,7 @@ export const createCreateQuestionTemplate = <
   } = args;
 
   if (context.user?.role !== AdminRole.admin) {
-    throw new ForbiddenError('Forbidden.');
+    throw new Forbidden();
   }
 
   const questionnaireConfiguration = await QuestionnaireConfigurationModel.findById(
