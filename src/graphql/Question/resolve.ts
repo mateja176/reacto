@@ -365,7 +365,7 @@ export const createCreateQuestion = <
     ...questionBase,
     rule: args.input.rule ?? undefined,
     questionnaire: questionnaireId,
-    answers: [],
+    answer: undefined,
   });
 
   const output = map(doc);

@@ -5,7 +5,7 @@ type YesNoQuestion implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answers: [YesNoAnswer!]!
+  answer: YesNoAnswer
   default: Boolean
 }
 type StringQuestion implements Node & NamedNode & QuestionBase {
@@ -15,7 +15,7 @@ type StringQuestion implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answers: [StringAnswer!]!
+  answer: StringAnswer
   default: String
 }
 type StringsQuestion implements Node & NamedNode & QuestionBase {
@@ -25,7 +25,7 @@ type StringsQuestion implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answers: [StringsAnswer!]!
+  answer: StringsAnswer
   options: [String!]!
   default: String
 }
@@ -36,7 +36,7 @@ type MultiStringsQuestion implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answers: [MultiStringsAnswer!]!
+  answer: MultiStringsAnswer
   options: [String!]!
   default: [String!]
 }
@@ -47,7 +47,7 @@ type NumberQuestion implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answers: [NumberAnswer!]!
+  answer: NumberAnswer
   default: Float
 }
 type NumbersQuestion implements Node & NamedNode & QuestionBase {
@@ -57,7 +57,7 @@ type NumbersQuestion implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answers: [NumbersAnswer!]!
+  answer: NumbersAnswer
   options: [Float!]!
   default: Float
 }
@@ -68,7 +68,7 @@ type MultiNumbersQuestion implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answers: [MultiNumbersAnswer!]!
+  answer: MultiNumbersAnswer
   options: [Float!]!
   default: [Float!]
 }
@@ -79,7 +79,7 @@ type FileQuestion implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answers: [FileAnswer!]!
+  answer: FileAnswer
   default: String
 }
 type FilesQuestion implements Node & NamedNode & QuestionBase {
@@ -89,7 +89,7 @@ type FilesQuestion implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answers: [FilesAnswer!]!
+  answer: FilesAnswer
   default: [String!]
 }
 

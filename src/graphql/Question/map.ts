@@ -25,7 +25,7 @@ import {
 } from '../../generated/graphql';
 import { MapClass, mapDoc } from '../../utils/map';
 import {
-  createFindAnswers,
+  createFindAnswer,
   createFindQuestionnaire,
   createFindQuestionnaireConfiguration,
 } from '../../utils/query';
@@ -298,7 +298,7 @@ const mapYesNoQuestionClass = (
       __typename: 'YesNoQuestion',
       ...base,
       default: cls.booleanDefault,
-      answers: createFindAnswers(mapYesNoAnswer)(cls.answers),
+      answer: cls.answer ? createFindAnswer(mapYesNoAnswer)(cls.answer) : null,
     };
   } else {
     throw new InvalidQuestionError();
@@ -314,7 +314,7 @@ const mapStringQuestionClass = (
       __typename: 'StringQuestion',
       ...base,
       default: cls.stringDefault,
-      answers: createFindAnswers(mapStringAnswer)(cls.answers),
+      answer: cls.answer ? createFindAnswer(mapStringAnswer)(cls.answer) : null,
     };
   } else {
     throw new InvalidQuestionError();
@@ -331,7 +331,9 @@ const mapStringsQuestionClass = (
       ...base,
       default: cls.strings.default ?? null,
       options: cls.strings.value,
-      answers: createFindAnswers(mapStringsAnswer)(cls.answers),
+      answer: cls.answer
+        ? createFindAnswer(mapStringsAnswer)(cls.answer)
+        : null,
     };
   } else {
     throw new InvalidQuestionError();
@@ -348,7 +350,9 @@ const mapMultiStringsQuestionClass = (
       ...base,
       default: cls.multiStrings.default ?? null,
       options: cls.multiStrings.value,
-      answers: createFindAnswers(mapMultiStringsAnswer)(cls.answers),
+      answer: cls.answer
+        ? createFindAnswer(mapMultiStringsAnswer)(cls.answer)
+        : null,
     };
   } else {
     throw new InvalidQuestionError();
@@ -366,7 +370,7 @@ const mapNumberQuestionClass = (
       __typename: 'NumberQuestion',
       ...base,
       default: cls.numberDefault ?? null,
-      answers: createFindAnswers(mapNumberAnswer)(cls.answers),
+      answer: cls.answer ? createFindAnswer(mapNumberAnswer)(cls.answer) : null,
     };
   } else {
     throw new InvalidQuestionError();
@@ -383,7 +387,9 @@ const mapNumbersQuestionClass = (
       ...base,
       default: cls.numbers.default ?? null,
       options: cls.numbers.value,
-      answers: createFindAnswers(mapNumbersAnswer)(cls.answers),
+      answer: cls.answer
+        ? createFindAnswer(mapNumbersAnswer)(cls.answer)
+        : null,
     };
   } else {
     throw new InvalidQuestionError();
@@ -400,7 +406,9 @@ const mapMultiNumbersQuestionClass = (
       ...base,
       default: cls.multiNumbers.default ?? null,
       options: cls.multiNumbers.value,
-      answers: createFindAnswers(mapMultiNumbersAnswer)(cls.answers),
+      answer: cls.answer
+        ? createFindAnswer(mapMultiNumbersAnswer)(cls.answer)
+        : null,
     };
   } else {
     throw new InvalidQuestionError();
@@ -418,7 +426,7 @@ const mapFileQuestionClass = (
       __typename: 'FileQuestion',
       ...base,
       default: cls.fileDefault ?? null,
-      answers: createFindAnswers(mapFileAnswer)(cls.answers),
+      answer: cls.answer ? createFindAnswer(mapFileAnswer)(cls.answer) : null,
     };
   } else {
     throw new InvalidQuestionError();
@@ -434,7 +442,7 @@ const mapFilesQuestionClass = (
       __typename: 'FilesQuestion',
       ...base,
       default: cls.filesDefault ?? null,
-      answers: createFindAnswers(mapFilesAnswer)(cls.answers),
+      answer: cls.answer ? createFindAnswer(mapFilesAnswer)(cls.answer) : null,
     };
   } else {
     throw new InvalidQuestionError();

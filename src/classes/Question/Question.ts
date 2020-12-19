@@ -8,5 +8,5 @@ export class QuestionClass extends QuestionBase {
   @prop({ ref: () => QuestionnaireClass })
   public questionnaire: Ref<QuestionnaireClass>;
   @prop({ ref: () => AnswerClass })
-  public answers: Ref<AnswerClass>[];
+  public answer?: Ref<AnswerClass>;
 }
