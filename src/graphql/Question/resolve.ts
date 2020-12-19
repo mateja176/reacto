@@ -1,3 +1,4 @@
+import { ApolloError } from 'apollo-server-express';
 import { Context } from 'vm';
 import {
   AdminRole,
@@ -177,7 +178,7 @@ export const createCreateQuestionTemplate = <
   );
 
   if (!questionnaireConfiguration) {
-    throw new Error();
+    throw new ApolloError('Questionnaire configuration not found.');
   }
 
   const doc = await QuestionTemplateModel.create({
