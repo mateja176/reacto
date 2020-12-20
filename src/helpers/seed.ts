@@ -18,14 +18,11 @@ const seedInputSchema = Joi.object<SeedInput>({
   password: passwordSchema,
 }).required();
 
-const seed = async (input: SeedInput) => {
-  const { name, email, password } = await seedInputSchema.validateAsync(input);
-
-  await mongoose.connect(env.mongodbURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-
+export const createCompanyAndUser = async ({
+  name,
+  email,
+  password,
+}: SeedInput) => {
   const userId = mongoose.Types.ObjectId();
 
   const reacto = await CompanyModel.create({
@@ -47,6 +44,17 @@ const seed = async (input: SeedInput) => {
     questionnaires: [],
     company: reacto._id,
   });
+};
+
+const seed = async (input: SeedInput) => {
+  const validatedInput = await seedInputSchema.validateAsync(input);
+
+  await mongoose.connect(env.mongodbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  await createCompanyAndUser(validatedInput);
 
   await mongoose.connection.close();
 };
