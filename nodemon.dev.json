@@ -1,6 +1,6 @@
 {
   "watch": "src",
   "ext": "graphql",
-  "ignore": ["src/generated/schema.graphql", "src/sdk"],
+  "ignore": ["src/generated/schema.graphql", "src/sdk", "src/setupTests.ts"],
   "exec": "npm run merge-and-generate"
 }
