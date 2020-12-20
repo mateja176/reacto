@@ -54,7 +54,7 @@ describe('users', () => {
     expect(typeof logIn.token).toBe('string');
   });
   test('invite', async () => {
-    const userDoc = await createCompanyAndUser({
+    const { userDoc } = await createCompanyAndUser({
       ...pick(['password', 'name'], seedInput),
       email: reactoEmail,
     });
