@@ -118,7 +118,7 @@ const invite: Mutation['invite'] = async (_, args, context) => {
     throw new Forbidden();
   }
 
-  const userDoc = UserModel.findOne({ email: args.input.email });
+  const userDoc = await UserModel.findOne({ email: args.input.email });
 
   if (userDoc) {
     throw new AlreadyExistsError();
