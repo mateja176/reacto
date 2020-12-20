@@ -13,7 +13,7 @@ export interface SeedInput {
   password: string;
 }
 
-const seedInputSchema = Joi.object<SeedInput>({
+export const seedInputSchema = Joi.object<SeedInput>({
   name: Joi.string().required(),
   email: Joi.string().required().email(),
   password: passwordSchema,
