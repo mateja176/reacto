@@ -1,4 +1,5 @@
 import { ApolloError } from 'apollo-server-express';
+import mongoose from 'mongoose';
 import { Context } from '../../Context';
 import {
   AdminRole,
@@ -207,19 +208,26 @@ export const createCreateQuestionTemplate = <
     throw new Forbidden();
   }
 
-  const questionnaireConfiguration = await QuestionnaireConfigurationModel.findById(
-    questionnaireConfigurationId,
-  );
-
-  if (!questionnaireConfiguration) {
-    throw new ApolloError('Questionnaire configuration not found.');
-  }
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   const doc = await QuestionTemplateModel.create({
     ...questionBase,
     rule: rule ?? undefined,
     questionnaireConfiguration: questionnaireConfigurationId,
   });
+
+  const questionnaireConfiguration = await QuestionnaireConfigurationModel.findOneAndUpdate(
+    { _id: questionnaireConfigurationId },
+    { $push: { questionTemplates: doc._id } },
+  );
+
+  if (!questionnaireConfiguration) {
+    throw new ApolloError('Questionnaire configuration not found.');
+  }
+
+  await session.commitTransaction();
+  session.endSession();
 
   const output = map(doc);
 
