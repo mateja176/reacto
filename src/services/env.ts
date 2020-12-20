@@ -1,7 +1,11 @@
 import dotenv from 'dotenv';
 import { EnvError } from '../utils/errors';
 
-dotenv.config();
+// * dotenv.config is invoked in setupTests.ts
+if (process.env.NODE_ENV !== 'test') {
+  // * in a production environment there is usually a platform specific way of injecting env vars
+  dotenv.config();
+}
 
 if (!process.env.MONGODB_URI) {
   throw new EnvError('MONGODB_URI');
