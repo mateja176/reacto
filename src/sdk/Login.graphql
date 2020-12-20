@@ -1,0 +1,13 @@
+mutation AdminLogin($input: LoginInput!) {
+  logIn(input: $input) {
+    token
+    user {
+      ... on AdminUser {
+        id
+        email
+        name
+        role
+      }
+    }
+  }
+}
