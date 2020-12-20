@@ -1,7 +1,8 @@
+import { DocumentType } from '@typegoose/typegoose';
 import { CommanderStatic } from 'commander';
 import Joi from 'joi';
 import mongoose from 'mongoose';
-import { Role } from '../classes/User/User';
+import { Role, UserClass } from '../classes/User/User';
 import env from '../services/env';
 import hashPassword from '../services/hashPassword';
 import { CompanyModel, UserModel } from '../services/models';
@@ -23,7 +24,7 @@ export const createCompanyAndUser = async ({
   name,
   email,
   password,
-}: SeedInput) => {
+}: SeedInput): Promise<DocumentType<UserClass>> => {
   const userId = mongoose.Types.ObjectId();
 
   const reacto = await CompanyModel.create({
@@ -36,7 +37,7 @@ export const createCompanyAndUser = async ({
     questionnaires: [],
   });
 
-  return await UserModel.create({
+  return UserModel.create({
     _id: userId,
     name,
     email,
