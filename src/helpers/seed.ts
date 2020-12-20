@@ -1,3 +1,4 @@
+import { CommanderStatic } from 'commander';
 import Joi from 'joi';
 import mongoose from 'mongoose';
 import { Role } from '../classes/User/User';
@@ -57,6 +58,19 @@ const seed = async (input: SeedInput) => {
   await createCompanyAndUser(validatedInput);
 
   await mongoose.connection.close();
+};
+
+export const getSeedInput = (commander: CommanderStatic): SeedInput => {
+  const { email, password, userName } = commander
+    .option('-n, --user-name <name>', "User's name")
+    .option('-e, --email <email>', "User's email")
+    .option('-p, --password <password>', "User's password")
+    .parse(process.argv);
+  return {
+    email,
+    password,
+    name: userName,
+  };
 };
 
 export default seed;

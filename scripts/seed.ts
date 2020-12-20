@@ -1,13 +1,7 @@
 import commander from 'commander';
-import seed from '../src/helpers/seed';
+import seed, { getSeedInput } from '../src/helpers/seed';
 
-const { userName, email, password } = commander
-  .option('-n, --user-name <name>', "User's name")
-  .option('-e, --email <email>', "User's email")
-  .option('-p, --password <password>', "User's password")
-  .parse(process.argv);
-
-const name = userName;
+const { name, email, password } = getSeedInput(commander);
 
 seed({
   name,
