@@ -1,6 +1,7 @@
 import { DocumentType } from '@typegoose/typegoose';
 import { AuthenticationError } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
+import mongoose from 'mongoose';
 import { join } from 'path';
 import { CompanyClass } from '../../classes/Company/Company';
 import { Role, UserClass } from '../../classes/User/User';
@@ -13,7 +14,11 @@ import {
 } from '../../generated/graphql';
 import createToken from '../../services/createToken';
 import env from '../../services/env';
-import { PendingUserModel, UserModel } from '../../services/models';
+import {
+  CompanyModel,
+  PendingUserModel,
+  UserModel,
+} from '../../services/models';
 import {
   AlreadyExistsError,
   Forbidden,
@@ -128,11 +133,23 @@ const invite: Mutation['invite'] = async (_, args, context) => {
     throw new AlreadyExistsError();
   }
 
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   const pendingUserDoc = await PendingUserModel.create({
     email: args.input.email,
     role: args.input.role,
     company: context.user.id,
   });
+
+  CompanyModel.updateOne(
+    { _id: context.user.company.id },
+    { $push: { pendingUsers: pendingUserDoc._id } },
+  );
+
+  await session.commitTransaction();
+
+  session.endSession();
 
   const pendingUser = mapPendingUser(pendingUserDoc);
 
