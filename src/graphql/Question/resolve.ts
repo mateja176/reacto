@@ -47,7 +47,11 @@ import {
   QuestionnaireModel,
   QuestionTemplateModel,
 } from '../../services/models';
-import { Forbidden, NotAuthenticatedError } from '../../utils/errors';
+import {
+  Forbidden,
+  NotAuthenticatedError,
+  NotFoundError,
+} from '../../utils/errors';
 import { filterInputSchema, ValidatedFilterInput } from '../../utils/validate';
 import {
   mapFileQuestion,
@@ -363,11 +367,8 @@ export const createCreateQuestion = <
     throw new Forbidden();
   }
 
-  const questionnaire = await QuestionnaireModel.findById(questionnaireId);
-
-  if (!questionnaire) {
-    throw new Error();
-  }
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   const doc = await QuestionModel.create({
     ...questionBase,
@@ -375,6 +376,18 @@ export const createCreateQuestion = <
     questionnaire: questionnaireId,
     answer: undefined,
   });
+
+  const questionnaire = await QuestionnaireModel.findOneAndUpdate(
+    { _id: questionnaireId },
+    { $push: { questions: doc._id } },
+  );
+
+  if (!questionnaire) {
+    throw new NotFoundError();
+  }
+
+  await session.commitTransaction();
+  session.endSession();
 
   const output = map(doc);
 
