@@ -69,7 +69,6 @@
     "wait-on": "^5.2.0"
   },
   "dependencies": {
-    "@graphql-tools/load-files": "^6.2.5",
     "@typegoose/typegoose": "^7.4.5",
     "apollo-server-express": "^2.19.0",
     "bcrypt": "^5.0.0",
