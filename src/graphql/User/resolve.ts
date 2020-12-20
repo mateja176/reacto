@@ -1,17 +1,10 @@
-import { DocumentType } from '@typegoose/typegoose';
-import { AuthenticationError } from 'apollo-server-express';
+import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import { join } from 'path';
-import { CompanyClass } from '../../classes/Company/Company';
-import { Role, UserClass } from '../../classes/User/User';
+import { v4 } from 'uuid';
 import mailgun from '../../config/mailgun';
-import {
-  AdminRole,
-  Mutation,
-  Query,
-  RegularRole,
-} from '../../generated/graphql';
+import { AdminRole, Mutation, Query } from '../../generated/graphql';
 import createToken from '../../services/createToken';
 import env from '../../services/env';
 import {
@@ -25,10 +18,13 @@ import {
   NotAuthenticatedError,
   NotFoundError,
 } from '../../utils/errors';
-import { mapDoc } from '../../utils/map';
 import { filterInputSchema, ValidatedFilterInput } from '../../utils/validate';
-import { mapPendingUser, mapUser, mapUserClass } from './map';
-import { inviteInputSchema, loginArgsSchema } from './validate';
+import { mapPendingUser, mapUser } from './map';
+import {
+  inviteInputSchema,
+  loginArgsSchema,
+  registerInputSchema,
+} from './validate';
 
 const user: Query['user'] = async (_, args, context) => {
   if (!context.user) {
@@ -85,11 +81,9 @@ export const userQuery = {
 const logIn: Mutation['logIn'] = async (_, args) => {
   await loginArgsSchema.validateAsync(args.input);
 
-  const userDoc = (await UserModel.findOne({
+  const userDoc = await UserModel.findOne({
     email: args.input.email,
-  }).populate('company')) as DocumentType<
-    Omit<UserClass, 'company'> & { company: DocumentType<CompanyClass> }
-  >;
+  });
 
   if (!userDoc) {
     throw new NotFoundError();
@@ -102,19 +96,15 @@ const logIn: Mutation['logIn'] = async (_, args) => {
   if (!passwordsMatch) {
     throw new AuthenticationError('Invalid credentials.');
   }
-  const { company, ...userClass } = mapDoc(userDoc);
 
-  const user = mapUserClass({ ...userClass, company: company._id });
+  const user = mapUser(userDoc);
 
   const token = createToken({
-    id: userClass.id,
-    name: userClass.name,
-    email: userClass.email,
-    role: userClass.role === Role.admin ? AdminRole.admin : RegularRole.regular,
-    company: {
-      id: company._id,
-      name: company.name,
-    },
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    company: { id: String(userDoc.company) },
   });
 
   return { __typename: 'LoginOutput', user, token };
@@ -136,16 +126,23 @@ const invite: Mutation['invite'] = async (_, args, context) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
+  const token = v4();
+
   const pendingUserDoc = await PendingUserModel.create({
     email: args.input.email,
     role: args.input.role,
+    token,
     company: context.user.id,
   });
 
-  CompanyModel.updateOne(
+  const companyDoc = await CompanyModel.findOneAndUpdate(
     { _id: context.user.company.id },
     { $push: { pendingUsers: pendingUserDoc._id } },
   );
+
+  if (!companyDoc) {
+    throw new ApolloError('Company not found.');
+  }
 
   await session.commitTransaction();
 
@@ -162,13 +159,11 @@ const invite: Mutation['invite'] = async (_, args, context) => {
         html: `<h1>Welcome to Reacto</h1>
       <br />
       <br />
-      You have been invited to join <strong>${
-        context.user?.company.name
-      }</strong>.
+      You have been invited to join <strong>${companyDoc.name}</strong>.
       <br />
       To complete your registration follow the link below:
       <br/>
-      ${join(env.appOrigin, env.appEmailPath)}?email=${args.input.email}`,
+      ${join(env.appOrigin, env.appEmailPath)}?token=${token}`,
       },
       (err) => {
         if (err) {
@@ -181,7 +176,66 @@ const invite: Mutation['invite'] = async (_, args, context) => {
   );
 };
 
+const register: Mutation['register'] = async (_, args) => {
+  await registerInputSchema.validateAsync(args.input);
+
+  const pendingUserDoc = await PendingUserModel.findOne({
+    token: args.input.token,
+  });
+
+  if (!pendingUserDoc) {
+    throw new NotFoundError();
+  }
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  const passwordHash = await bcrypt.hash(args.input.password, 10);
+
+  const companyId = String(pendingUserDoc.company);
+
+  const userDoc = await UserModel.create({
+    company: companyId,
+    email: pendingUserDoc.email,
+    role: pendingUserDoc.role,
+    name: args.input.name,
+    passwordHash,
+    questionnaires: [],
+  });
+
+  await PendingUserModel.remove({ _id: pendingUserDoc._id });
+
+  await CompanyModel.updateOne(
+    { _id: companyId },
+    {
+      $pull: { pendingUsers: pendingUserDoc._id },
+    },
+  );
+
+  await session.commitTransaction();
+  session.endSession();
+
+  const user = mapUser(userDoc);
+
+  const token = createToken({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    company: {
+      id: companyId,
+    },
+  });
+
+  return {
+    __typename: 'RegisterOutput',
+    token,
+    user,
+  };
+};
+
 export const userMutation = {
   logIn,
   invite,
+  register,
 };

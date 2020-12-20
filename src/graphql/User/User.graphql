@@ -62,7 +62,19 @@ input InviteInput {
   email: String!
   role: Role!
 }
+
+input RegisterInput {
+  token: String!
+  name: String!
+  password: String!
+}
+type RegisterOutput {
+  token: String!
+  user: User!
+}
+
 type Mutation {
   logIn(input: LoginInput!): LoginOutput!
   invite(input: InviteInput!): PendingUser!
+  register(input: RegisterInput!): RegisterOutput!
 }

@@ -8,6 +8,8 @@ export class PendingUserClass {
   email: string;
   @prop({ enum: Role })
   role: Role;
+  @prop()
+  token: string;
   @prop({ ref: () => CompanyClass })
   company: Ref<CompanyClass>;
 }
