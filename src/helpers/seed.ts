@@ -36,7 +36,7 @@ export const createCompanyAndUser = async ({
     questionnaires: [],
   });
 
-  await UserModel.create({
+  return await UserModel.create({
     _id: userId,
     name,
     email,
