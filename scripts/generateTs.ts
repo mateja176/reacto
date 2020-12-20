@@ -1,4 +1,4 @@
-import * as fs from 'fs-extra';
+import { promises as fs } from 'fs';
 import * as gql from 'graphql';
 import { join } from 'path';
 import prettier from 'prettier';
@@ -129,16 +129,11 @@ const printer = ts.createPrinter();
     ts.createSourceFile('', '', ts.ScriptTarget.Latest),
   );
 
-  fs.writeFile(
+  await fs.writeFile(
     join(generatedPath, 'graphql.ts'),
     prettier.format(source, {
       parser: 'typescript',
       ...(prettierOptions as prettier.Options),
     }),
-    (err) => {
-      if (err) {
-        console.error(err);
-      }
-    },
   );
 })();

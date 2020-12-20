@@ -1,10 +1,10 @@
 import { gql } from 'apollo-server-express';
-import fs from 'fs-extra';
+import { promises as fs, Stats } from 'fs';
 import { DocumentNode } from 'graphql';
 import { join } from 'path';
 import { and, not, pipe } from 'ramda';
 
-const getStat = ([, b]: readonly [string, fs.Stats]): fs.Stats => b;
+const getStat = ([, b]: readonly [string, Stats]): Stats => b;
 export const readSchemas = async (
   rootPath: string,
 ): Promise<DocumentNode[]> => {
@@ -17,7 +17,7 @@ export const readSchemas = async (
     }),
   );
 
-  const isDir = (stat: fs.Stats) => stat.isDirectory();
+  const isDir = (stat: Stats) => stat.isDirectory();
   const filter = pipe(getStat, isDir);
 
   const dirs = pairs.filter(filter);

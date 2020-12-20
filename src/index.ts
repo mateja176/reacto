@@ -6,7 +6,7 @@ import {
 } from 'apollo-server-express';
 import express from 'express';
 import jwt from 'express-jwt';
-import * as fs from 'fs-extra';
+import { promises as fs } from 'fs';
 import mongoose from 'mongoose';
 import { join } from 'path';
 import 'reflect-metadata';
