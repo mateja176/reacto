@@ -4,7 +4,6 @@ import { pick } from 'ramda';
 import { v4 } from 'uuid';
 import { Role as UserRole } from '../classes/User/User';
 import { endpoint } from '../config/config';
-import { AdminRole } from '../generated/graphql';
 import {
   AdminLoginMutationVariables,
   getSdk,
@@ -12,6 +11,8 @@ import {
   RegisterRegularMutationVariables,
   Role,
 } from '../generated/sdk';
+import { createHeaders } from '../helpers/helpers';
+import { userDocToJWTUser } from '../helpers/map';
 import {
   createCompanyAndUser,
   SeedInput,
@@ -61,17 +62,11 @@ describe('users', () => {
       email: env.mailGunEmail,
     });
 
-    const token = createToken({
-      id: userDoc._id,
-      name: userDoc.name,
-      email: userDoc.email,
-      company: { id: String(userDoc.company) },
-      role: AdminRole.admin,
-    });
+    const token = createToken(userDocToJWTUser(userDoc));
 
     const sdk = getSdk(
       new GraphQLClient(endpoint, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: createHeaders(token),
       }),
     );
 
