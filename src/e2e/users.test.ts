@@ -1,19 +1,15 @@
+import commander from 'commander';
 import { GraphQLClient } from 'graphql-request';
 import mongoose from 'mongoose';
 import { pick } from 'ramda';
 import { endpoint } from '../config/config';
 import { AdminLoginMutationVariables, getSdk } from '../generated/sdk';
-import { createCompanyAndUser, SeedInput } from '../helpers/seed';
+import { createCompanyAndUser, getSeedInput, SeedInput } from '../helpers/seed';
 import env from '../services/env';
 
-const seedInput: SeedInput = {
-  email: 'reactodevelopment@gmail.com',
-  password: '12345678A!',
-  name: 'Reacto Dev',
-};
-const loginArgs: AdminLoginMutationVariables = {
-  input: pick(['email', 'password'], seedInput),
-};
+const seedInput: SeedInput = getSeedInput(commander);
+
+const reactoEmail = 'reactodevelopment@gmail.com';
 
 describe('users', () => {
   beforeEach(async () => {
@@ -29,7 +25,11 @@ describe('users', () => {
   test('login', async () => {
     const sdk = getSdk(new GraphQLClient(endpoint));
 
-    const { logIn } = await sdk.AdminLogin(loginArgs);
+    const loginVars: AdminLoginMutationVariables = {
+      input: pick(['email', 'password'], seedInput),
+    };
+
+    const { logIn } = await sdk.AdminLogin(loginVars);
 
     if (logIn.user.__typename !== 'AdminUser') {
       throw new Error('User is not admin.');
