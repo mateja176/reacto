@@ -2,12 +2,19 @@ import { GraphQLClient } from 'graphql-request';
 import mongoose from 'mongoose';
 import { pick } from 'ramda';
 import { endpoint } from '../config/config';
-import { AdminLoginMutationVariables, getSdk } from '../generated/sdk';
+import { AdminRole } from '../generated/graphql';
+import {
+  AdminLoginMutationVariables,
+  getSdk,
+  InviteMutationVariables,
+  Role,
+} from '../generated/sdk';
 import {
   createCompanyAndUser,
   SeedInput,
   seedInputSchema,
 } from '../helpers/seed';
+import createToken from '../services/createToken';
 import env from '../services/env';
 
 const { value } = seedInputSchema.validate({
@@ -45,5 +52,36 @@ describe('users', () => {
 
     expect(logIn.user.email).toEqual(seedInput.email);
     expect(typeof logIn.token).toBe('string');
+  });
+  test('invite', async () => {
+    const userDoc = await createCompanyAndUser({
+      ...pick(['password', 'name'], seedInput),
+      email: reactoEmail,
+    });
+
+    const token = createToken({
+      id: userDoc._id,
+      name: userDoc.name,
+      email: userDoc.email,
+      company: { id: String(userDoc.company) },
+      role: AdminRole.admin,
+    });
+
+    const sdk = getSdk(
+      new GraphQLClient(endpoint, {
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    );
+
+    const inviteVars: InviteMutationVariables = {
+      input: {
+        email: seedInput.email,
+        role: Role.Regular,
+      },
+    };
+
+    const { invite } = await sdk.Invite(inviteVars);
+
+    expect(invite.email).toEqual(seedInput.email);
   });
 });
