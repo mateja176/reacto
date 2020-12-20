@@ -1,5 +1,10 @@
+import mongoose from 'mongoose';
 import { AdminRole, Mutation, Query } from '../../generated/graphql';
-import { QuestionnaireConfigurationModel } from '../../services/models';
+import {
+  CompanyModel,
+  QuestionnaireConfigurationModel,
+  UserModel,
+} from '../../services/models';
 import { Forbidden, NotAuthenticatedError } from '../../utils/errors';
 import { filterInputSchema, ValidatedFilterInput } from '../../utils/validate';
 import { mapQuestionnaireConfiguration } from './map';
@@ -47,7 +52,10 @@ const createQuestionnaireConfiguration: Mutation['createQuestionnaireConfigurati
     throw new Forbidden();
   }
 
-  const questionnaireConfiguration = await QuestionnaireConfigurationModel.create(
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  const questionnaireConfigurationDoc = await QuestionnaireConfigurationModel.create(
     {
       name: args.input.name,
       type: args.input.type,
@@ -57,7 +65,23 @@ const createQuestionnaireConfiguration: Mutation['createQuestionnaireConfigurati
     },
   );
 
-  return mapQuestionnaireConfiguration(questionnaireConfiguration);
+  await CompanyModel.updateOne(
+    { _id: context.user.company.id },
+    {
+      $push: { questionnaireConfigurations: questionnaireConfigurationDoc._id },
+    },
+  );
+  await UserModel.updateOne(
+    { _id: context.user.id },
+    {
+      $push: { questionnaireConfigurations: questionnaireConfigurationDoc._id },
+    },
+  );
+
+  await session.commitTransaction();
+  session.endSession();
+
+  return mapQuestionnaireConfiguration(questionnaireConfigurationDoc);
 };
 
 export const questionnaireConfigurationMutation = {
