@@ -8,10 +8,6 @@ describe('generate Typescript type from Graphql SDL', () => {
       const result = mapPrimitive(gql.GraphQLString);
       expect(result.kind).toBe(ts.SyntaxKind.StringKeyword);
     });
-    test('should map id to string', () => {
-      const result = mapPrimitive(gql.GraphQLID);
-      expect(result.kind).toBe(ts.SyntaxKind.StringKeyword);
-    });
     test('should map int to number', () => {
       const result = mapPrimitive(gql.GraphQLInt);
       expect(result.kind).toBe(ts.SyntaxKind.NumberKeyword);
