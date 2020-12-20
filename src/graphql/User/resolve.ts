@@ -162,13 +162,16 @@ const invite: Mutation['invite'] = async (_, args, context) => {
         to: args.input.email,
         subject: 'Reacto Invitation',
         html: `<h1>Welcome to Reacto</h1>
-      <br />
-      <br />
-      You have been invited to join <strong>${companyDoc.name}</strong>.
-      <br />
-      To complete your registration follow the link below:
-      <br/>
-      ${join(env.appOrigin, env.appEmailPath)}?token=${token}`,
+      <h2>
+        You have been invited to join ${companyDoc.name}
+      </h2>
+      <p>
+        To complete your registration follow <a href=${`${join(
+          env.appOrigin,
+          env.appEmailPath,
+        )}?token=${token}`}>this link</a>.
+      </p>
+      <br/>`,
       },
       (err) => {
         if (err) {
