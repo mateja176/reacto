@@ -1,12 +1,15 @@
 import { GraphQLClient } from 'graphql-request';
 import mongoose from 'mongoose';
 import { pick } from 'ramda';
+import { v4 } from 'uuid';
+import { Role as UserRole } from '../classes/User/User';
 import { endpoint } from '../config/config';
 import { AdminRole } from '../generated/graphql';
 import {
   AdminLoginMutationVariables,
   getSdk,
   InviteMutationVariables,
+  RegisterRegularMutationVariables,
   Role,
 } from '../generated/sdk';
 import {
@@ -16,6 +19,7 @@ import {
 } from '../helpers/seed';
 import createToken from '../services/createToken';
 import env from '../services/env';
+import { PendingUserModel } from '../services/models';
 
 const { value } = seedInputSchema.validate({
   email: process.env.EMAIL,
@@ -83,5 +87,34 @@ describe('users', () => {
     const { invite } = await sdk.Invite(inviteVars);
 
     expect(invite.email).toEqual(seedInput.email);
+  });
+  test('register', async () => {
+    const { companyDoc } = await createCompanyAndUser(seedInput);
+
+    const token = v4();
+
+    await PendingUserModel.create({
+      email: reactoEmail,
+      role: UserRole.regular,
+      company: companyDoc._id,
+      token,
+    });
+
+    const sdk = getSdk(new GraphQLClient(endpoint));
+
+    const registerVars: RegisterRegularMutationVariables = {
+      input: {
+        name: 'Reacto Dev',
+        password: seedInput.password,
+        token,
+      },
+    };
+
+    const { register } = await sdk.RegisterRegular(registerVars);
+
+    if (register.user.__typename !== 'RegularUser') {
+      throw new Error('User is not a regular user.');
+    }
+    expect(register.user.email).toBe(reactoEmail);
   });
 });

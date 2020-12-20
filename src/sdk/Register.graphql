@@ -1,0 +1,14 @@
+mutation RegisterRegular($input: RegisterInput!) {
+  register(input: $input) {
+    token
+    user {
+      ... on RegularUser {
+        __typename
+        id
+        email
+        name
+        role
+      }
+    }
+  }
+}
