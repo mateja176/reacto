@@ -17,6 +17,9 @@ if (!process.env.MAIL_GUN_API_KEY) {
 if (!process.env.MAIL_GUN_USERNAME) {
   throw new EnvError('MAIL_GUN_USERNAME');
 }
+if (!process.env.MAIL_GUN_EMAIL) {
+  throw new EnvError('MAIL_GUN_EMAIL');
+}
 
 if (!process.env.APP_ORIGIN) {
   throw new EnvError('APP_ORIGIN');
@@ -33,6 +36,7 @@ const env = {
   mailGunUsername: process.env.MAIL_GUN_USERNAME,
   appOrigin: process.env.APP_ORIGIN,
   appEmailPath: process.env.APP_EMAIL_PATH,
+  mailGunEmail: process.env.MAIL_GUN_EMAIL,
 };
 
 export default env;

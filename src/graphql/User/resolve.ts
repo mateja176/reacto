@@ -158,7 +158,7 @@ const invite: Mutation['invite'] = async (_, args, context) => {
   return new Promise((resolve, reject) =>
     mailgun.sendMail(
       {
-        from: env.mailGunUsername,
+        from: env.mailGunEmail,
         to: args.input.email,
         subject: 'Reacto Invitation',
         html: `<h1>Welcome to Reacto</h1>
