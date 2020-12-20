@@ -7,6 +7,7 @@ import mailgun from '../../config/mailgun';
 import { AdminRole, Mutation, Query } from '../../generated/graphql';
 import createToken from '../../services/createToken';
 import env from '../../services/env';
+import hashPassword from '../../services/hashPassword';
 import {
   CompanyModel,
   PendingUserModel,
@@ -190,7 +191,7 @@ const register: Mutation['register'] = async (_, args) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
-  const passwordHash = await bcrypt.hash(args.input.password, 10);
+  const passwordHash = await hashPassword(args.input.password);
 
   const companyId = String(pendingUserDoc.company);
 
