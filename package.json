@@ -20,7 +20,7 @@
     "merge-schema": "ts-node scripts/mergeSchema.ts",
     "generate-ts": "ts-node scripts/generateTs.ts",
     "merge-and-generate": "npm run merge-schema && npm run generate-ts",
-    "merge-and-generate:watch": "nodemon --watch src --ext graphql --ignore src/generated/schema.graphql --exec 'npm run merge-and-generate'"
+    "merge-and-generate:watch": "nodemon --config nodemon.dev.json"
   },
   "repository": {
     "type": "git",
