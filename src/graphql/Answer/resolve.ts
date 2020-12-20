@@ -355,39 +355,39 @@ export const answerMutation = {
     mapFilesAnswer,
   ),
 
-  updateYesNoAnswer: createCreateAnswer<YesNoAnswerConfig>(
+  updateYesNoAnswer: createUpdateAnswer<YesNoAnswerUpdateConfig>(
     createYesNoAnswerSchema,
     mapYesNoAnswer,
   ),
-  updateStringAnswer: createCreateAnswer<StringAnswerConfig>(
+  updateStringAnswer: createUpdateAnswer<StringAnswerUpdateConfig>(
     createStringAnswerSchema,
     mapStringAnswer,
   ),
-  updateStringsAnswer: createCreateAnswer<StringsAnswerConfig>(
+  updateStringsAnswer: createUpdateAnswer<StringsAnswerUpdateConfig>(
     createStringsAnswerSchema,
     mapStringsAnswer,
   ),
-  updateMultiStringsAnswer: createCreateAnswer<MultiStringsAnswerConfig>(
+  updateMultiStringsAnswer: createUpdateAnswer<MultiStringsAnswerUpdateConfig>(
     createMultiStringsAnswerSchema,
     mapMultiStringsAnswer,
   ),
-  updateNumberAnswer: createCreateAnswer<NumberAnswerConfig>(
+  updateNumberAnswer: createUpdateAnswer<NumberAnswerUpdateConfig>(
     createNumberAnswerSchema,
     mapNumberAnswer,
   ),
-  updateNumbersAnswer: createCreateAnswer<NumbersAnswerConfig>(
+  updateNumbersAnswer: createUpdateAnswer<NumbersAnswerUpdateConfig>(
     createNumbersAnswerSchema,
     mapNumbersAnswer,
   ),
-  updateMultiNumbersAnswer: createCreateAnswer<MultiNumbersAnswerConfig>(
+  updateMultiNumbersAnswer: createUpdateAnswer<MultiNumbersAnswerUpdateConfig>(
     createMultiNumbersAnswerSchema,
     mapMultiNumbersAnswer,
   ),
-  updateFileAnswer: createCreateAnswer<FileAnswerConfig>(
+  updateFileAnswer: createUpdateAnswer<FileAnswerUpdateConfig>(
     createFileAnswerSchema,
     mapFileAnswer,
   ),
-  updateFilesAnswer: createCreateAnswer<FilesAnswerConfig>(
+  updateFilesAnswer: createUpdateAnswer<FilesAnswerUpdateConfig>(
     createFilesAnswerSchema,
     mapFilesAnswer,
   ),
