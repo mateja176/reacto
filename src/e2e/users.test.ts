@@ -28,8 +28,6 @@ const { value } = seedInputSchema.validate({
 });
 const seedInput: SeedInput = value;
 
-const reactoEmail = 'reactodevelopment@gmail.com';
-
 describe('users', () => {
   beforeEach(async () => {
     await mongoose.connect(env.mongodbURI);
@@ -60,7 +58,7 @@ describe('users', () => {
   test('invite', async () => {
     const { userDoc } = await createCompanyAndUser({
       ...pick(['password', 'name'], seedInput),
-      email: reactoEmail,
+      email: env.mailGunEmail,
     });
 
     const token = createToken({
@@ -94,7 +92,7 @@ describe('users', () => {
     const token = v4();
 
     await PendingUserModel.create({
-      email: reactoEmail,
+      email: env.mailGunEmail,
       role: UserRole.regular,
       company: companyDoc._id,
       token,
@@ -115,6 +113,6 @@ describe('users', () => {
     if (register.user.__typename !== 'RegularUser') {
       throw new Error('User is not a regular user.');
     }
-    expect(register.user.email).toBe(reactoEmail);
+    expect(register.user.email).toBe(env.mailGunEmail);
   });
 });
