@@ -3,6 +3,7 @@ mutation AdminLogin($input: LoginInput!) {
     token
     user {
       ... on AdminUser {
+        __typename
         id
         email
         name
