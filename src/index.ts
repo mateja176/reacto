@@ -10,7 +10,7 @@ import { promises as fs } from 'fs';
 import mongoose from 'mongoose';
 import { join } from 'path';
 import 'reflect-metadata';
-import { path } from './config/config';
+import { endpoint, path } from './config/config';
 import { jwtAlgorithm } from './config/jwt';
 import { Context } from './Context';
 import resolvers from './graphql';
@@ -59,11 +59,7 @@ import env from './services/env';
 
   server.applyMiddleware({ app, path });
 
-  const port = process.env.PORT ?? 4000;
-
-  app.listen({ port }, () => {
-    console.log(
-      `🚀 Server ready at http://localhost:${port}${server.graphqlPath}`,
-    );
+  app.listen({ port: env.port }, () => {
+    console.log(`🚀 Server ready at ${endpoint}`);
   });
 })();

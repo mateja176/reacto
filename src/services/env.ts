@@ -26,6 +26,7 @@ if (!process.env.APP_EMAIL_PATH) {
 }
 
 const env = {
+  port: process.env.PORT ?? 4000,
   mongodbURI: process.env.MONGODB_URI,
   jwtSecret: process.env.JWT_SECRET,
   mailGunApiKey: process.env.MAIL_GUN_API_KEY,
