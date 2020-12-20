@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "cross-env NODE_ENV=test jest",
     "codegen": "graphql-codegen --config codegen.yml",
     "build": "tsc",
     "type-check": "tsc --noEmit",
