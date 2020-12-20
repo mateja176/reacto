@@ -44,3 +44,31 @@ export const createFilesAnswerSchema = Joi.object({
   ...createAnswerBaseSchemaMap,
   answer: Joi.array().items(Joi.string().required()).required(),
 }).required();
+
+export const updateYesNoAnswerSchema = Joi.object({
+  answer: Joi.boolean().required(),
+}).required();
+export const updateStringAnswerSchema = Joi.object({
+  answer: Joi.string().required(),
+}).required();
+export const updateStringsAnswerSchema = Joi.object({
+  answer: Joi.string().required(),
+}).required();
+export const updateMultiStringsAnswerSchema = Joi.object({
+  answer: Joi.array().items(Joi.string().required()),
+}).required();
+export const updateNumberAnswerSchema = Joi.object({
+  answer: Joi.number().required(),
+}).required();
+export const updateNumbersAnswerSchema = Joi.object({
+  answer: Joi.number().required(),
+}).required();
+export const updateMultiNumbersAnswerSchema = Joi.object({
+  answer: Joi.array().items(Joi.number().required()).required(),
+}).required();
+export const updateFileAnswerSchema = Joi.object({
+  answer: Joi.string().required(),
+}).required();
+export const updateFilesAnswerSchema = Joi.object({
+  answer: Joi.array().items(Joi.string().required()).required(),
+}).required();

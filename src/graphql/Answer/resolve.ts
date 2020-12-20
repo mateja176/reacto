@@ -2,6 +2,7 @@ import { DocumentType } from '@typegoose/typegoose';
 import { ApolloError } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import { Context } from 'vm';
+import { AnswerClass } from '../../classes/Answer/Answer';
 import { QuestionClass } from '../../classes/Question/Question';
 import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
 import {
@@ -19,14 +20,28 @@ import {
   FilesAnswer,
   MultiNumbersAnswer,
   MultiStringsAnswer,
+  Nullable,
   NumberAnswer,
   NumbersAnswer,
   StringAnswer,
   StringsAnswer,
+  UpdateFileAnswerInput,
+  UpdateFilesAnswerInput,
+  UpdateMultiNumbersAnswerInput,
+  UpdateMultiStringsAnswerInput,
+  UpdateNumberAnswerInput,
+  UpdateNumbersAnswerInput,
+  UpdateStringAnswerInput,
+  UpdateStringsAnswerInput,
+  UpdateYesNoAnswerInput,
   YesNoAnswer,
 } from '../../generated/graphql';
 import { AnswerModel, QuestionModel } from '../../services/models';
-import { Forbidden, NotAuthenticatedError } from '../../utils/errors';
+import {
+  Forbidden,
+  NotAuthenticatedError,
+  NotFoundError,
+} from '../../utils/errors';
 import {
   mapFileAnswer,
   mapFilesAnswer,
@@ -48,6 +63,14 @@ import {
   createStringAnswerSchema,
   createStringsAnswerSchema,
   createYesNoAnswerSchema,
+  updateFileAnswerSchema,
+  updateFilesAnswerSchema,
+  updateMultiNumbersAnswerSchema,
+  updateMultiStringsAnswerSchema,
+  updateNumberAnswerSchema,
+  updateNumbersAnswerSchema,
+  updateStringsAnswerSchema,
+  updateYesNoAnswerSchema,
 } from './validate';
 
 type YesNoAnswerConfig = [
@@ -177,6 +200,123 @@ export const createCreateAnswer = <
   return output;
 };
 
+type YesNoAnswerUpdateConfig = [
+  typeof updateYesNoAnswerSchema,
+  typeof mapYesNoAnswer,
+  UpdateYesNoAnswerInput,
+  YesNoAnswer,
+];
+type StringAnswerUpdateConfig = [
+  typeof updateStringsAnswerSchema,
+  typeof mapStringAnswer,
+  UpdateStringAnswerInput,
+  StringAnswer,
+];
+type StringsAnswerUpdateConfig = [
+  typeof updateStringsAnswerSchema,
+  typeof mapStringsAnswer,
+  UpdateStringsAnswerInput,
+  StringsAnswer,
+];
+type MultiStringsAnswerUpdateConfig = [
+  typeof updateMultiStringsAnswerSchema,
+  typeof mapMultiStringsAnswer,
+  UpdateMultiStringsAnswerInput,
+  MultiStringsAnswer,
+];
+type NumberAnswerUpdateConfig = [
+  typeof updateNumberAnswerSchema,
+  typeof mapNumberAnswer,
+  UpdateNumberAnswerInput,
+  NumberAnswer,
+];
+type NumbersAnswerUpdateConfig = [
+  typeof updateNumbersAnswerSchema,
+  typeof mapNumbersAnswer,
+  UpdateNumbersAnswerInput,
+  NumbersAnswer,
+];
+type MultiNumbersAnswerUpdateConfig = [
+  typeof updateMultiNumbersAnswerSchema,
+  typeof mapMultiNumbersAnswer,
+  UpdateMultiNumbersAnswerInput,
+  MultiNumbersAnswer,
+];
+type FileAnswerUpdateConfig = [
+  typeof updateFileAnswerSchema,
+  typeof mapFileAnswer,
+  UpdateFileAnswerInput,
+  FileAnswer,
+];
+type FilesAnswerUpdateConfig = [
+  typeof updateFilesAnswerSchema,
+  typeof mapFilesAnswer,
+  UpdateFilesAnswerInput,
+  FilesAnswer,
+];
+
+export const createUpdateAnswer = <
+  Config extends
+    | YesNoAnswerUpdateConfig
+    | StringAnswerUpdateConfig
+    | StringsAnswerUpdateConfig
+    | MultiStringsAnswerUpdateConfig
+    | NumberAnswerUpdateConfig
+    | NumbersAnswerUpdateConfig
+    | MultiNumbersAnswerUpdateConfig
+    | FileAnswerUpdateConfig
+    | FilesAnswerUpdateConfig
+>(
+  schema: Config[0],
+  map: Config[1],
+) => async (
+  _: never,
+  args: {
+    input: Config[2];
+  },
+  context: Context,
+): Promise<Config[3]> => {
+  await schema.validateAsync(args.input);
+
+  if (!context.user) {
+    throw new NotAuthenticatedError();
+  }
+
+  const doc = (await AnswerModel.findOneAndUpdate(
+    {
+      _id: args.input.id,
+    },
+    { answer: args.input.answer },
+  ).populate({
+    path: 'question',
+    populate: 'questionnaire',
+  })) as Nullable<
+    DocumentType<Omit<AnswerClass, 'question'>> & {
+      question: DocumentType<Omit<QuestionClass, 'questionnaire'>> & {
+        questionnaire: DocumentType<QuestionnaireClass>;
+      };
+    }
+  >;
+
+  if (!doc) {
+    throw new NotFoundError();
+  }
+
+  if (
+    context.user.id !== String(doc.question.questionnaire.user) ||
+    !(
+      context.user.role === AdminRole.admin &&
+      context.user.company.id === String(doc.question.questionnaire.company)
+    )
+  ) {
+    throw new Forbidden();
+  }
+
+  const output = map(doc);
+
+  return output;
+};
+
 export const answerMutation = {
   createYesNoAnswer: createCreateAnswer<YesNoAnswerConfig>(
     createYesNoAnswerSchema,
@@ -211,6 +351,43 @@ export const answerMutation = {
     mapFileAnswer,
   ),
   createFilesAnswer: createCreateAnswer<FilesAnswerConfig>(
+    createFilesAnswerSchema,
+    mapFilesAnswer,
+  ),
+
+  updateYesNoAnswer: createCreateAnswer<YesNoAnswerConfig>(
+    createYesNoAnswerSchema,
+    mapYesNoAnswer,
+  ),
+  updateStringAnswer: createCreateAnswer<StringAnswerConfig>(
+    createStringAnswerSchema,
+    mapStringAnswer,
+  ),
+  updateStringsAnswer: createCreateAnswer<StringsAnswerConfig>(
+    createStringsAnswerSchema,
+    mapStringsAnswer,
+  ),
+  updateMultiStringsAnswer: createCreateAnswer<MultiStringsAnswerConfig>(
+    createMultiStringsAnswerSchema,
+    mapMultiStringsAnswer,
+  ),
+  updateNumberAnswer: createCreateAnswer<NumberAnswerConfig>(
+    createNumberAnswerSchema,
+    mapNumberAnswer,
+  ),
+  updateNumbersAnswer: createCreateAnswer<NumbersAnswerConfig>(
+    createNumbersAnswerSchema,
+    mapNumbersAnswer,
+  ),
+  updateMultiNumbersAnswer: createCreateAnswer<MultiNumbersAnswerConfig>(
+    createMultiNumbersAnswerSchema,
+    mapMultiNumbersAnswer,
+  ),
+  updateFileAnswer: createCreateAnswer<FileAnswerConfig>(
+    createFileAnswerSchema,
+    mapFileAnswer,
+  ),
+  updateFilesAnswer: createCreateAnswer<FilesAnswerConfig>(
     createFilesAnswerSchema,
     mapFilesAnswer,
   ),

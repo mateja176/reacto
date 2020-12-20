@@ -98,6 +98,44 @@ input CreateFilesAnswerInput {
   questionId: ID!
   answer: [String!]!
 }
+
+input UpdateYesNoAnswerInput {
+  id: ID!
+  answer: Boolean!
+}
+input UpdateStringAnswerInput {
+  id: ID!
+  answer: String!
+}
+input UpdateStringsAnswerInput {
+  id: ID!
+  answer: String!
+}
+input UpdateMultiStringsAnswerInput {
+  id: ID!
+  answer: [String!]!
+}
+input UpdateNumberAnswerInput {
+  id: ID!
+  answer: Float!
+}
+input UpdateNumbersAnswerInput {
+  id: ID!
+  answer: Float!
+}
+input UpdateMultiNumbersAnswerInput {
+  id: ID!
+  answer: [Float!]!
+}
+input UpdateFileAnswerInput {
+  id: ID!
+  answer: String!
+}
+input UpdateFilesAnswerInput {
+  id: ID!
+  answer: [String!]!
+}
+
 type Mutation {
   createYesNoAnswer(input: CreateYesNoAnswerInput!): YesNoAnswer!
   createStringAnswer(input: CreateStringAnswerInput!): StringAnswer!
@@ -112,4 +150,18 @@ type Mutation {
   ): MultiNumbersAnswer!
   createFileAnswer(input: CreateFileAnswerInput!): FileAnswer!
   createFilesAnswer(input: CreateFilesAnswerInput!): FilesAnswer!
+
+  updateYesNoAnswer(input: UpdateYesNoAnswerInput!): YesNoAnswer!
+  updateStringAnswer(input: UpdateStringAnswerInput!): StringAnswer!
+  updateStringsAnswer(input: UpdateStringsAnswerInput!): StringsAnswer!
+  updateMultiStringsAnswer(
+    input: UpdateMultiStringsAnswerInput!
+  ): MultiStringsAnswer!
+  updateNumberAnswer(input: UpdateNumberAnswerInput!): NumberAnswer!
+  updateNumbersAnswer(input: UpdateNumbersAnswerInput!): NumbersAnswer!
+  updateMultiNumbersAnswer(
+    input: UpdateMultiNumbersAnswerInput!
+  ): MultiNumbersAnswer!
+  updateFileAnswer(input: UpdateFileAnswerInput!): FileAnswer!
+  updateFilesAnswer(input: UpdateFilesAnswerInput!): FilesAnswer!
 }
