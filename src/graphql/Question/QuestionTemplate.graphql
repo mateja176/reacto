@@ -68,7 +68,7 @@ type FileQuestionTemplate implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
-  default: String!
+  default: String
 }
 type FilesQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
