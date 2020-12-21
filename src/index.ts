@@ -1,4 +1,7 @@
+import { mongoose } from '@typegoose/typegoose';
 import createServer from './createServer';
 import env from './services/env';
 
-createServer(env.mongodbURI);
+mongoose.createConnection(env.mongodbURI).then((connection) => {
+  return createServer(connection);
+});

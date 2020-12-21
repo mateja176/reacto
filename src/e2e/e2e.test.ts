@@ -1,3 +1,4 @@
+import { ApolloServer } from 'apollo-server-express';
 import { GraphQLClient } from 'graphql-request';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
@@ -6,6 +7,7 @@ import { v4 } from 'uuid';
 import { Role as UserRole } from '../classes/User/User';
 import { endpoint } from '../config/config';
 import { mongodbConfig } from '../config/mongodb';
+import createServer from '../createServer';
 import {
   AdminLoginMutationVariables,
   getSdk,
@@ -32,20 +34,22 @@ const { value } = seedInputSchema.validate({
 const seedInput: SeedInput = value;
 
 let mongoServer: MongoMemoryServer;
+let server: ApolloServer;
 let connection: mongoose.Connection;
 let models: Models;
 
 describe('e2e', () => {
   beforeAll(async () => {
     mongoServer = new MongoMemoryServer();
-    connection = await mongoose.createConnection(
-      await mongoServer.getUri(),
-      mongodbConfig,
-    );
+    const uri = await mongoServer.getUri();
+    connection = await mongoose.createConnection(uri, mongodbConfig);
+    server = await createServer(connection);
     models = createModels(connection);
   });
   afterAll(async () => {
     await connection.close();
+
+    await server.stop();
 
     await mongoServer.stop();
   });

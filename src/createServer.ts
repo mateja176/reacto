@@ -12,16 +12,13 @@ import { join } from 'path';
 import 'reflect-metadata';
 import { endpoint, path } from './config/config';
 import { jwtAlgorithm } from './config/jwt';
-import { mongodbConfig } from './config/mongodb';
 import { Context } from './Context';
 import resolvers from './graphql';
 import { JWTUser } from './interfaces/JWTUser';
 import env from './services/env';
 import { createModels } from './services/models';
 
-const createServer = async (mongodbURI: string) => {
-  const connection = await mongoose.createConnection(mongodbURI, mongodbConfig);
-
+const createServer = async (connection: mongoose.Connection) => {
   const schema = await fs.readFile(
     join(__dirname, 'generated', 'schema.graphql'),
     { encoding: 'utf-8' },
