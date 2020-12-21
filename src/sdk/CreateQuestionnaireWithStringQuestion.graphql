@@ -1,0 +1,19 @@
+mutation CreateQuestionnaireWithStringQuestion(
+  $input: CreateQuestionnaireInput!
+) {
+  createQuestionnaire(input: $input) {
+    id
+    name
+    type
+    inheritedQuestions {
+      ... on StringQuestion {
+        __typename
+        id
+        name
+        label
+        rule
+        optional
+      }
+    }
+  }
+}
