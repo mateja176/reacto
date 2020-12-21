@@ -21,6 +21,7 @@ export const createModels = (connection: mongoose.Connection) => {
     }),
     QuestionnaireConfiguration: getModelForClass(
       QuestionnaireConfigurationClass,
+      { existingConnection: connection },
     ),
     Questionnaire: getModelForClass(QuestionnaireClass, {
       existingConnection: connection,
