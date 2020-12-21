@@ -35,8 +35,10 @@ const user: Query['user'] = async (_, args, context) => {
 
   if (
     context.user.id !== args.id ||
-    (context.user.role === AdminRole.admin &&
-      context.user.company.id === String(userDoc.company))
+    !(
+      context.user.role === AdminRole.admin &&
+      context.user.company.id === String(userDoc.company)
+    )
   ) {
     throw new Forbidden();
   }
