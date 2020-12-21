@@ -1,9 +1,11 @@
 import { GraphQLClient } from 'graphql-request';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { pick } from 'ramda';
 import { v4 } from 'uuid';
 import { Role as UserRole } from '../classes/User/User';
 import { endpoint } from '../config/config';
+import { mongodbConfig } from '../config/mongodb';
 import {
   AdminLoginMutationVariables,
   getSdk,
@@ -31,7 +33,10 @@ const seedInput: SeedInput = value;
 
 describe('users', () => {
   beforeEach(async () => {
-    await mongoose.connect(env.mongodbURI);
+    await mongoose.connect(
+      await new MongoMemoryServer().getUri(),
+      mongodbConfig,
+    );
   });
   afterEach(async () => {
     await mongoose.connection.db.dropDatabase();

@@ -1,6 +1,8 @@
 import { GraphQLClient } from 'graphql-request';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { endpoint } from '../config/config';
+import { mongodbConfig } from '../config/mongodb';
 import { getSdk } from '../generated/sdk';
 import { createHeaders } from '../helpers/helpers';
 import { userDocToJWTUser } from '../helpers/map';
@@ -10,7 +12,6 @@ import {
   seedInputSchema,
 } from '../helpers/seed';
 import createToken from '../services/createToken';
-import env from '../services/env';
 
 const { value } = seedInputSchema.validate({
   email: process.env.EMAIL,
@@ -21,7 +22,10 @@ const seedInput: SeedInput = value;
 
 describe('questionnaire configuration', () => {
   beforeEach(async () => {
-    await mongoose.connect(env.mongodbURI);
+    await mongoose.connect(
+      await new MongoMemoryServer().getUri(),
+      mongodbConfig,
+    );
   });
   afterEach(async () => {
     await mongoose.connection.db.dropDatabase();
