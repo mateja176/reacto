@@ -257,7 +257,7 @@ export const mapQuestionTemplate = (models: Models) => (
   } else if (cls.files) {
     return mapFilesQuestionTemplateClass(cls, base);
   } else {
-    throw new InvalidQuestionError();
+    throw new InvalidQuestionTemplateError();
   }
 };
 
