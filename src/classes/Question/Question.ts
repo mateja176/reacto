@@ -3,7 +3,10 @@ import { AnswerClass } from '../Answer/Answer';
 import { QuestionnaireClass } from '../Questionnaire/Questionnaire';
 import { QuestionBase } from './QuestionBase';
 
-@ModelOptions({ options: { customName: 'Question' } })
+@ModelOptions({
+  options: { customName: 'Question' },
+  schemaOptions: { minimize: false },
+})
 export class QuestionClass extends QuestionBase {
   @prop({ ref: () => QuestionnaireClass })
   public questionnaire: Ref<QuestionnaireClass>;
