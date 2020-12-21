@@ -35,26 +35,25 @@ const seedInput: SeedInput = value;
 
 let mongoServer: MongoMemoryServer;
 let server: ApolloServer;
-let connection: mongoose.Connection;
 let models: Models;
 
 describe('e2e', () => {
   beforeAll(async () => {
     mongoServer = new MongoMemoryServer();
     const uri = await mongoServer.getUri();
-    connection = await mongoose.createConnection(uri, mongodbConfig);
-    server = await createServer(connection);
-    models = createModels(connection);
+    await mongoose.connect(uri, mongodbConfig);
+    server = await createServer(mongoose.connection);
+    models = createModels(mongoose.connection);
   });
   afterAll(async () => {
-    await connection.close();
+    await mongoose.connection.close();
 
     await server.stop();
 
     await mongoServer.stop();
   });
   afterEach(async () => {
-    await connection.db.dropDatabase();
+    await mongoose.connection.db.dropDatabase();
   });
   describe('users', () => {
     test('login', async () => {
