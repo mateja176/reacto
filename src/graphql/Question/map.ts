@@ -42,7 +42,7 @@ import { mapQuestionnaireConfiguration } from '../QuestionnaireConfiguration/map
 
 export class InvalidQuestionTemplateError extends Error {
   constructor() {
-    super('Invalid question template.');
+    super('Invalid question template type.');
   }
 }
 type Base = Pick<Question, 'id' | 'label' | 'name' | 'rule' | 'optional'>;
@@ -265,7 +265,12 @@ export const mapQuestionTemplate = (models: Models) => (
 
 export class InvalidQuestionError extends Error {
   constructor() {
-    super('Invalid question.');
+    super('Invalid question type.');
+  }
+}
+export class UnknownQuestionError extends Error {
+  constructor() {
+    super('Unknown question type.');
   }
 }
 
@@ -512,6 +517,6 @@ export const mapQuestion = (models: Models) => (
   } else if (cls.files) {
     return mapFilesQuestionClass(models, cls, base);
   } else {
-    throw new InvalidQuestionError();
+    throw new UnknownQuestionError();
   }
 };
