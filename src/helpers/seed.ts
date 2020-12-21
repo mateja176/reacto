@@ -5,7 +5,7 @@ import { Role } from '../classes/User/User';
 import { mongodbConfig } from '../config/mongodb';
 import env from '../services/env';
 import hashPassword from '../services/hashPassword';
-import { Models } from '../services/models';
+import { createModels, Models } from '../services/models';
 import { passwordSchema } from '../utils/validate';
 
 export interface SeedInput {
@@ -50,14 +50,15 @@ export const createCompanyAndUser = (models: Models) => async ({
 };
 
 const seed = async (input: SeedInput) => {
-  const validatedInput = await seedInputSchema.validateAsync(input);
+  const validatedInput: SeedInput = await seedInputSchema.validateAsync(input);
 
   const connection = await mongoose.createConnection(
     env.mongodbURI,
     mongodbConfig,
   );
 
-  await createCompanyAndUser(validatedInput);
+  const models = createModels(connection);
+  await createCompanyAndUser(models)(validatedInput);
 
   await connection.close();
 };
