@@ -20,17 +20,20 @@ const { value } = seedInputSchema.validate({
 });
 const seedInput: SeedInput = value;
 
+let mongoServer: MongoMemoryServer;
+
 describe('questionnaire configuration', () => {
-  beforeEach(async () => {
-    await mongoose.connect(
-      await new MongoMemoryServer().getUri(),
-      mongodbConfig,
-    );
+  beforeAll(async () => {
+    mongoServer = new MongoMemoryServer();
+    await mongoose.connect(await mongoServer.getUri(), mongodbConfig);
+  });
+  afterAll(async () => {
+    await mongoose.connection.close();
+
+    await mongoServer.stop();
   });
   afterEach(async () => {
     await mongoose.connection.db.dropDatabase();
-
-    await mongoose.connection.close();
   });
   test('create', async () => {
     const { userDoc } = await createCompanyAndUser(seedInput);
