@@ -2,6 +2,7 @@ import { CommanderStatic } from 'commander';
 import Joi from 'joi';
 import mongoose from 'mongoose';
 import { Role } from '../classes/User/User';
+import { mongodbConfig } from '../config/mongodb';
 import env from '../services/env';
 import hashPassword from '../services/hashPassword';
 import { CompanyModel, UserModel } from '../services/models';
@@ -51,10 +52,7 @@ export const createCompanyAndUser = async ({
 const seed = async (input: SeedInput) => {
   const validatedInput = await seedInputSchema.validateAsync(input);
 
-  await mongoose.connect(env.mongodbURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  await mongoose.connect(env.mongodbURI, mongodbConfig);
 
   await createCompanyAndUser(validatedInput);
 
