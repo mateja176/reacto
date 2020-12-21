@@ -8,6 +8,10 @@ import { UserClass } from '../User/User';
 export class QuestionnaireClass implements Named {
   @prop()
   public name: string;
+  @prop({
+    comment: 'Inherited from QuestionnaireConfiguration - readonly.',
+  })
+  public type: string;
   @prop({ ref: () => CompanyClass })
   public company: Ref<CompanyClass>;
   @prop({ ref: () => UserClass })
