@@ -11,6 +11,11 @@ export class NotFoundError extends ApolloError {
     super('Not found.');
   }
 }
+export class QuestionnaireConfigurationNotFound extends ApolloError {
+  constructor() {
+    super('Questionnaire configuration not found.');
+  }
+}
 
 export class AlreadyExistsError extends ApolloError {
   constructor() {

@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import { Context } from '../../Context';
 import {
@@ -51,6 +50,7 @@ import {
   Forbidden,
   NotAuthenticatedError,
   NotFoundError,
+  QuestionnaireConfigurationNotFound,
 } from '../../utils/errors';
 import { filterInputSchema, ValidatedFilterInput } from '../../utils/validate';
 import {
@@ -227,7 +227,7 @@ export const createCreateQuestionTemplate = <
   );
 
   if (!questionnaireConfiguration) {
-    throw new ApolloError('Questionnaire configuration not found.');
+    throw new QuestionnaireConfigurationNotFound();
   }
 
   await session.commitTransaction();

@@ -1,4 +1,3 @@
-import { ApolloError } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import { Mutation, Query } from '../../generated/graphql';
 import {
@@ -9,7 +8,10 @@ import {
   QuestionTemplateModel,
   UserModel,
 } from '../../services/models';
-import { NotAuthenticatedError } from '../../utils/errors';
+import {
+  NotAuthenticatedError,
+  QuestionnaireConfigurationNotFound,
+} from '../../utils/errors';
 import { filterInputSchema, ValidatedFilterInput } from '../../utils/validate';
 import { mapQuestionnaire, questionTemplateToQuestion } from './map';
 import { createQuestionnaireInputSchema } from './validate';
@@ -53,7 +55,7 @@ const createQuestionnaire: Mutation['createQuestionnaire'] = async (
   );
 
   if (!questionnaireConfigurationDoc) {
-    throw new ApolloError('Questionnaire configuration not found.');
+    throw new QuestionnaireConfigurationNotFound();
   }
 
   const questionTemplateDocs = await QuestionTemplateModel.find({
