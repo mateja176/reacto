@@ -14,7 +14,7 @@
     "ci": "cross-env CI=true concurrently --kill-others-on-fail --names format,lint,type-check,test --prefix-colors yellow,cyan,blue,green npm:format npm:lint npm:type-check npm:test",
     "start": "ts-node src/index.ts",
     "dev:server": "nodemon --watch src --ext ts --ignore 'src/**/*.{test,spec}.ts' --exec 'ts-node' src/index.ts",
-    "dev": "concurrently --kill-others-on-fail --names server,merge-and-generate --prefix-colors cyan,blue npm:merge-and-generate:watch npm:dev:server",
+    "dev": "concurrently --kill-others-on-fail --names merge-and-generate,server --prefix-colors cyan,blue npm:merge-and-generate:watch npm:dev:server",
     "serve": "node build/index.js",
     "seed": "ts-node scripts/seed.ts",
     "merge-schema": "ts-node scripts/mergeSchema.ts",
