@@ -1,4 +1,7 @@
-import { DocumentType } from '@typegoose/typegoose';
+import { DocumentType, mongoose } from '@typegoose/typegoose';
+import { CreateQuery } from 'mongoose';
+import { QuestionClass } from '../../classes/Question/Question';
+import { QuestionTemplateClass } from '../../classes/Question/QuestionTemplate';
 import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
 import { Questionnaire } from '../../generated/graphql';
 import { mapDoc } from '../../utils/map';
@@ -29,5 +32,26 @@ export const mapQuestionnaire = (
     user: createFindUser(mapUser)(user),
     inheritedQuestions: createFindQuestions(mapQuestion)(inheritedQuestions),
     questions: createFindQuestions(mapQuestion)(questions),
+  };
+};
+
+export const questionTemplateToQuestion = (
+  questionnaireId: mongoose.Types.ObjectId,
+) => (doc: DocumentType<QuestionTemplateClass>): CreateQuery<QuestionClass> => {
+  return {
+    name: doc.name,
+    label: doc.label,
+    optional: doc.optional,
+    rule: doc.rule,
+    questionnaire: questionnaireId,
+    booleanDefault: doc.booleanDefault,
+    stringDefault: doc.stringDefault,
+    strings: doc.strings,
+    multiStrings: doc.multiStrings,
+    numberDefault: doc.numberDefault,
+    numbers: doc.numbers,
+    multiNumbers: doc.multiNumbers,
+    fileDefault: doc.fileDefault,
+    filesDefault: doc.filesDefault,
   };
 };
