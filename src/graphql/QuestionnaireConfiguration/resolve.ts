@@ -1,10 +1,5 @@
 import mongoose from 'mongoose';
 import { AdminRole, Mutation, Query } from '../../generated/graphql';
-import {
-  CompanyModel,
-  QuestionnaireConfigurationModel,
-  UserModel,
-} from '../../services/models';
 import { Forbidden, NotAuthenticatedError } from '../../utils/errors';
 import { filterInputSchema, ValidatedFilterInput } from '../../utils/validate';
 import { mapQuestionnaireConfiguration } from './map';
@@ -24,13 +19,15 @@ const questionnaireConfigurations: Query['questionnaireConfigurations'] = async 
     throw new NotAuthenticatedError();
   }
 
-  const questionnaireConfigurationDocs = await QuestionnaireConfigurationModel.find(
+  const questionnaireConfigurationDocs = await context.models.QuestionnaireConfiguration.find(
     { company: context.user.company.id },
   )
     .skip(skip)
     .limit(limit);
 
-  return questionnaireConfigurationDocs.map(mapQuestionnaireConfiguration);
+  return questionnaireConfigurationDocs.map(
+    mapQuestionnaireConfiguration(context.models),
+  );
 };
 
 export const questionnaireConfigurationQuery = {
@@ -55,7 +52,7 @@ const createQuestionnaireConfiguration: Mutation['createQuestionnaireConfigurati
   const session = await mongoose.startSession();
   session.startTransaction();
 
-  const questionnaireConfigurationDoc = await QuestionnaireConfigurationModel.create(
+  const questionnaireConfigurationDoc = await context.models.QuestionnaireConfiguration.create(
     {
       name: args.input.name,
       type: args.input.type,
@@ -65,13 +62,13 @@ const createQuestionnaireConfiguration: Mutation['createQuestionnaireConfigurati
     },
   );
 
-  await CompanyModel.updateOne(
+  await context.models.Company.updateOne(
     { _id: context.user.company.id },
     {
       $push: { questionnaireConfigurations: questionnaireConfigurationDoc._id },
     },
   );
-  await UserModel.updateOne(
+  await context.models.User.updateOne(
     { _id: context.user.id },
     {
       $push: { questionnaireConfigurations: questionnaireConfigurationDoc._id },
@@ -81,7 +78,9 @@ const createQuestionnaireConfiguration: Mutation['createQuestionnaireConfigurati
   await session.commitTransaction();
   session.endSession();
 
-  return mapQuestionnaireConfiguration(questionnaireConfigurationDoc);
+  return mapQuestionnaireConfiguration(context.models)(
+    questionnaireConfigurationDoc,
+  );
 };
 
 export const questionnaireConfigurationMutation = {

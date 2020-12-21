@@ -9,12 +9,9 @@ import {
   RegularUser,
   User,
 } from '../../generated/graphql';
+import { Models } from '../../services/models';
 import { MapClass, mapDoc } from '../../utils/map';
-import {
-  createFindCompany,
-  createFindQuestionnaireConfigurations,
-  createFindQuestionnaires,
-} from '../../utils/query';
+import { createFind, createFindMany } from '../../utils/query';
 import { mapCompany } from '../Company/map';
 import { mapQuestionnaire } from '../Questionnaire/map';
 import { mapQuestionnaireConfiguration } from '../QuestionnaireConfiguration/map';
@@ -30,19 +27,21 @@ export type UserBase = Pick<
   'id' | 'email' | 'name' | 'company' | 'questionnaires'
 >;
 
-const getUserBase = (cls: MapClass<UserClass>): UserBase => {
+const getUserBase = (models: Models) => (
+  cls: MapClass<UserClass>,
+): UserBase => {
   return {
     id: cls.id,
     email: cls.email,
     name: cls.name,
-    company: createFindCompany(mapCompany)(cls.company),
-    questionnaires: createFindQuestionnaires(mapQuestionnaire)(
-      cls.questionnaires,
-    ),
+    company: createFind(models.Company)(mapCompany(models))(cls.company),
+    questionnaires: createFindMany(models.Questionnaire)(
+      mapQuestionnaire(models),
+    )(cls.questionnaires),
   };
 };
 
-export const mapAdminUserClass = (
+export const mapAdminUserClass = (models: Models) => (
   cls: MapClass<UserClass>,
   base: UserBase,
 ): AdminUser => {
@@ -51,17 +50,19 @@ export const mapAdminUserClass = (
       __typename: 'AdminUser',
       ...base,
       role: AdminRole.admin,
-      questionnaireConfigurations: createFindQuestionnaireConfigurations(
-        mapQuestionnaireConfiguration,
-      )(cls.questionnaireConfigurations),
+      questionnaireConfigurations: createFindMany(
+        models.QuestionnaireConfiguration,
+      )(mapQuestionnaireConfiguration(models))(cls.questionnaireConfigurations),
     };
   } else {
     throw new InvalidUserError();
   }
 };
-export const mapAdminUser = (doc: DocumentType<UserClass>): AdminUser => {
+export const mapAdminUser = (models: Models) => (
+  doc: DocumentType<UserClass>,
+): AdminUser => {
   const cls = mapDoc(doc);
-  return mapAdminUserClass(cls, getUserBase(cls));
+  return mapAdminUserClass(models)(cls, getUserBase(models)(cls));
 };
 export const mapRegularUserClass = (
   _: MapClass<UserClass>,
@@ -73,21 +74,25 @@ export const mapRegularUserClass = (
     role: RegularRole.regular,
   };
 };
-export const mapUserClass = (cls: MapClass<UserClass>): User => {
-  const base: UserBase = getUserBase(cls);
+export const mapUserClass = (models: Models) => (
+  cls: MapClass<UserClass>,
+): User => {
+  const base: UserBase = getUserBase(models)(cls);
   if (cls.role === Role.admin) {
-    return mapAdminUserClass(cls, base);
+    return mapAdminUserClass(models)(cls, base);
   } else {
     return mapRegularUserClass(cls, base);
   }
 };
-export const mapUser = (doc: DocumentType<UserClass>): User => {
+export const mapUser = (models: Models) => (
+  doc: DocumentType<UserClass>,
+): User => {
   const userClass = mapDoc(doc);
 
-  return mapUserClass(userClass);
+  return mapUserClass(models)(userClass);
 };
 
-export const mapPendingUser = (
+export const mapPendingUser = (models: Models) => (
   doc: DocumentType<PendingUserClass>,
 ): PendingUser => {
   const { company, ...pendingUser } = mapDoc(doc);
@@ -95,6 +100,6 @@ export const mapPendingUser = (
   return {
     __typename: 'PendingUser',
     ...pendingUser,
-    company: createFindCompany(mapCompany)(company),
+    company: createFind(models.Company)(mapCompany(models))(company),
   };
 };

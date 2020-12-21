@@ -12,10 +12,7 @@ import {
   seedInputSchema,
 } from '../helpers/seed';
 import createToken from '../services/createToken';
-import {
-  QuestionnaireConfigurationModel,
-  QuestionTemplateModel,
-} from '../services/models';
+import { createModels, Models } from '../services/models';
 
 const { value } = seedInputSchema.validate({
   email: process.env.EMAIL,
@@ -25,26 +22,34 @@ const { value } = seedInputSchema.validate({
 const seedInput: SeedInput = value;
 
 let mongoServer: MongoMemoryServer;
+let connection: mongoose.Connection;
+let models: Models;
 
 describe('questionnaire', () => {
   beforeAll(async () => {
     mongoServer = new MongoMemoryServer();
-    await mongoose.connect(await mongoServer.getUri(), mongodbConfig);
+    connection = await mongoose.createConnection(
+      await mongoServer.getUri(),
+      mongodbConfig,
+    );
+    models = createModels(connection);
   });
   afterAll(async () => {
-    await mongoose.connection.close();
+    await connection.close();
 
     await mongoServer.stop();
   });
   afterEach(async () => {
-    await mongoose.connection.db.dropDatabase();
+    await connection.db.dropDatabase();
   });
   test('create', async () => {
-    const { companyDoc, userDoc } = await createCompanyAndUser(seedInput);
+    const { companyDoc, userDoc } = await createCompanyAndUser(models)(
+      seedInput,
+    );
 
     const questionnaireConfigurationId = mongoose.Types.ObjectId();
 
-    const questionTemplate = await QuestionTemplateModel.create({
+    const questionTemplate = await models.QuestionTemplate.create({
       name: 'Test Template',
       label: 'How are you?',
       optional: false,
@@ -52,7 +57,7 @@ describe('questionnaire', () => {
       string: {},
     });
 
-    await QuestionnaireConfigurationModel.create({
+    await models.QuestionnaireConfiguration.create({
       _id: questionnaireConfigurationId,
       name: 'Test Questionnaire Configuration',
       type: 'Test',

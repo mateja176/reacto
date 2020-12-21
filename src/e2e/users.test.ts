@@ -22,7 +22,7 @@ import {
 } from '../helpers/seed';
 import createToken from '../services/createToken';
 import env from '../services/env';
-import { PendingUserModel } from '../services/models';
+import { createModels, Models } from '../services/models';
 
 const { value } = seedInputSchema.validate({
   email: process.env.EMAIL,
@@ -32,22 +32,28 @@ const { value } = seedInputSchema.validate({
 const seedInput: SeedInput = value;
 
 let mongoServer: MongoMemoryServer;
+let connection: mongoose.Connection;
+let models: Models;
 
 describe('users', () => {
   beforeAll(async () => {
     mongoServer = new MongoMemoryServer();
-    await mongoose.connect(await mongoServer.getUri(), mongodbConfig);
+    (connection = await mongoose.createConnection(
+      await mongoServer.getUri(),
+      mongodbConfig,
+    )),
+      (models = createModels(connection));
   });
   afterAll(async () => {
-    await mongoose.connection.close();
+    await connection.close();
 
     await mongoServer.stop();
   });
   afterEach(async () => {
-    await mongoose.connection.db.dropDatabase();
+    await connection.db.dropDatabase();
   });
   test('login', async () => {
-    await createCompanyAndUser(seedInput);
+    await createCompanyAndUser(models)(seedInput);
 
     const sdk = getSdk(new GraphQLClient(endpoint));
 
@@ -65,7 +71,7 @@ describe('users', () => {
     expect(typeof logIn.token).toBe('string');
   });
   test('invite', async () => {
-    const { userDoc } = await createCompanyAndUser({
+    const { userDoc } = await createCompanyAndUser(models)({
       ...pick(['password', 'name'], seedInput),
       email: env.mailGunEmail,
     });
@@ -90,11 +96,11 @@ describe('users', () => {
     expect(invite.email).toEqual(seedInput.email);
   });
   test('register', async () => {
-    const { companyDoc } = await createCompanyAndUser(seedInput);
+    const { companyDoc } = await createCompanyAndUser(models)(seedInput);
 
     const token = v4();
 
-    await PendingUserModel.create({
+    await models.PendingUser.create({
       email: env.mailGunEmail,
       role: UserRole.regular,
       company: companyDoc._id,

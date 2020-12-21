@@ -41,12 +41,6 @@ import {
   YesNoQuestionTemplate,
 } from '../../generated/graphql';
 import {
-  QuestionModel,
-  QuestionnaireConfigurationModel,
-  QuestionnaireModel,
-  QuestionTemplateModel,
-} from '../../services/models';
-import {
   Forbidden,
   NotAuthenticatedError,
   NotFoundError,
@@ -109,13 +103,13 @@ const questionTemplates: Query['questionTemplates'] = async (
     throw new NotAuthenticatedError();
   }
 
-  const questionTemplateDocs = await QuestionTemplateModel.find({
+  const questionTemplateDocs = await context.models.QuestionTemplate.find({
     company: context.user.company.id,
   })
     .skip(skip)
     .limit(limit);
 
-  return questionTemplateDocs.map(mapQuestionTemplate);
+  return questionTemplateDocs.map(mapQuestionTemplate(context.models));
 };
 
 export const questionTemplateQuery = {
@@ -215,13 +209,13 @@ export const createCreateQuestionTemplate = <
   const session = await mongoose.startSession();
   session.startTransaction();
 
-  const doc = await QuestionTemplateModel.create({
+  const doc = await context.models.QuestionTemplate.create({
     ...questionBase,
     rule: rule ?? undefined,
     questionnaireConfiguration: questionnaireConfigurationId,
   });
 
-  const questionnaireConfiguration = await QuestionnaireConfigurationModel.findOneAndUpdate(
+  const questionnaireConfiguration = await context.models.QuestionnaireConfiguration.findOneAndUpdate(
     { _id: questionnaireConfigurationId },
     { $push: { questionTemplates: doc._id } },
   );
@@ -233,7 +227,7 @@ export const createCreateQuestionTemplate = <
   await session.commitTransaction();
   session.endSession();
 
-  const output = map(doc);
+  const output = map(context.models)(doc);
 
   return output;
 };
@@ -370,14 +364,14 @@ export const createCreateQuestion = <
   const session = await mongoose.startSession();
   session.startTransaction();
 
-  const doc = await QuestionModel.create({
+  const doc = await context.models.Question.create({
     ...questionBase,
     rule: args.input.rule ?? undefined,
     questionnaire: questionnaireId,
     answer: undefined,
   });
 
-  const questionnaire = await QuestionnaireModel.findOneAndUpdate(
+  const questionnaire = await context.models.Questionnaire.findOneAndUpdate(
     { _id: questionnaireId },
     { $push: { questions: doc._id } },
   );
@@ -389,7 +383,7 @@ export const createCreateQuestion = <
   await session.commitTransaction();
   session.endSession();
 
-  const output = map(doc);
+  const output = map(context.models)(doc);
 
   return output;
 };

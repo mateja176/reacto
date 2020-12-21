@@ -1,4 +1,4 @@
-import { getModelForClass } from '@typegoose/typegoose';
+import { getModelForClass, mongoose } from '@typegoose/typegoose';
 import { AnswerClass } from '../classes/Answer/Answer';
 import { CompanyClass } from '../classes/Company/Company';
 import { QuestionClass } from '../classes/Question/Question';
@@ -8,13 +8,32 @@ import { QuestionnaireConfigurationClass } from '../classes/QuestionnaireConfigu
 import { PendingUserClass } from '../classes/User/PendingUser';
 import { UserClass } from '../classes/User/User';
 
-export const CompanyModel = getModelForClass(CompanyClass);
-export const UserModel = getModelForClass(UserClass);
-export const PendingUserModel = getModelForClass(PendingUserClass);
-export const QuestionnaireConfigurationModel = getModelForClass(
-  QuestionnaireConfigurationClass,
-);
-export const QuestionnaireModel = getModelForClass(QuestionnaireClass);
-export const QuestionModel = getModelForClass(QuestionClass);
-export const QuestionTemplateModel = getModelForClass(QuestionTemplateClass);
-export const AnswerModel = getModelForClass(AnswerClass);
+export const createModels = (connection: mongoose.Connection) => {
+  return {
+    Company: getModelForClass(CompanyClass, {
+      existingConnection: connection,
+    }),
+    User: getModelForClass(UserClass, {
+      existingConnection: connection,
+    }),
+    PendingUser: getModelForClass(PendingUserClass, {
+      existingConnection: connection,
+    }),
+    QuestionnaireConfiguration: getModelForClass(
+      QuestionnaireConfigurationClass,
+    ),
+    Questionnaire: getModelForClass(QuestionnaireClass, {
+      existingConnection: connection,
+    }),
+    Question: getModelForClass(QuestionClass, {
+      existingConnection: connection,
+    }),
+    QuestionTemplate: getModelForClass(QuestionTemplateClass, {
+      existingConnection: connection,
+    }),
+    Answer: getModelForClass(AnswerClass, {
+      existingConnection: connection,
+    }),
+  };
+};
+export type Models = ReturnType<typeof createModels>;

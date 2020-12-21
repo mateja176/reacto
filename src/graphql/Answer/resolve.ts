@@ -36,7 +36,6 @@ import {
   UpdateYesNoAnswerInput,
   YesNoAnswer,
 } from '../../generated/graphql';
-import { AnswerModel, QuestionModel } from '../../services/models';
 import {
   Forbidden,
   NotAuthenticatedError,
@@ -162,12 +161,12 @@ export const createCreateAnswer = <
   const session = await mongoose.startSession();
   session.startTransaction();
 
-  const doc = await AnswerModel.create({
+  const doc = await context.models.Answer.create({
     ...answerBase,
     question: questionId,
   });
 
-  const questionDoc = (await QuestionModel.findOneAndUpdate(
+  const questionDoc = (await context.models.Question.findOneAndUpdate(
     { _id: args.input.questionId },
     { answer: doc._id },
   ).populate('questionnaire')) as DocumentType<
@@ -195,7 +194,7 @@ export const createCreateAnswer = <
 
   session.endSession();
 
-  const output = map(doc);
+  const output = map(context.models)(doc);
 
   return output;
 };
@@ -282,7 +281,7 @@ export const createUpdateAnswer = <
     throw new NotAuthenticatedError();
   }
 
-  const doc = (await AnswerModel.findOneAndUpdate(
+  const doc = (await context.models.Answer.findOneAndUpdate(
     {
       _id: args.input.id,
     },
@@ -312,7 +311,7 @@ export const createUpdateAnswer = <
     throw new Forbidden();
   }
 
-  const output = map(doc);
+  const output = map(context.models)(doc);
 
   return output;
 };

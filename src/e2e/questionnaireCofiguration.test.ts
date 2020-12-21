@@ -12,6 +12,7 @@ import {
   seedInputSchema,
 } from '../helpers/seed';
 import createToken from '../services/createToken';
+import { createModels, Models } from '../services/models';
 
 const { value } = seedInputSchema.validate({
   email: process.env.EMAIL,
@@ -21,11 +22,17 @@ const { value } = seedInputSchema.validate({
 const seedInput: SeedInput = value;
 
 let mongoServer: MongoMemoryServer;
+let connection: mongoose.Connection;
+let models: Models;
 
 describe('questionnaire configuration', () => {
   beforeAll(async () => {
     mongoServer = new MongoMemoryServer();
-    await mongoose.connect(await mongoServer.getUri(), mongodbConfig);
+    connection = await mongoose.createConnection(
+      await mongoServer.getUri(),
+      mongodbConfig,
+    );
+    models = createModels(connection);
   });
   afterAll(async () => {
     await mongoose.connection.close();
@@ -33,10 +40,10 @@ describe('questionnaire configuration', () => {
     await mongoServer.stop();
   });
   afterEach(async () => {
-    await mongoose.connection.db.dropDatabase();
+    await connection.db.dropDatabase();
   });
   test('create', async () => {
-    const { userDoc } = await createCompanyAndUser(seedInput);
+    const { userDoc } = await createCompanyAndUser(models)(seedInput);
 
     const token = createToken(userDocToJWTUser(userDoc));
 

@@ -1,14 +1,6 @@
 import mongoose from 'mongoose';
 import { Mutation, Query } from '../../generated/graphql';
 import {
-  CompanyModel,
-  QuestionModel,
-  QuestionnaireConfigurationModel,
-  QuestionnaireModel,
-  QuestionTemplateModel,
-  UserModel,
-} from '../../services/models';
-import {
   NotAuthenticatedError,
   QuestionnaireConfigurationNotFound,
 } from '../../utils/errors';
@@ -26,13 +18,13 @@ const questionnaires: Query['questionnaires'] = async (_, args, context) => {
     throw new NotAuthenticatedError();
   }
 
-  const questionnaireDocs = await QuestionnaireModel.find({
+  const questionnaireDocs = await context.models.Questionnaire.find({
     company: context.user.company.id,
   })
     .skip(skip)
     .limit(limit);
 
-  return questionnaireDocs.map(mapQuestionnaire);
+  return questionnaireDocs.map(mapQuestionnaire(context.models));
 };
 
 export const questionnaireQuery = {
@@ -50,7 +42,7 @@ const createQuestionnaire: Mutation['createQuestionnaire'] = async (
     throw new NotAuthenticatedError();
   }
 
-  const questionnaireConfigurationDoc = await QuestionnaireConfigurationModel.findById(
+  const questionnaireConfigurationDoc = await context.models.QuestionnaireConfiguration.findById(
     args.input.questionnaireConfigurationId,
   );
 
@@ -58,7 +50,7 @@ const createQuestionnaire: Mutation['createQuestionnaire'] = async (
     throw new QuestionnaireConfigurationNotFound();
   }
 
-  const questionTemplateDocs = await QuestionTemplateModel.find({
+  const questionTemplateDocs = await context.models.QuestionTemplate.find({
     _id: { $in: questionnaireConfigurationDoc.questionTemplates },
   });
 
@@ -67,11 +59,11 @@ const createQuestionnaire: Mutation['createQuestionnaire'] = async (
 
   const questionnaireId = mongoose.Types.ObjectId();
 
-  const inheritedQuestionDocs = await QuestionModel.create(
+  const inheritedQuestionDocs = await context.models.Question.create(
     questionTemplateDocs.map(questionTemplateToQuestion(questionnaireId)),
   );
 
-  const questionnaireDoc = await QuestionnaireModel.create({
+  const questionnaireDoc = await context.models.Questionnaire.create({
     _id: questionnaireId,
     name: args.input.name,
     type: questionnaireConfigurationDoc.type,
@@ -81,11 +73,11 @@ const createQuestionnaire: Mutation['createQuestionnaire'] = async (
     questions: [],
   });
 
-  await CompanyModel.updateOne(
+  await context.models.Company.updateOne(
     { _id: context.user.company.id },
     { $push: { questionnaires: questionnaireDoc._id } },
   );
-  await UserModel.updateOne(
+  await context.models.User.updateOne(
     { _id: context.user.id },
     { $push: { questionnaires: questionnaireDoc._id } },
   );
@@ -93,7 +85,7 @@ const createQuestionnaire: Mutation['createQuestionnaire'] = async (
   await session.commitTransaction();
   session.endSession();
 
-  return mapQuestionnaire(questionnaireDoc);
+  return mapQuestionnaire(context.models)(questionnaireDoc);
 };
 
 export const questionnaireMutation = {

@@ -4,9 +4,12 @@ import env from '../src/services/env';
 
 // ! for local usage only
 (async () => {
-  await mongoose.connect(env.mongodbURI, mongodbConfig);
+  const connection = await mongoose.createConnection(
+    env.mongodbURI,
+    mongodbConfig,
+  );
 
   await mongoose.connection.db.dropDatabase();
 
-  await mongoose.connection.close();
+  await connection.close();
 })();

@@ -5,7 +5,7 @@ import { Role } from '../classes/User/User';
 import { mongodbConfig } from '../config/mongodb';
 import env from '../services/env';
 import hashPassword from '../services/hashPassword';
-import { CompanyModel, UserModel } from '../services/models';
+import { Models } from '../services/models';
 import { passwordSchema } from '../utils/validate';
 
 export interface SeedInput {
@@ -20,14 +20,14 @@ export const seedInputSchema = Joi.object<SeedInput>({
   password: passwordSchema,
 }).required();
 
-export const createCompanyAndUser = async ({
+export const createCompanyAndUser = (models: Models) => async ({
   name,
   email,
   password,
 }: SeedInput) => {
   const userId = mongoose.Types.ObjectId();
 
-  const reacto = await CompanyModel.create({
+  const reacto = await models.Company.create({
     name: 'Reacto',
     owner: userId,
     pendingUsers: [],
@@ -36,7 +36,7 @@ export const createCompanyAndUser = async ({
     questionnaires: [],
   });
 
-  const userDoc = await UserModel.create({
+  const userDoc = await models.User.create({
     _id: userId,
     name,
     email,
@@ -52,11 +52,14 @@ export const createCompanyAndUser = async ({
 const seed = async (input: SeedInput) => {
   const validatedInput = await seedInputSchema.validateAsync(input);
 
-  await mongoose.connect(env.mongodbURI, mongodbConfig);
+  const connection = await mongoose.createConnection(
+    env.mongodbURI,
+    mongodbConfig,
+  );
 
   await createCompanyAndUser(validatedInput);
 
-  await mongoose.connection.close();
+  await connection.close();
 };
 
 export const getSeedInput = (commander: CommanderStatic): SeedInput => {

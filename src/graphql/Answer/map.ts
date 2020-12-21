@@ -12,8 +12,9 @@ import {
   StringsAnswer,
   YesNoAnswer,
 } from '../../generated/graphql';
+import { Models } from '../../services/models';
 import { MapClass, mapDoc } from '../../utils/map';
-import { createFindQuestion } from '../../utils/query';
+import { createFind } from '../../utils/query';
 import {
   mapFileQuestion,
   mapFilesQuestion,
@@ -33,21 +34,27 @@ export class InvalidAnswerError extends Error {
 }
 
 export const mapAnswerDoc = <A extends Answer>(
-  map: (cls: MapClass<AnswerClass>, answerBase: Pick<Answer, 'id'>) => A,
-) => (doc: DocumentType<AnswerClass>) => {
+  map: (
+    models: Models,
+    cls: MapClass<AnswerClass>,
+    answerBase: Pick<Answer, 'id'>,
+  ) => A,
+) => (models: Models) => (doc: DocumentType<AnswerClass>) => {
   const cls = mapDoc(doc);
   const { id } = cls;
-  return map(cls, { id });
+  return map(models, cls, { id });
 };
 export const mapYesNoAnswer = mapAnswerDoc(
-  (cls, base): YesNoAnswer => {
+  (models, cls, base): YesNoAnswer => {
     const { question, boolean } = cls;
 
     if (boolean) {
       return {
         __typename: 'YesNoAnswer',
         ...base,
-        question: createFindQuestion(mapYesNoQuestion)(question),
+        question: createFind(models.Question)(mapYesNoQuestion(models))(
+          question,
+        ),
         answer: boolean,
       };
     } else {
@@ -56,14 +63,16 @@ export const mapYesNoAnswer = mapAnswerDoc(
   },
 );
 export const mapStringAnswer = mapAnswerDoc(
-  (cls, base): StringAnswer => {
+  (models, cls, base): StringAnswer => {
     const { question, string } = cls;
 
     if (string) {
       return {
         __typename: 'StringAnswer',
         ...base,
-        question: createFindQuestion(mapStringQuestion)(question),
+        question: createFind(models.Question)(mapStringQuestion(models))(
+          question,
+        ),
         answer: string,
       };
     } else {
@@ -72,14 +81,16 @@ export const mapStringAnswer = mapAnswerDoc(
   },
 );
 export const mapStringsAnswer = mapAnswerDoc(
-  (cls, base): StringsAnswer => {
+  (models, cls, base): StringsAnswer => {
     const { question, strings } = cls;
 
     if (strings) {
       return {
         __typename: 'StringsAnswer',
         ...base,
-        question: createFindQuestion(mapStringsQuestion)(question),
+        question: createFind(models.Question)(mapStringsQuestion(models))(
+          question,
+        ),
         answer: strings,
       };
     } else {
@@ -88,14 +99,16 @@ export const mapStringsAnswer = mapAnswerDoc(
   },
 );
 export const mapMultiStringsAnswer = mapAnswerDoc(
-  (cls, base): MultiStringsAnswer => {
+  (models, cls, base): MultiStringsAnswer => {
     const { question, multiStrings } = cls;
 
     if (multiStrings) {
       return {
         __typename: 'MultiStringsAnswer',
         ...base,
-        question: createFindQuestion(mapMultiStringsQuestion)(question),
+        question: createFind(models.Question)(mapMultiStringsQuestion(models))(
+          question,
+        ),
         answer: multiStrings,
       };
     } else {
@@ -104,14 +117,16 @@ export const mapMultiStringsAnswer = mapAnswerDoc(
   },
 );
 export const mapNumberAnswer = mapAnswerDoc(
-  (cls, base): NumberAnswer => {
+  (models, cls, base): NumberAnswer => {
     const { question, number } = cls;
 
     if (number) {
       return {
         __typename: 'NumberAnswer',
         ...base,
-        question: createFindQuestion(mapNumberQuestion)(question),
+        question: createFind(models.Question)(mapNumberQuestion(models))(
+          question,
+        ),
         answer: number,
       };
     } else {
@@ -120,14 +135,16 @@ export const mapNumberAnswer = mapAnswerDoc(
   },
 );
 export const mapNumbersAnswer = mapAnswerDoc(
-  (cls, base): NumbersAnswer => {
+  (models, cls, base): NumbersAnswer => {
     const { question, numbers } = cls;
 
     if (numbers) {
       return {
         __typename: 'NumbersAnswer',
         ...base,
-        question: createFindQuestion(mapNumbersQuestion)(question),
+        question: createFind(models.Question)(mapNumbersQuestion(models))(
+          question,
+        ),
         answer: numbers,
       };
     } else {
@@ -136,14 +153,16 @@ export const mapNumbersAnswer = mapAnswerDoc(
   },
 );
 export const mapMultiNumbersAnswer = mapAnswerDoc(
-  (cls, base): MultiNumbersAnswer => {
+  (models, cls, base): MultiNumbersAnswer => {
     const { question, multiNumbers } = cls;
 
     if (multiNumbers) {
       return {
         __typename: 'MultiNumbersAnswer',
         ...base,
-        question: createFindQuestion(mapMultiNumbersQuestion)(question),
+        question: createFind(models.Question)(mapMultiNumbersQuestion(models))(
+          question,
+        ),
         answer: multiNumbers,
       };
     } else {
@@ -152,14 +171,16 @@ export const mapMultiNumbersAnswer = mapAnswerDoc(
   },
 );
 export const mapFileAnswer = mapAnswerDoc(
-  (cls, base): FileAnswer => {
+  (models, cls, base): FileAnswer => {
     const { question, file } = cls;
 
     if (file) {
       return {
         __typename: 'FileAnswer',
         ...base,
-        question: createFindQuestion(mapFileQuestion)(question),
+        question: createFind(models.Question)(mapFileQuestion(models))(
+          question,
+        ),
         answer: file,
       };
     } else {
@@ -168,14 +189,16 @@ export const mapFileAnswer = mapAnswerDoc(
   },
 );
 export const mapFilesAnswer = mapAnswerDoc(
-  (cls, base): FilesAnswer => {
+  (models, cls, base): FilesAnswer => {
     const { question, files } = cls;
 
     if (files) {
       return {
         __typename: 'FilesAnswer',
         ...base,
-        question: createFindQuestion(mapFilesQuestion)(question),
+        question: createFind(models.Question)(mapFilesQuestion(models))(
+          question,
+        ),
         answer: files,
       };
     } else {

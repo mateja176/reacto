@@ -9,11 +9,6 @@ import createToken from '../../services/createToken';
 import env from '../../services/env';
 import hashPassword from '../../services/hashPassword';
 import {
-  CompanyModel,
-  PendingUserModel,
-  UserModel,
-} from '../../services/models';
-import {
   AlreadyExistsError,
   Forbidden,
   NotAuthenticatedError,
@@ -32,7 +27,7 @@ const user: Query['user'] = async (_, args, context) => {
     throw new AuthenticationError('');
   }
 
-  const userDoc = await UserModel.findById(args.id);
+  const userDoc = await context.models.User.findById(args.id);
 
   if (!userDoc) {
     throw new NotFoundError();
@@ -46,7 +41,7 @@ const user: Query['user'] = async (_, args, context) => {
     throw new Forbidden();
   }
 
-  const user = mapUser(userDoc);
+  const user = mapUser(context.models)(userDoc);
 
   return user;
 };
@@ -65,13 +60,13 @@ const users: Query['users'] = async (_, args, context) => {
     throw new Forbidden();
   }
 
-  const userDocs = await UserModel.find({
+  const userDocs = await context.models.User.find({
     company: String(context.user.company),
   })
     .skip(skip)
     .limit(limit);
 
-  return userDocs.map(mapUser);
+  return userDocs.map(mapUser(context.models));
 };
 
 export const userQuery = {
@@ -79,10 +74,10 @@ export const userQuery = {
   users,
 };
 
-const logIn: Mutation['logIn'] = async (_, args) => {
+const logIn: Mutation['logIn'] = async (_, args, context) => {
   await loginArgsSchema.validateAsync(args.input);
 
-  const userDoc = await UserModel.findOne({
+  const userDoc = await context.models.User.findOne({
     email: args.input.email,
   });
 
@@ -98,7 +93,7 @@ const logIn: Mutation['logIn'] = async (_, args) => {
     throw new AuthenticationError('Invalid credentials.');
   }
 
-  const user = mapUser(userDoc);
+  const user = mapUser(context.models)(userDoc);
 
   const token = createToken({
     id: user.id,
@@ -122,7 +117,9 @@ const invite: Mutation['invite'] = async (_, args, context) => {
     throw new Forbidden();
   }
 
-  const userDoc = await UserModel.findOne({ email: args.input.email });
+  const userDoc = await context.models.User.findOne({
+    email: args.input.email,
+  });
 
   if (userDoc) {
     throw new AlreadyExistsError();
@@ -133,14 +130,14 @@ const invite: Mutation['invite'] = async (_, args, context) => {
 
   const token = v4();
 
-  const pendingUserDoc = await PendingUserModel.create({
+  const pendingUserDoc = await context.models.PendingUser.create({
     email: args.input.email,
     role: args.input.role,
     token,
     company: context.user.id,
   });
 
-  const companyDoc = await CompanyModel.findOneAndUpdate(
+  const companyDoc = await context.models.Company.findOneAndUpdate(
     { _id: context.user.company.id },
     { $push: { pendingUsers: pendingUserDoc._id } },
   );
@@ -153,7 +150,7 @@ const invite: Mutation['invite'] = async (_, args, context) => {
 
   session.endSession();
 
-  const pendingUser = mapPendingUser(pendingUserDoc);
+  const pendingUser = mapPendingUser(context.models)(pendingUserDoc);
 
   return new Promise((resolve, reject) =>
     mailgun.sendMail(
@@ -184,10 +181,10 @@ const invite: Mutation['invite'] = async (_, args, context) => {
   );
 };
 
-const register: Mutation['register'] = async (_, args) => {
+const register: Mutation['register'] = async (_, args, context) => {
   await registerInputSchema.validateAsync(args.input);
 
-  const pendingUserDoc = await PendingUserModel.findOne({
+  const pendingUserDoc = await context.models.PendingUser.findOne({
     token: args.input.token,
   });
 
@@ -202,7 +199,7 @@ const register: Mutation['register'] = async (_, args) => {
 
   const companyId = String(pendingUserDoc.company);
 
-  const userDoc = await UserModel.create({
+  const userDoc = await context.models.User.create({
     company: companyId,
     email: pendingUserDoc.email,
     role: pendingUserDoc.role,
@@ -211,9 +208,9 @@ const register: Mutation['register'] = async (_, args) => {
     questionnaires: [],
   });
 
-  await PendingUserModel.remove({ _id: pendingUserDoc._id });
+  await context.models.PendingUser.remove({ _id: pendingUserDoc._id });
 
-  await CompanyModel.updateOne(
+  await context.models.Company.updateOne(
     { _id: companyId },
     {
       $pull: { pendingUsers: pendingUserDoc._id },
@@ -223,7 +220,7 @@ const register: Mutation['register'] = async (_, args) => {
   await session.commitTransaction();
   session.endSession();
 
-  const user = mapUser(userDoc);
+  const user = mapUser(context.models)(userDoc);
 
   const token = createToken({
     id: user.id,

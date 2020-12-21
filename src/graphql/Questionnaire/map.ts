@@ -4,17 +4,14 @@ import { QuestionClass } from '../../classes/Question/Question';
 import { QuestionTemplateClass } from '../../classes/Question/QuestionTemplate';
 import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
 import { Questionnaire } from '../../generated/graphql';
+import { Models } from '../../services/models';
 import { mapDoc } from '../../utils/map';
-import {
-  createFindCompany,
-  createFindQuestions,
-  createFindUser,
-} from '../../utils/query';
+import { createFind, createFindMany } from '../../utils/query';
 import { mapCompany } from '../Company/map';
 import { mapQuestion } from '../Question/map';
 import { mapUser } from '../User/map';
 
-export const mapQuestionnaire = (
+export const mapQuestionnaire = (models: Models) => (
   doc: DocumentType<QuestionnaireClass>,
 ): Questionnaire => {
   const {
@@ -28,10 +25,12 @@ export const mapQuestionnaire = (
   return {
     __typename: 'Questionnaire',
     ...questionnaire,
-    company: createFindCompany(mapCompany)(company),
-    user: createFindUser(mapUser)(user),
-    inheritedQuestions: createFindQuestions(mapQuestion)(inheritedQuestions),
-    questions: createFindQuestions(mapQuestion)(questions),
+    company: createFind(models.Company)(mapCompany(models))(company),
+    user: createFind(models.User)(mapUser(models))(user),
+    inheritedQuestions: createFindMany(models.Question)(mapQuestion(models))(
+      inheritedQuestions,
+    ),
+    questions: createFindMany(models.Question)(mapQuestion(models))(questions),
   };
 };
 

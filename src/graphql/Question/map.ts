@@ -23,12 +23,9 @@ import {
   YesNoQuestion,
   YesNoQuestionTemplate,
 } from '../../generated/graphql';
+import { Models } from '../../services/models';
 import { MapClass, mapDoc } from '../../utils/map';
-import {
-  createFindAnswer,
-  createFindQuestionnaire,
-  createFindQuestionnaireConfiguration,
-} from '../../utils/query';
+import { createFind } from '../../utils/query';
 import {
   mapFileAnswer,
   mapFilesAnswer,
@@ -55,7 +52,7 @@ type QuestionTemplateBase = Base &
 
 export const mapQuestionTemplateDoc = <Q extends QuestionTemplate>(
   map: (cls: MapClass<QuestionTemplateClass>, base: QuestionTemplateBase) => Q,
-) => (doc: DocumentType<QuestionTemplateClass>): Q => {
+) => (models: Models) => (doc: DocumentType<QuestionTemplateClass>): Q => {
   const cls = mapDoc(doc);
   const { id, label, name, rule, optional, questionnaireConfiguration } = cls;
   return map(cls, {
@@ -64,8 +61,8 @@ export const mapQuestionTemplateDoc = <Q extends QuestionTemplate>(
     name,
     rule: rule ?? null,
     optional,
-    questionnaireConfiguration: createFindQuestionnaireConfiguration(
-      mapQuestionnaireConfiguration,
+    questionnaireConfiguration: createFind(models.QuestionnaireConfiguration)(
+      mapQuestionnaireConfiguration(models),
     )(questionnaireConfiguration),
   });
 };
@@ -224,7 +221,7 @@ export const mapFilesQuestionTemplate = mapQuestionTemplateDoc(
   mapFilesQuestionTemplateClass,
 );
 
-export const mapQuestionTemplate = (
+export const mapQuestionTemplate = (models: Models) => (
   doc: DocumentType<QuestionTemplateClass>,
 ): QuestionTemplate => {
   const cls = mapDoc(doc);
@@ -236,8 +233,8 @@ export const mapQuestionTemplate = (
     name,
     rule: rule ?? null,
     optional,
-    questionnaireConfiguration: createFindQuestionnaireConfiguration(
-      mapQuestionnaireConfiguration,
+    questionnaireConfiguration: createFind(models.QuestionnaireConfiguration)(
+      mapQuestionnaireConfiguration(models),
     )(questionnaireConfiguration),
   };
 
@@ -275,21 +272,24 @@ export class InvalidQuestionError extends Error {
 type QuestionBase = Base & Pick<Question, 'questionnaire'>;
 
 export const mapQuestionDoc = <Q extends Question>(
-  map: (cls: MapClass<QuestionClass>, base: QuestionBase) => Q,
-) => (doc: DocumentType<QuestionClass>) => {
+  map: (models: Models, cls: MapClass<QuestionClass>, base: QuestionBase) => Q,
+) => (models: Models) => (doc: DocumentType<QuestionClass>) => {
   const cls = mapDoc(doc);
   const { id, label, name, rule, optional, questionnaire } = cls;
-  return map(cls, {
+  return map(models, cls, {
     id,
     label,
     name,
     rule: rule ?? null,
     optional,
-    questionnaire: createFindQuestionnaire(mapQuestionnaire)(questionnaire),
+    questionnaire: createFind(models.Questionnaire)(mapQuestionnaire(models))(
+      questionnaire,
+    ),
   });
 };
 
 const mapYesNoQuestionClass = (
+  models: Models,
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): YesNoQuestion => {
@@ -298,14 +298,18 @@ const mapYesNoQuestionClass = (
       __typename: 'YesNoQuestion',
       ...base,
       default: cls.boolean.default ?? null,
-      answer: cls.answer ? createFindAnswer(mapYesNoAnswer)(cls.answer) : null,
+      answer: cls.answer
+        ? createFind(models.Answer)(mapYesNoAnswer(models))(cls.answer)
+        : null,
     };
   } else {
     throw new InvalidQuestionError();
   }
 };
 export const mapYesNoQuestion = mapQuestionDoc(mapYesNoQuestionClass);
+
 const mapStringQuestionClass = (
+  models: Models,
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): StringQuestion => {
@@ -314,14 +318,18 @@ const mapStringQuestionClass = (
       __typename: 'StringQuestion',
       ...base,
       default: cls.string.default ?? null,
-      answer: cls.answer ? createFindAnswer(mapStringAnswer)(cls.answer) : null,
+      answer: cls.answer
+        ? createFind(models.Answer)(mapStringAnswer(models))(cls.answer)
+        : null,
     };
   } else {
     throw new InvalidQuestionError();
   }
 };
 export const mapStringQuestion = mapQuestionDoc(mapStringQuestionClass);
+
 const mapStringsQuestionClass = (
+  models: Models,
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): StringsQuestion => {
@@ -332,7 +340,7 @@ const mapStringsQuestionClass = (
       default: cls.strings.default ?? null,
       options: cls.strings.options,
       answer: cls.answer
-        ? createFindAnswer(mapStringsAnswer)(cls.answer)
+        ? createFind(models.Answer)(mapStringsAnswer(models))(cls.answer)
         : null,
     };
   } else {
@@ -340,7 +348,9 @@ const mapStringsQuestionClass = (
   }
 };
 export const mapStringsQuestion = mapQuestionDoc(mapStringsQuestionClass);
+
 const mapMultiStringsQuestionClass = (
+  models: Models,
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): MultiStringsQuestion => {
@@ -351,7 +361,7 @@ const mapMultiStringsQuestionClass = (
       default: cls.multiStrings.default ?? null,
       options: cls.multiStrings.options,
       answer: cls.answer
-        ? createFindAnswer(mapMultiStringsAnswer)(cls.answer)
+        ? createFind(models.Answer)(mapMultiStringsAnswer(models))(cls.answer)
         : null,
     };
   } else {
@@ -361,7 +371,9 @@ const mapMultiStringsQuestionClass = (
 export const mapMultiStringsQuestion = mapQuestionDoc(
   mapMultiStringsQuestionClass,
 );
+
 const mapNumberQuestionClass = (
+  models: Models,
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): NumberQuestion => {
@@ -370,14 +382,18 @@ const mapNumberQuestionClass = (
       __typename: 'NumberQuestion',
       ...base,
       default: cls.number.default ?? null,
-      answer: cls.answer ? createFindAnswer(mapNumberAnswer)(cls.answer) : null,
+      answer: cls.answer
+        ? createFind(models.Answer)(mapNumberAnswer(models))(cls.answer)
+        : null,
     };
   } else {
     throw new InvalidQuestionError();
   }
 };
 export const mapNumberQuestion = mapQuestionDoc(mapNumberQuestionClass);
+
 const mapNumbersQuestionClass = (
+  models: Models,
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): NumbersQuestion => {
@@ -388,7 +404,7 @@ const mapNumbersQuestionClass = (
       default: cls.numbers.default ?? null,
       options: cls.numbers.options,
       answer: cls.answer
-        ? createFindAnswer(mapNumbersAnswer)(cls.answer)
+        ? createFind(models.Answer)(mapNumbersAnswer(models))(cls.answer)
         : null,
     };
   } else {
@@ -396,7 +412,9 @@ const mapNumbersQuestionClass = (
   }
 };
 export const mapNumbersQuestion = mapQuestionDoc(mapNumbersQuestionClass);
+
 const mapMultiNumbersQuestionClass = (
+  models: Models,
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): MultiNumbersQuestion => {
@@ -407,7 +425,7 @@ const mapMultiNumbersQuestionClass = (
       default: cls.multiNumbers.default ?? null,
       options: cls.multiNumbers.options,
       answer: cls.answer
-        ? createFindAnswer(mapMultiNumbersAnswer)(cls.answer)
+        ? createFind(models.Answer)(mapMultiNumbersAnswer(models))(cls.answer)
         : null,
     };
   } else {
@@ -417,7 +435,9 @@ const mapMultiNumbersQuestionClass = (
 export const mapMultiNumbersQuestion = mapQuestionDoc(
   mapMultiNumbersQuestionClass,
 );
+
 const mapFileQuestionClass = (
+  models: Models,
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): FileQuestion => {
@@ -426,14 +446,18 @@ const mapFileQuestionClass = (
       __typename: 'FileQuestion',
       ...base,
       default: cls.file.default ?? null,
-      answer: cls.answer ? createFindAnswer(mapFileAnswer)(cls.answer) : null,
+      answer: cls.answer
+        ? createFind(models.Answer)(mapFileAnswer(models))(cls.answer)
+        : null,
     };
   } else {
     throw new InvalidQuestionError();
   }
 };
 export const mapFileQuestion = mapQuestionDoc(mapFileQuestionClass);
+
 const mapFilesQuestionClass = (
+  models: Models,
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): FilesQuestion => {
@@ -442,7 +466,9 @@ const mapFilesQuestionClass = (
       __typename: 'FilesQuestion',
       ...base,
       default: cls.files.default ?? null,
-      answer: cls.answer ? createFindAnswer(mapFilesAnswer)(cls.answer) : null,
+      answer: cls.answer
+        ? createFind(models.Answer)(mapFilesAnswer(models))(cls.answer)
+        : null,
     };
   } else {
     throw new InvalidQuestionError();
@@ -450,7 +476,9 @@ const mapFilesQuestionClass = (
 };
 export const mapFilesQuestion = mapQuestionDoc(mapFilesQuestionClass);
 
-export const mapQuestion = (doc: DocumentType<QuestionClass>): Question => {
+export const mapQuestion = (models: Models) => (
+  doc: DocumentType<QuestionClass>,
+): Question => {
   const cls = mapDoc(doc);
   const { id, label, name, rule, optional, questionnaire } = cls;
 
@@ -460,27 +488,29 @@ export const mapQuestion = (doc: DocumentType<QuestionClass>): Question => {
     name,
     rule: rule ?? null,
     optional,
-    questionnaire: createFindQuestionnaire(mapQuestionnaire)(questionnaire),
+    questionnaire: createFind(models.Questionnaire)(mapQuestionnaire(models))(
+      questionnaire,
+    ),
   };
 
   if (cls.boolean) {
-    return mapYesNoQuestionClass(cls, base);
+    return mapYesNoQuestionClass(models, cls, base);
   } else if (cls.string) {
-    return mapStringQuestionClass(cls, base);
+    return mapStringQuestionClass(models, cls, base);
   } else if (cls.strings) {
-    return mapStringsQuestionClass(cls, base);
+    return mapStringsQuestionClass(models, cls, base);
   } else if (cls.multiStrings) {
-    return mapMultiStringsQuestionClass(cls, base);
+    return mapMultiStringsQuestionClass(models, cls, base);
   } else if (cls.number) {
-    return mapNumberQuestionClass(cls, base);
+    return mapNumberQuestionClass(models, cls, base);
   } else if (cls.numbers) {
-    return mapNumbersQuestionClass(cls, base);
+    return mapNumbersQuestionClass(models, cls, base);
   } else if (cls.multiNumbers) {
-    return mapMultiStringsQuestionClass(cls, base);
+    return mapMultiNumbersQuestionClass(models, cls, base);
   } else if (cls.file) {
-    return mapFileQuestionClass(cls, base);
+    return mapFileQuestionClass(models, cls, base);
   } else if (cls.files) {
-    return mapFilesQuestionClass(cls, base);
+    return mapFilesQuestionClass(models, cls, base);
   } else {
     throw new InvalidQuestionError();
   }
