@@ -48,6 +48,7 @@ describe('e2e', () => {
   afterAll(async () => {
     await mongoose.connection.close();
 
+    // * https://www.apollographql.com/docs/apollo-server/api/apollo-server/
     await server.stop();
 
     await mongoServer.stop();
