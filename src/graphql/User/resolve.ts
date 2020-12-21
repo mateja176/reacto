@@ -63,7 +63,7 @@ const users: Query['users'] = async (_, args, context) => {
   }
 
   const userDocs = await context.models.User.find({
-    company: String(context.user.company),
+    company: context.user.company.id,
   })
     .skip(skip)
     .limit(limit);
