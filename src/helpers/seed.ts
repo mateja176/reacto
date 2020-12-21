@@ -27,7 +27,6 @@ export const createCompanyAndUser = async ({
   const userId = mongoose.Types.ObjectId();
 
   const reacto = await CompanyModel.create({
-    _id: mongoose.Types.ObjectId(),
     name: 'Reacto',
     owner: userId,
     pendingUsers: [],
