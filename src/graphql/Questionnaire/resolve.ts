@@ -1,7 +1,9 @@
+import { ApolloError } from 'apollo-server-express';
 import mongoose from 'mongoose';
 import { Mutation, Query } from '../../generated/graphql';
 import {
   CompanyModel,
+  QuestionnaireConfigurationModel,
   QuestionnaireModel,
   UserModel,
 } from '../../services/models';
@@ -44,11 +46,20 @@ const createQuestionnaire: Mutation['createQuestionnaire'] = async (
     throw new NotAuthenticatedError();
   }
 
+  const questionnaireConfigurationDoc = await QuestionnaireConfigurationModel.findById(
+    args.input.questionnaireConfigurationId,
+  );
+
+  if (!questionnaireConfigurationDoc) {
+    throw new ApolloError('Questionnaire configuration not found.');
+  }
+
   const session = await mongoose.startSession();
   session.startTransaction();
 
   const questionnaireDoc = await QuestionnaireModel.create({
     name: args.input.name,
+    type: questionnaireConfigurationDoc.type,
     company: context.user.company.id,
     user: context.user.id,
     inheritedQuestions: [],

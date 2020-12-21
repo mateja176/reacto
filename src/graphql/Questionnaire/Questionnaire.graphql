@@ -1,6 +1,7 @@
 type Questionnaire implements Node & NamedNode {
   id: ID!
   name: String!
+  type: String!
   company: Company!
   user: User!
   inheritedQuestions: [Question!]!
