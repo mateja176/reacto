@@ -74,11 +74,11 @@ const mapYesNoQuestionTemplateClass = (
   cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
 ): YesNoQuestionTemplate => {
-  if (cls.booleanDefault) {
+  if (cls.boolean) {
     return {
       __typename: 'YesNoQuestionTemplate',
       ...base,
-      default: cls.booleanDefault,
+      default: cls.boolean.default ?? null,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -91,11 +91,11 @@ const mapStringQuestionTemplateClass = (
   cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
 ): StringQuestionTemplate => {
-  if (cls.stringDefault) {
+  if (cls.string) {
     return {
       __typename: 'StringQuestionTemplate',
       ...base,
-      default: cls.stringDefault,
+      default: cls.string.default ?? null,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -142,11 +142,11 @@ const mapNumberQuestionTemplateClass = (
   cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
 ): NumberQuestionTemplate => {
-  if (cls.numberDefault) {
+  if (cls.number) {
     return {
       __typename: 'NumberQuestionTemplate',
       ...base,
-      default: cls.numberDefault,
+      default: cls.number.default ?? null,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -193,11 +193,11 @@ const mapFileQuestionTemplateClass = (
   cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
 ): FileQuestionTemplate => {
-  if (cls.fileDefault) {
+  if (cls.file) {
     return {
       __typename: 'FileQuestionTemplate',
       ...base,
-      default: cls.fileDefault ?? null,
+      default: cls.file.default ?? null,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -210,11 +210,11 @@ const mapFilesQuestionTemplateClass = (
   cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
 ): FilesQuestionTemplate => {
-  if (cls.filesDefault) {
+  if (cls.files) {
     return {
       __typename: 'FilesQuestionTemplate',
       ...base,
-      default: cls.filesDefault ?? null,
+      default: cls.files.default ?? null,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -241,23 +241,23 @@ export const mapQuestionTemplate = (
     )(questionnaireConfiguration),
   };
 
-  if (cls.booleanDefault) {
+  if (cls.boolean) {
     return mapYesNoQuestionTemplateClass(cls, base);
-  } else if (cls.stringDefault) {
+  } else if (cls.string) {
     return mapStringQuestionTemplateClass(cls, base);
   } else if (cls.strings) {
     return mapStringsQuestionTemplateClass(cls, base);
   } else if (cls.multiStrings) {
     return mapMultiStringsQuestionTemplateClass(cls, base);
-  } else if (cls.numberDefault) {
+  } else if (cls.number) {
     return mapNumberQuestionTemplateClass(cls, base);
   } else if (cls.numbers) {
     return mapNumbersQuestionTemplateClass(cls, base);
   } else if (cls.multiNumbers) {
     return mapMultiStringsQuestionTemplateClass(cls, base);
-  } else if (cls.fileDefault) {
+  } else if (cls.file) {
     return mapFileQuestionTemplateClass(cls, base);
-  } else if (cls.filesDefault) {
+  } else if (cls.files) {
     return mapFilesQuestionTemplateClass(cls, base);
   } else {
     throw new InvalidQuestionError();
@@ -293,11 +293,11 @@ const mapYesNoQuestionClass = (
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): YesNoQuestion => {
-  if (cls.booleanDefault) {
+  if (cls.boolean) {
     return {
       __typename: 'YesNoQuestion',
       ...base,
-      default: cls.booleanDefault,
+      default: cls.boolean.default ?? null,
       answer: cls.answer ? createFindAnswer(mapYesNoAnswer)(cls.answer) : null,
     };
   } else {
@@ -309,11 +309,11 @@ const mapStringQuestionClass = (
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): StringQuestion => {
-  if (cls.stringDefault) {
+  if (cls.string) {
     return {
       __typename: 'StringQuestion',
       ...base,
-      default: cls.stringDefault,
+      default: cls.string.default ?? null,
       answer: cls.answer ? createFindAnswer(mapStringAnswer)(cls.answer) : null,
     };
   } else {
@@ -365,11 +365,11 @@ const mapNumberQuestionClass = (
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): NumberQuestion => {
-  if (cls.numberDefault) {
+  if (cls.number) {
     return {
       __typename: 'NumberQuestion',
       ...base,
-      default: cls.numberDefault ?? null,
+      default: cls.number.default ?? null,
       answer: cls.answer ? createFindAnswer(mapNumberAnswer)(cls.answer) : null,
     };
   } else {
@@ -421,11 +421,11 @@ const mapFileQuestionClass = (
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): FileQuestion => {
-  if (cls.fileDefault) {
+  if (cls.file) {
     return {
       __typename: 'FileQuestion',
       ...base,
-      default: cls.fileDefault ?? null,
+      default: cls.file.default ?? null,
       answer: cls.answer ? createFindAnswer(mapFileAnswer)(cls.answer) : null,
     };
   } else {
@@ -437,11 +437,11 @@ const mapFilesQuestionClass = (
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
 ): FilesQuestion => {
-  if (cls.filesDefault) {
+  if (cls.files) {
     return {
       __typename: 'FilesQuestion',
       ...base,
-      default: cls.filesDefault ?? null,
+      default: cls.files.default ?? null,
       answer: cls.answer ? createFindAnswer(mapFilesAnswer)(cls.answer) : null,
     };
   } else {
@@ -463,23 +463,23 @@ export const mapQuestion = (doc: DocumentType<QuestionClass>): Question => {
     questionnaire: createFindQuestionnaire(mapQuestionnaire)(questionnaire),
   };
 
-  if (cls.booleanDefault) {
+  if (cls.boolean) {
     return mapYesNoQuestionClass(cls, base);
-  } else if (cls.stringDefault) {
+  } else if (cls.string) {
     return mapStringQuestionClass(cls, base);
   } else if (cls.strings) {
     return mapStringsQuestionClass(cls, base);
   } else if (cls.multiStrings) {
     return mapMultiStringsQuestionClass(cls, base);
-  } else if (cls.numberDefault) {
+  } else if (cls.number) {
     return mapNumberQuestionClass(cls, base);
   } else if (cls.numbers) {
     return mapNumbersQuestionClass(cls, base);
   } else if (cls.multiNumbers) {
     return mapMultiStringsQuestionClass(cls, base);
-  } else if (cls.fileDefault) {
+  } else if (cls.file) {
     return mapFileQuestionClass(cls, base);
-  } else if (cls.filesDefault) {
+  } else if (cls.files) {
     return mapFilesQuestionClass(cls, base);
   } else {
     throw new InvalidQuestionError();

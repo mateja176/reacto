@@ -20,21 +20,21 @@ export class QuestionBase implements Named, Ruled {
   })
   public optional: boolean;
   @prop()
-  public booleanDefault?: boolean;
+  public boolean?: { default?: boolean };
   @prop()
-  public stringDefault?: string;
+  public string?: { default?: string };
   @prop({ comment: 'Select Textual' })
   public strings?: { options: string[]; default?: string };
   @prop({ comment: 'Multi-select Textual' })
   public multiStrings?: { options: string[]; default: string[] };
   @prop()
-  public numberDefault?: number;
+  public number?: { default?: number };
   @prop({ comment: 'Select Numerical' })
   public numbers?: { options: number[]; default: number };
   @prop({ comment: 'Multi-select Numerical' })
   public multiNumbers?: { options: number[]; default: number[] };
   @prop()
-  public fileDefault?: string;
+  public file?: { default?: string };
   @prop()
-  public filesDefault?: string[];
+  public files?: { default?: string[] };
 }
