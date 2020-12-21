@@ -330,7 +330,7 @@ const mapStringsQuestionClass = (
       __typename: 'StringsQuestion',
       ...base,
       default: cls.strings.default ?? null,
-      options: cls.strings.value,
+      options: cls.strings.options,
       answer: cls.answer
         ? createFindAnswer(mapStringsAnswer)(cls.answer)
         : null,
@@ -349,7 +349,7 @@ const mapMultiStringsQuestionClass = (
       __typename: 'MultiStringsQuestion',
       ...base,
       default: cls.multiStrings.default ?? null,
-      options: cls.multiStrings.value,
+      options: cls.multiStrings.options,
       answer: cls.answer
         ? createFindAnswer(mapMultiStringsAnswer)(cls.answer)
         : null,
@@ -386,7 +386,7 @@ const mapNumbersQuestionClass = (
       __typename: 'NumbersQuestion',
       ...base,
       default: cls.numbers.default ?? null,
-      options: cls.numbers.value,
+      options: cls.numbers.options,
       answer: cls.answer
         ? createFindAnswer(mapNumbersAnswer)(cls.answer)
         : null,
@@ -405,7 +405,7 @@ const mapMultiNumbersQuestionClass = (
       __typename: 'MultiNumbersQuestion',
       ...base,
       default: cls.multiNumbers.default ?? null,
-      options: cls.multiNumbers.value,
+      options: cls.multiNumbers.options,
       answer: cls.answer
         ? createFindAnswer(mapMultiNumbersAnswer)(cls.answer)
         : null,
