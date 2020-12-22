@@ -62,9 +62,11 @@ export const mapQuestionTemplateDoc = <Q extends QuestionTemplate>(
       name,
       rule: rule ?? null,
       optional,
-      questionnaireConfiguration: createFind(models.QuestionnaireConfiguration)(
-        mapQuestionnaireConfiguration(models),
-      )(questionnaireConfiguration),
+      questionnaireConfiguration: createFind({
+        Model: models.QuestionnaireConfiguration,
+        map: mapQuestionnaireConfiguration(models),
+        ref: questionnaireConfiguration,
+      }),
     },
     cls,
   );
@@ -236,9 +238,11 @@ export const mapQuestionTemplate = (models: Models) => (
     name,
     rule: rule ?? null,
     optional,
-    questionnaireConfiguration: createFind(models.QuestionnaireConfiguration)(
-      mapQuestionnaireConfiguration(models),
-    )(questionnaireConfiguration),
+    questionnaireConfiguration: createFind({
+      Model: models.QuestionnaireConfiguration,
+      map: mapQuestionnaireConfiguration(models),
+      ref: questionnaireConfiguration,
+    }),
   };
 
   if (cls.boolean) {
@@ -290,9 +294,11 @@ export const mapQuestionDoc = <Q extends Question>(
     name,
     rule: rule ?? null,
     optional,
-    questionnaire: createFind(models.Questionnaire)(mapQuestionnaire(models))(
-      questionnaire,
-    ),
+    questionnaire: createFind({
+      Model: models.Questionnaire,
+      map: mapQuestionnaire(models),
+      ref: questionnaire,
+    }),
   });
 };
 
@@ -307,7 +313,11 @@ const mapYesNoQuestionClass = (
       ...base,
       default: cls.boolean.default ?? null,
       answer: cls.answer
-        ? createFind(models.Answer)(mapYesNoAnswer(models))(cls.answer)
+        ? createFind({
+            Model: models.Answer,
+            map: mapYesNoAnswer(models),
+            ref: cls.answer,
+          })
         : null,
     };
   } else {
@@ -327,7 +337,11 @@ const mapStringQuestionClass = (
       ...base,
       default: cls.string.default ?? null,
       answer: cls.answer
-        ? createFind(models.Answer)(mapStringAnswer(models))(cls.answer)
+        ? createFind({
+            Model: models.Answer,
+            map: mapStringAnswer(models),
+            ref: cls.answer,
+          })
         : null,
     };
   } else {
@@ -348,7 +362,11 @@ const mapStringsQuestionClass = (
       default: cls.strings.default ?? null,
       options: cls.strings.options,
       answer: cls.answer
-        ? createFind(models.Answer)(mapStringsAnswer(models))(cls.answer)
+        ? createFind({
+            Model: models.Answer,
+            map: mapStringsAnswer(models),
+            ref: cls.answer,
+          })
         : null,
     };
   } else {
@@ -369,7 +387,11 @@ const mapMultiStringsQuestionClass = (
       default: cls.multiStrings.default ?? null,
       options: cls.multiStrings.options,
       answer: cls.answer
-        ? createFind(models.Answer)(mapMultiStringsAnswer(models))(cls.answer)
+        ? createFind({
+            Model: models.Answer,
+            map: mapMultiStringsAnswer(models),
+            ref: cls.answer,
+          })
         : null,
     };
   } else {
@@ -391,7 +413,11 @@ const mapNumberQuestionClass = (
       ...base,
       default: cls.number.default ?? null,
       answer: cls.answer
-        ? createFind(models.Answer)(mapNumberAnswer(models))(cls.answer)
+        ? createFind({
+            Model: models.Answer,
+            map: mapNumberAnswer(models),
+            ref: cls.answer,
+          })
         : null,
     };
   } else {
@@ -412,7 +438,11 @@ const mapNumbersQuestionClass = (
       default: cls.numbers.default ?? null,
       options: cls.numbers.options,
       answer: cls.answer
-        ? createFind(models.Answer)(mapNumbersAnswer(models))(cls.answer)
+        ? createFind({
+            Model: models.Answer,
+            map: mapNumbersAnswer(models),
+            ref: cls.answer,
+          })
         : null,
     };
   } else {
@@ -433,7 +463,11 @@ const mapMultiNumbersQuestionClass = (
       default: cls.multiNumbers.default ?? null,
       options: cls.multiNumbers.options,
       answer: cls.answer
-        ? createFind(models.Answer)(mapMultiNumbersAnswer(models))(cls.answer)
+        ? createFind({
+            Model: models.Answer,
+            map: mapMultiNumbersAnswer(models),
+            ref: cls.answer,
+          })
         : null,
     };
   } else {
@@ -455,7 +489,11 @@ const mapFileQuestionClass = (
       ...base,
       default: cls.file.default ?? null,
       answer: cls.answer
-        ? createFind(models.Answer)(mapFileAnswer(models))(cls.answer)
+        ? createFind({
+            Model: models.Answer,
+            map: mapFileAnswer(models),
+            ref: cls.answer,
+          })
         : null,
     };
   } else {
@@ -475,7 +513,11 @@ const mapFilesQuestionClass = (
       ...base,
       default: cls.files.default ?? null,
       answer: cls.answer
-        ? createFind(models.Answer)(mapFilesAnswer(models))(cls.answer)
+        ? createFind({
+            Model: models.Answer,
+            map: mapFilesAnswer(models),
+            ref: cls.answer,
+          })
         : null,
     };
   } else {
@@ -496,9 +538,11 @@ export const mapQuestion = (models: Models) => (
     name,
     rule: rule ?? null,
     optional,
-    questionnaire: createFind(models.Questionnaire)(mapQuestionnaire(models))(
-      questionnaire,
-    ),
+    questionnaire: createFind({
+      Model: models.Questionnaire,
+      map: mapQuestionnaire(models),
+      ref: questionnaire,
+    }),
   };
 
   if (cls.boolean) {

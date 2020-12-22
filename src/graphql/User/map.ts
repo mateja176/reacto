@@ -34,10 +34,16 @@ const getUserBase = (models: Models) => (
     id: cls.id,
     email: cls.email,
     name: cls.name,
-    company: createFind(models.Company)(mapCompany(models))(cls.company),
-    questionnaires: createFindMany(models.Questionnaire)(
-      mapQuestionnaire(models),
-    )(cls.questionnaires),
+    company: createFind({
+      Model: models.Company,
+      map: mapCompany(models),
+      ref: cls.company,
+    }),
+    questionnaires: createFindMany({
+      Model: models.Questionnaire,
+      map: mapQuestionnaire(models),
+      refs: cls.questionnaires,
+    }),
   };
 };
 
@@ -50,9 +56,11 @@ export const mapAdminUserClass = (models: Models) => (
       __typename: 'AdminUser',
       ...base,
       role: AdminRole.admin,
-      questionnaireConfigurations: createFindMany(
-        models.QuestionnaireConfiguration,
-      )(mapQuestionnaireConfiguration(models))(cls.questionnaireConfigurations),
+      questionnaireConfigurations: createFindMany({
+        Model: models.QuestionnaireConfiguration,
+        map: mapQuestionnaireConfiguration(models),
+        refs: cls.questionnaireConfigurations,
+      }),
     };
   } else {
     throw new InvalidUserError();
@@ -66,7 +74,7 @@ export const mapAdminUser = (models: Models) => (
 };
 export const mapRegularUserClass = (
   base: UserBase,
-  _: MapClass<UserClass>,
+  _: MapClass<UserClass>, // eslint-disable-line @typescript-eslint/no-unused-vars
 ): RegularUser => {
   return {
     __typename: 'RegularUser',
@@ -100,6 +108,10 @@ export const mapPendingUser = (models: Models) => (
   return {
     __typename: 'PendingUser',
     ...pendingUser,
-    company: createFind(models.Company)(mapCompany(models))(company),
+    company: createFind({
+      Model: models.Company,
+      map: mapCompany(models),
+      ref: company,
+    }),
   };
 };

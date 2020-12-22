@@ -22,13 +22,25 @@ export const mapCompany = (models: Models) => (
   return {
     __typename: 'Company',
     ...company,
-    owner: createFind(models.User)(mapAdminUser(models))(owner),
-    users: createFindMany(models.User)(mapUser(models))(users),
-    questionnaires: createFindMany(models.Questionnaire)(
-      mapQuestionnaire(models),
-    )(questionnaires),
-    questionnaireConfigurations: createFindMany(
-      models.QuestionnaireConfiguration,
-    )(mapQuestionnaireConfiguration(models))(questionnaireConfigurations),
+    owner: createFind({
+      Model: models.User,
+      map: mapAdminUser(models),
+      ref: owner,
+    }),
+    users: createFindMany({
+      Model: models.User,
+      map: mapUser(models),
+      refs: users,
+    }),
+    questionnaires: createFindMany({
+      Model: models.Questionnaire,
+      map: mapQuestionnaire(models),
+      refs: questionnaires,
+    }),
+    questionnaireConfigurations: createFindMany({
+      Model: models.QuestionnaireConfiguration,
+      map: mapQuestionnaireConfiguration(models),
+      refs: questionnaireConfigurations,
+    }),
   };
 };

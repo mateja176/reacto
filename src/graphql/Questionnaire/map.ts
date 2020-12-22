@@ -24,12 +24,22 @@ export const mapQuestionnaire = (models: Models) => (
   return {
     __typename: 'Questionnaire',
     ...questionnaire,
-    company: createFind(models.Company)(mapCompany(models))(company),
-    user: createFind(models.User)(mapUser(models))(user),
-    inheritedQuestions: createFindMany(models.Question)(mapQuestion(models))(
-      inheritedQuestions,
-    ),
-    questions: createFindMany(models.Question)(mapQuestion(models))(questions),
+    company: createFind({
+      Model: models.Company,
+      map: mapCompany(models),
+      ref: company,
+    }),
+    user: createFind({ Model: models.User, map: mapUser(models), ref: user }),
+    inheritedQuestions: createFindMany({
+      Model: models.Question,
+      map: mapQuestion(models),
+      refs: inheritedQuestions,
+    }),
+    questions: createFindMany({
+      Model: models.Question,
+      map: mapQuestion(models),
+      refs: questions,
+    }),
   };
 };
 

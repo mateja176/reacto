@@ -52,9 +52,11 @@ export const mapYesNoAnswer = mapAnswerDoc(
       return {
         __typename: 'YesNoAnswer',
         ...base,
-        question: createFind(models.Question)(mapYesNoQuestion(models))(
-          question,
-        ),
+        question: createFind({
+          Model: models.Question,
+          map: mapYesNoQuestion(models),
+          ref: question,
+        }),
         answer: boolean,
       };
     } else {
@@ -70,9 +72,11 @@ export const mapStringAnswer = mapAnswerDoc(
       return {
         __typename: 'StringAnswer',
         ...base,
-        question: createFind(models.Question)(mapStringQuestion(models))(
-          question,
-        ),
+        question: createFind({
+          Model: models.Question,
+          map: mapStringQuestion(models),
+          ref: question,
+        }),
         answer: string,
       };
     } else {
@@ -88,9 +92,11 @@ export const mapStringsAnswer = mapAnswerDoc(
       return {
         __typename: 'StringsAnswer',
         ...base,
-        question: createFind(models.Question)(mapStringsQuestion(models))(
-          question,
-        ),
+        question: createFind({
+          Model: models.Question,
+          map: mapStringsQuestion(models),
+          ref: question,
+        }),
         answer: strings,
       };
     } else {
@@ -106,9 +112,11 @@ export const mapMultiStringsAnswer = mapAnswerDoc(
       return {
         __typename: 'MultiStringsAnswer',
         ...base,
-        question: createFind(models.Question)(mapMultiStringsQuestion(models))(
-          question,
-        ),
+        question: createFind({
+          Model: models.Question,
+          map: mapMultiStringsQuestion(models),
+          ref: question,
+        }),
         answer: multiStrings,
       };
     } else {
@@ -124,9 +132,11 @@ export const mapNumberAnswer = mapAnswerDoc(
       return {
         __typename: 'NumberAnswer',
         ...base,
-        question: createFind(models.Question)(mapNumberQuestion(models))(
-          question,
-        ),
+        question: createFind({
+          Model: models.Question,
+          map: mapNumberQuestion(models),
+          ref: question,
+        }),
         answer: number,
       };
     } else {
@@ -142,9 +152,11 @@ export const mapNumbersAnswer = mapAnswerDoc(
       return {
         __typename: 'NumbersAnswer',
         ...base,
-        question: createFind(models.Question)(mapNumbersQuestion(models))(
-          question,
-        ),
+        question: createFind({
+          Model: models.Question,
+          map: mapNumbersQuestion(models),
+          ref: question,
+        }),
         answer: numbers,
       };
     } else {
@@ -160,9 +172,11 @@ export const mapMultiNumbersAnswer = mapAnswerDoc(
       return {
         __typename: 'MultiNumbersAnswer',
         ...base,
-        question: createFind(models.Question)(mapMultiNumbersQuestion(models))(
-          question,
-        ),
+        question: createFind({
+          Model: models.Question,
+          map: mapMultiNumbersQuestion(models),
+          ref: question,
+        }),
         answer: multiNumbers,
       };
     } else {
@@ -178,9 +192,11 @@ export const mapFileAnswer = mapAnswerDoc(
       return {
         __typename: 'FileAnswer',
         ...base,
-        question: createFind(models.Question)(mapFileQuestion(models))(
-          question,
-        ),
+        question: createFind({
+          Model: models.Question,
+          map: mapFileQuestion(models),
+          ref: question,
+        }),
         answer: file,
       };
     } else {
@@ -196,9 +212,11 @@ export const mapFilesAnswer = mapAnswerDoc(
       return {
         __typename: 'FilesAnswer',
         ...base,
-        question: createFind(models.Question)(mapFilesQuestion(models))(
-          question,
-        ),
+        question: createFind({
+          Model: models.Question,
+          map: mapFilesQuestion(models),
+          ref: question,
+        }),
         answer: files,
       };
     } else {

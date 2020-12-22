@@ -21,10 +21,16 @@ export const mapQuestionnaireConfiguration = (models: Models) => (
   return {
     __typename: 'QuestionnaireConfiguration',
     ...questionnaireConfiguration,
-    company: createFind(models.Company)(mapCompany(models))(company),
-    user: createFind(models.User)(mapUser(models))(user),
-    questionTemplates: createFindMany(models.QuestionTemplate)(
-      mapQuestionTemplate(models),
-    )(questionTemplates),
+    company: createFind({
+      Model: models.Company,
+      map: mapCompany(models),
+      ref: company,
+    }),
+    user: createFind({ Model: models.User, map: mapUser(models), ref: user }),
+    questionTemplates: createFindMany({
+      Model: models.QuestionTemplate,
+      map: mapQuestionTemplate(models),
+      refs: questionTemplates,
+    }),
   };
 };
