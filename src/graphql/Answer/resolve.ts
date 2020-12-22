@@ -1,6 +1,5 @@
-import { DocumentType } from '@typegoose/typegoose';
+import { DocumentType, mongoose } from '@typegoose/typegoose';
 import { ApolloError } from 'apollo-server-express';
-import mongoose from 'mongoose';
 import { Context } from 'vm';
 import { AnswerClass } from '../../classes/Answer/Answer';
 import { QuestionClass } from '../../classes/Question/Question';

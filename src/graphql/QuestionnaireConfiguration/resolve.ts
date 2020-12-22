@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import { mongoose } from '@typegoose/typegoose';
 import { AdminRole, Mutation, Query } from '../../generated/graphql';
 import { Forbidden, NotAuthenticatedError } from '../../utils/errors';
 import { filterInputSchema, ValidatedFilterInput } from '../../utils/validate';

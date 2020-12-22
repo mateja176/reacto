@@ -1,6 +1,6 @@
+import { mongoose } from '@typegoose/typegoose';
 import { ApolloError, AuthenticationError } from 'apollo-server-express';
 import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
 import { join } from 'path';
 import { v4 } from 'uuid';
 import mailgun from '../../config/mailgun';

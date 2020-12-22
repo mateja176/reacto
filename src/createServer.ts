@@ -1,3 +1,4 @@
+import { mongoose } from '@typegoose/typegoose';
 import {
   ApolloServer,
   gql,
@@ -7,7 +8,6 @@ import {
 import express from 'express';
 import jwt from 'express-jwt';
 import { promises as fs } from 'fs';
-import mongoose from 'mongoose';
 import { join } from 'path';
 import 'reflect-metadata';
 import { endpoint, path } from './config/config';

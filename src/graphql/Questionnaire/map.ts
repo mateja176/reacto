@@ -1,5 +1,4 @@
 import { DocumentType, mongoose } from '@typegoose/typegoose';
-import { CreateQuery } from 'mongoose';
 import { QuestionClass } from '../../classes/Question/Question';
 import { QuestionTemplateClass } from '../../classes/Question/QuestionTemplate';
 import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
@@ -36,7 +35,9 @@ export const mapQuestionnaire = (models: Models) => (
 
 export const questionTemplateToQuestion = (
   questionnaireId: mongoose.Types.ObjectId,
-) => (doc: DocumentType<QuestionTemplateClass>): CreateQuery<QuestionClass> => {
+) => (
+  doc: DocumentType<QuestionTemplateClass>,
+): mongoose.CreateQuery<QuestionClass> => {
   return {
     name: doc.name,
     label: doc.label,

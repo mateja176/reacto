@@ -1,7 +1,7 @@
+import { mongoose } from '@typegoose/typegoose';
 import { ApolloServer } from 'apollo-server-express';
 import { GraphQLClient } from 'graphql-request';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
 import { pick } from 'ramda';
 import { v4 } from 'uuid';
 import { Role as UserRole } from '../classes/User/User';

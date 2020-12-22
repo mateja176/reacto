@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import { mongoose } from '@typegoose/typegoose';
 import { Context } from '../../Context';
 import {
   AdminRole,

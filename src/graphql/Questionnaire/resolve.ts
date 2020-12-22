@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import { mongoose } from '@typegoose/typegoose';
 import { Mutation, Query } from '../../generated/graphql';
 import {
   NotAuthenticatedError,

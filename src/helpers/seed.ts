@@ -1,6 +1,6 @@
+import { mongoose } from '@typegoose/typegoose';
 import { CommanderStatic } from 'commander';
 import Joi from 'joi';
-import mongoose from 'mongoose';
 import { Role } from '../classes/User/User';
 import { mongodbConfig } from '../config/mongodb';
 import env from '../services/env';
