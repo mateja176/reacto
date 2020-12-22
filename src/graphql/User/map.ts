@@ -42,8 +42,8 @@ const getUserBase = (models: Models) => (
 };
 
 export const mapAdminUserClass = (models: Models) => (
-  cls: MapClass<UserClass>,
   base: UserBase,
+  cls: MapClass<UserClass>,
 ): AdminUser => {
   if (cls.questionnaireConfigurations) {
     return {
@@ -62,11 +62,11 @@ export const mapAdminUser = (models: Models) => (
   doc: DocumentType<UserClass>,
 ): AdminUser => {
   const cls = mapDoc(doc);
-  return mapAdminUserClass(models)(cls, getUserBase(models)(cls));
+  return mapAdminUserClass(models)(getUserBase(models)(cls), cls);
 };
 export const mapRegularUserClass = (
-  _: MapClass<UserClass>,
   base: UserBase,
+  _: MapClass<UserClass>,
 ): RegularUser => {
   return {
     __typename: 'RegularUser',
@@ -79,9 +79,9 @@ export const mapUserClass = (models: Models) => (
 ): User => {
   const base: UserBase = getUserBase(models)(cls);
   if (cls.role === Role.admin) {
-    return mapAdminUserClass(models)(cls, base);
+    return mapAdminUserClass(models)(base, cls);
   } else {
-    return mapRegularUserClass(cls, base);
+    return mapRegularUserClass(base, cls);
   }
 };
 export const mapUser = (models: Models) => (

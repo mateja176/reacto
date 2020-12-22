@@ -51,25 +51,28 @@ type QuestionTemplateBase = Base &
   Pick<QuestionTemplate, 'questionnaireConfiguration'>;
 
 export const mapQuestionTemplateDoc = <Q extends QuestionTemplate>(
-  map: (cls: MapClass<QuestionTemplateClass>, base: QuestionTemplateBase) => Q,
+  map: (base: QuestionTemplateBase, cls: MapClass<QuestionTemplateClass>) => Q,
 ) => (models: Models) => (doc: DocumentType<QuestionTemplateClass>): Q => {
   const cls = mapDoc(doc);
   const { id, label, name, rule, optional, questionnaireConfiguration } = cls;
-  return map(cls, {
-    id,
-    label,
-    name,
-    rule: rule ?? null,
-    optional,
-    questionnaireConfiguration: createFind(models.QuestionnaireConfiguration)(
-      mapQuestionnaireConfiguration(models),
-    )(questionnaireConfiguration),
-  });
+  return map(
+    {
+      id,
+      label,
+      name,
+      rule: rule ?? null,
+      optional,
+      questionnaireConfiguration: createFind(models.QuestionnaireConfiguration)(
+        mapQuestionnaireConfiguration(models),
+      )(questionnaireConfiguration),
+    },
+    cls,
+  );
 };
 
 const mapYesNoQuestionTemplateClass = (
-  cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
+  cls: MapClass<QuestionTemplateClass>,
 ): YesNoQuestionTemplate => {
   if (cls.boolean) {
     return {
@@ -85,8 +88,8 @@ export const mapYesNoQuestionTemplate = mapQuestionTemplateDoc(
   mapYesNoQuestionTemplateClass,
 );
 const mapStringQuestionTemplateClass = (
-  cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
+  cls: MapClass<QuestionTemplateClass>,
 ): StringQuestionTemplate => {
   if (cls.string) {
     return {
@@ -102,8 +105,8 @@ export const mapStringQuestionTemplate = mapQuestionTemplateDoc(
   mapStringQuestionTemplateClass,
 );
 const mapStringsQuestionTemplateClass = (
-  cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
+  cls: MapClass<QuestionTemplateClass>,
 ): StringsQuestionTemplate => {
   if (cls.strings) {
     return {
@@ -119,8 +122,8 @@ export const mapStringsQuestionTemplate = mapQuestionTemplateDoc(
   mapStringsQuestionTemplateClass,
 );
 const mapMultiStringsQuestionTemplateClass = (
-  cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
+  cls: MapClass<QuestionTemplateClass>,
 ): MultiStringsQuestionTemplate => {
   if (cls.multiStrings) {
     return {
@@ -136,8 +139,8 @@ export const mapMultiStringsQuestionTemplate = mapQuestionTemplateDoc(
   mapMultiStringsQuestionTemplateClass,
 );
 const mapNumberQuestionTemplateClass = (
-  cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
+  cls: MapClass<QuestionTemplateClass>,
 ): NumberQuestionTemplate => {
   if (cls.number) {
     return {
@@ -153,8 +156,8 @@ export const mapNumberQuestionTemplate = mapQuestionTemplateDoc(
   mapNumberQuestionTemplateClass,
 );
 const mapNumbersQuestionTemplateClass = (
-  cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
+  cls: MapClass<QuestionTemplateClass>,
 ): NumbersQuestionTemplate => {
   if (cls.numbers) {
     return {
@@ -170,8 +173,8 @@ export const mapNumbersQuestionTemplate = mapQuestionTemplateDoc(
   mapNumbersQuestionTemplateClass,
 );
 const mapMultiNumbersQuestionTemplateClass = (
-  cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
+  cls: MapClass<QuestionTemplateClass>,
 ): MultiNumbersQuestionTemplate => {
   if (cls.multiNumbers) {
     return {
@@ -187,8 +190,8 @@ export const mapMultiNumbersQuestionTemplate = mapQuestionTemplateDoc(
   mapMultiNumbersQuestionTemplateClass,
 );
 const mapFileQuestionTemplateClass = (
-  cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
+  cls: MapClass<QuestionTemplateClass>,
 ): FileQuestionTemplate => {
   if (cls.file) {
     return {
@@ -204,8 +207,8 @@ export const mapFileQuestionTemplate = mapQuestionTemplateDoc(
   mapFileQuestionTemplateClass,
 );
 const mapFilesQuestionTemplateClass = (
-  cls: MapClass<QuestionTemplateClass>,
   base: QuestionTemplateBase,
+  cls: MapClass<QuestionTemplateClass>,
 ): FilesQuestionTemplate => {
   if (cls.files) {
     return {
@@ -239,23 +242,23 @@ export const mapQuestionTemplate = (models: Models) => (
   };
 
   if (cls.boolean) {
-    return mapYesNoQuestionTemplateClass(cls, base);
+    return mapYesNoQuestionTemplateClass(base, cls);
   } else if (cls.string) {
-    return mapStringQuestionTemplateClass(cls, base);
+    return mapStringQuestionTemplateClass(base, cls);
   } else if (cls.strings) {
-    return mapStringsQuestionTemplateClass(cls, base);
+    return mapStringsQuestionTemplateClass(base, cls);
   } else if (cls.multiStrings) {
-    return mapMultiStringsQuestionTemplateClass(cls, base);
+    return mapMultiStringsQuestionTemplateClass(base, cls);
   } else if (cls.number) {
-    return mapNumberQuestionTemplateClass(cls, base);
+    return mapNumberQuestionTemplateClass(base, cls);
   } else if (cls.numbers) {
-    return mapNumbersQuestionTemplateClass(cls, base);
+    return mapNumbersQuestionTemplateClass(base, cls);
   } else if (cls.multiNumbers) {
-    return mapMultiStringsQuestionTemplateClass(cls, base);
+    return mapMultiStringsQuestionTemplateClass(base, cls);
   } else if (cls.file) {
-    return mapFileQuestionTemplateClass(cls, base);
+    return mapFileQuestionTemplateClass(base, cls);
   } else if (cls.files) {
-    return mapFilesQuestionTemplateClass(cls, base);
+    return mapFilesQuestionTemplateClass(base, cls);
   } else {
     throw new InvalidQuestionTemplateError();
   }
