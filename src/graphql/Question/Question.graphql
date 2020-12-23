@@ -176,6 +176,80 @@ input CreateFilesQuestionInput {
   questionnaireId: ID!
   default: [String!]
 }
+
+input UpdateYesNoQuestionInput {
+  id: ID!
+  name: String
+  label: String
+  rule: String
+  optional: Boolean
+  default: Boolean
+}
+input UpdateStringQuestionInput {
+  id: ID!
+  name: String
+  label: String
+  rule: String
+  optional: Boolean
+  default: String
+}
+input UpdateStringsQuestionInput {
+  id: ID!
+  name: String
+  label: String
+  rule: String
+  optional: Boolean
+  default: String
+}
+input UpdateMultiStringsQuestionInput {
+  id: ID!
+  name: String
+  label: String
+  rule: String
+  optional: Boolean
+  default: [String!]
+}
+input UpdateNumberQuestionInput {
+  id: ID!
+  name: String
+  label: String
+  rule: String
+  optional: Boolean
+  default: Float
+}
+input UpdateNumbersQuestionInput {
+  id: ID!
+  name: String
+  label: String
+  rule: String
+  optional: Boolean
+  default: Float
+}
+input UpdateMultiNumbersQuestionInput {
+  id: ID!
+  name: String
+  label: String
+  rule: String
+  optional: Boolean
+  default: [Float!]
+}
+input UpdateFileQuestionInput {
+  id: ID!
+  name: String
+  label: String
+  rule: String
+  optional: Boolean
+  default: String
+}
+input UpdateFilesQuestionInput {
+  id: ID!
+  name: String
+  label: String
+  rule: String
+  optional: Boolean
+  default: [String!]
+}
+
 type Mutation {
   createYesNoQuestion(input: CreateYesNoQuestionInput!): YesNoQuestion!
   createStringQuestion(input: CreateStringQuestionInput!): StringQuestion!
@@ -190,4 +264,18 @@ type Mutation {
   ): MultiNumbersQuestion!
   createFileQuestion(input: CreateFileQuestionInput!): FileQuestion!
   createFilesQuestion(input: CreateFilesQuestionInput!): FilesQuestion!
+
+  updateYesNoQuestion(input: UpdateYesNoQuestionInput!): YesNoQuestion!
+  updateStringQuestion(input: UpdateStringQuestionInput!): StringQuestion!
+  updateStringsQuestion(input: UpdateStringsQuestionInput!): StringsQuestion!
+  updateMultiStringsQuestion(
+    input: UpdateMultiStringsQuestionInput!
+  ): MultiStringsQuestion!
+  updateNumberQuestion(input: UpdateNumberQuestionInput!): NumberQuestion!
+  updateNumbersQuestion(input: UpdateNumbersQuestionInput!): NumbersQuestion!
+  updateMultiNumbersQuestion(
+    input: UpdateMultiNumbersQuestionInput!
+  ): MultiNumbersQuestion!
+  updateFileQuestion(input: UpdateFileQuestionInput!): FileQuestion!
+  updateFilesQuestion(input: UpdateFilesQuestionInput!): FilesQuestion!
 }
