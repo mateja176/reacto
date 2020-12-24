@@ -19,6 +19,15 @@ import {
   CreateYesNoQuestionInput,
   CreateYesNoQuestionTemplateInput,
   QuestionBase,
+  UpdateFileQuestionInput,
+  UpdateFilesQuestionInput,
+  UpdateMultiNumbersQuestionInput,
+  UpdateMultiStringsQuestionInput,
+  UpdateNumberQuestionInput,
+  UpdateNumbersQuestionInput,
+  UpdateStringQuestionInput,
+  UpdateStringsQuestionInput,
+  UpdateYesNoQuestionInput,
 } from '../../generated/graphql';
 import { idSchema } from '../../utils/validate';
 
@@ -27,6 +36,7 @@ const baseSchemaMap: joi.SchemaMap<Base> = {
   name: joi.string().required(),
   label: joi.string().required(),
   optional: joi.boolean().required(),
+  rule: joi.string(), // TODO create parser
 };
 
 const createQuestionTemplateBaseSchemaMap: joi.SchemaMap<
@@ -34,7 +44,6 @@ const createQuestionTemplateBaseSchemaMap: joi.SchemaMap<
 > = {
   ...baseSchemaMap,
   questionnaireConfigurationId: idSchema,
-  rule: joi.string(), // TODO create parser
 };
 
 export const createYesNoQuestionTemplateSchema = joi
@@ -153,6 +162,71 @@ export const createFileQuestionSchema = joi
 export const createFilesQuestionSchema = joi
   .object<CreateFilesQuestionInput>({
     ...createQuestionBaseSchemaMap,
+    default: joi.array().items(joi.string()),
+  })
+  .required();
+
+const updateQuestionBaseSchemaMap: joi.SchemaMap<
+  Omit<UpdateYesNoQuestionInput, 'default'>
+> = {
+  id: joi.string(),
+  name: joi.string(),
+  label: joi.string(),
+  optional: joi.boolean(),
+  rule: joi.string(), // TODO create parser
+};
+
+export const updateYesNoQuestionSchema = joi
+  .object<UpdateYesNoQuestionInput>({
+    ...updateQuestionBaseSchemaMap,
+    default: joi.boolean(),
+  })
+  .required();
+export const updateStringQuestionSchema = joi
+  .object<UpdateStringQuestionInput>({
+    ...updateQuestionBaseSchemaMap,
+    default: joi.string(),
+  })
+  .required();
+export const updateStringsQuestionSchema = joi
+  .object<UpdateStringsQuestionInput>({
+    ...updateQuestionBaseSchemaMap,
+    default: joi.string(),
+  })
+  .required();
+export const updateMultiStringsQuestionSchema = joi
+  .object<UpdateMultiStringsQuestionInput>({
+    ...updateQuestionBaseSchemaMap,
+    default: joi.array().items(joi.string()),
+  })
+  .required();
+export const updateNumberQuestionSchema = joi
+  .object<UpdateNumberQuestionInput>({
+    ...updateQuestionBaseSchemaMap,
+    default: joi.number(),
+  })
+  .required();
+export const updateNumbersQuestionSchema = joi
+  .object<UpdateNumbersQuestionInput>({
+    ...updateQuestionBaseSchemaMap,
+    default: joi.number(),
+  })
+  .required();
+export const updateMultiNumbersQuestionSchema = joi
+  .object<UpdateMultiNumbersQuestionInput>({
+    ...updateQuestionBaseSchemaMap,
+    default: joi.array().items(joi.number().required()),
+  })
+  .required();
+export const updateFileQuestionSchema = joi
+  .object<UpdateFileQuestionInput>({
+    ...updateQuestionBaseSchemaMap,
+    default: joi.string(),
+  })
+  .required();
+export const updateFilesQuestionSchema = joi
+  .object<UpdateFilesQuestionInput>({
+    ...updateQuestionBaseSchemaMap,
     default: joi.array().items(joi.string()),
   })
   .required();

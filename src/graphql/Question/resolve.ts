@@ -1,4 +1,7 @@
-import { mongoose } from '@typegoose/typegoose';
+import { DocumentType, mongoose } from '@typegoose/typegoose';
+import { isNil } from 'ramda';
+import { QuestionClass } from '../../classes/Question/Question';
+import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
 import { Context } from '../../Context';
 import {
   AdminRole,
@@ -37,6 +40,15 @@ import {
   StringQuestionTemplate,
   StringsQuestion,
   StringsQuestionTemplate,
+  UpdateFileQuestionInput,
+  UpdateFilesQuestionInput,
+  UpdateMultiNumbersQuestionInput,
+  UpdateMultiStringsQuestionInput,
+  UpdateNumberQuestionInput,
+  UpdateNumbersQuestionInput,
+  UpdateStringQuestionInput,
+  UpdateStringsQuestionInput,
+  UpdateYesNoQuestionInput,
   YesNoQuestion,
   YesNoQuestionTemplate,
 } from '../../generated/graphql';
@@ -87,6 +99,14 @@ import {
   createStringsQuestionTemplateSchema,
   createYesNoQuestionSchema,
   createYesNoQuestionTemplateSchema,
+  updateFileQuestionSchema,
+  updateFilesQuestionSchema,
+  updateMultiNumbersQuestionSchema,
+  updateMultiStringsQuestionSchema,
+  updateNumberQuestionSchema,
+  updateNumbersQuestionSchema,
+  updateStringsQuestionSchema,
+  updateYesNoQuestionSchema,
 } from './validate';
 
 const questionTemplates: Query['questionTemplates'] = async (
@@ -388,6 +408,129 @@ export const createCreateQuestion = <
   return output;
 };
 
+type YesNoUpdateQuestionConfig = [
+  typeof updateYesNoQuestionSchema,
+  typeof mapYesNoQuestion,
+  UpdateYesNoQuestionInput,
+  YesNoQuestion,
+];
+type StringUpdateQuestionConfig = [
+  typeof updateStringsQuestionSchema,
+  typeof mapStringQuestion,
+  UpdateStringQuestionInput,
+  StringQuestion,
+];
+type StringsUpdateQuestionConfig = [
+  typeof updateStringsQuestionSchema,
+  typeof mapStringsQuestion,
+  UpdateStringsQuestionInput,
+  StringsQuestion,
+];
+type MultiStringsUpdateQuestionConfig = [
+  typeof updateMultiStringsQuestionSchema,
+  typeof mapMultiStringsQuestion,
+  UpdateMultiStringsQuestionInput,
+  MultiStringsQuestion,
+];
+type NumberUpdateQuestionConfig = [
+  typeof updateNumberQuestionSchema,
+  typeof mapNumberQuestion,
+  UpdateNumberQuestionInput,
+  NumberQuestion,
+];
+type NumbersUpdateQuestionConfig = [
+  typeof updateNumbersQuestionSchema,
+  typeof mapNumbersQuestion,
+  UpdateNumbersQuestionInput,
+  NumbersQuestion,
+];
+type MultiNumbersUpdateQuestionConfig = [
+  typeof updateMultiNumbersQuestionSchema,
+  typeof mapMultiNumbersQuestion,
+  UpdateMultiNumbersQuestionInput,
+  MultiNumbersQuestion,
+];
+type FileUpdateQuestionConfig = [
+  typeof updateFileQuestionSchema,
+  typeof mapFileQuestion,
+  UpdateFileQuestionInput,
+  FileQuestion,
+];
+type FilesUpdateQuestionConfig = [
+  typeof updateFilesQuestionSchema,
+  typeof mapFilesQuestion,
+  UpdateFilesQuestionInput,
+  FilesQuestion,
+];
+
+export const createUpdateQuestion = <
+  Config extends
+    | YesNoUpdateQuestionConfig
+    | StringUpdateQuestionConfig
+    | StringsUpdateQuestionConfig
+    | MultiStringsUpdateQuestionConfig
+    | NumberUpdateQuestionConfig
+    | NumbersUpdateQuestionConfig
+    | MultiNumbersUpdateQuestionConfig
+    | FileUpdateQuestionConfig
+    | FilesUpdateQuestionConfig
+>(
+  schema: Config[0],
+  map: Config[1],
+) => async (
+  _: never,
+  args: {
+    input: Config[2];
+  },
+  context: Context,
+): Promise<Config[3]> => {
+  await schema.validateAsync(args.input);
+
+  const {
+    input: { id, ...questionBase },
+  } = args;
+
+  if (!context.user) {
+    throw new NotAuthenticatedError();
+  }
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  const doc = (await context.models.Question.findOneAndUpdate(
+    { _id: id },
+    Object.fromEntries<string, typeof questionBase[keyof typeof questionBase]>(
+      Object.entries(questionBase).filter(
+        (entry): entry is [typeof entry[0], NonNullable<typeof entry[1]>] =>
+          !isNil(entry[1]),
+      ),
+    ),
+  ).populate('questionnaire')) as DocumentType<
+    Omit<QuestionClass, 'questionnaire'> & { questionnaire: QuestionnaireClass }
+  >;
+
+  if (!doc) {
+    throw new NotFoundError();
+  }
+
+  if (
+    !(
+      (context.user.role === AdminRole.admin &&
+        String(doc.questionnaire.company) === context.user.company.id) ||
+      String(doc.questionnaire.user) === context.user.id
+    )
+  ) {
+    throw new Forbidden();
+  }
+
+  await session.commitTransaction();
+  session.endSession();
+
+  const output = map(context.models)(doc);
+
+  return output;
+};
+
 export const questionMutation = {
   createYesNoQuestion: createCreateQuestion<YesNoQuestionConfig>(
     createYesNoQuestionSchema,
@@ -422,6 +565,42 @@ export const questionMutation = {
     mapFileQuestion,
   ),
   createFilesQuestion: createCreateQuestion<FilesQuestionConfig>(
+    createFilesQuestionSchema,
+    mapFilesQuestion,
+  ),
+  updateYesNoQuestion: createUpdateQuestion<YesNoUpdateQuestionConfig>(
+    createYesNoQuestionSchema,
+    mapYesNoQuestion,
+  ),
+  updateStringQuestion: createUpdateQuestion<StringUpdateQuestionConfig>(
+    createStringQuestionSchema,
+    mapStringQuestion,
+  ),
+  updateStringsQuestion: createUpdateQuestion<StringsUpdateQuestionConfig>(
+    createStringsQuestionSchema,
+    mapStringsQuestion,
+  ),
+  updateMultiStringsQuestion: createUpdateQuestion<MultiStringsUpdateQuestionConfig>(
+    createMultiStringsQuestionSchema,
+    mapMultiStringsQuestion,
+  ),
+  updateNumberQuestion: createUpdateQuestion<NumberUpdateQuestionConfig>(
+    createNumberQuestionSchema,
+    mapNumberQuestion,
+  ),
+  updateNumbersQuestion: createUpdateQuestion<NumbersUpdateQuestionConfig>(
+    createNumbersQuestionSchema,
+    mapNumbersQuestion,
+  ),
+  updateMultiNumbersQuestion: createUpdateQuestion<MultiNumbersUpdateQuestionConfig>(
+    createMultiNumbersQuestionSchema,
+    mapMultiNumbersQuestion,
+  ),
+  updateFileQuestion: createUpdateQuestion<FileUpdateQuestionConfig>(
+    createFileQuestionSchema,
+    mapFileQuestion,
+  ),
+  updateFilesQuestion: createUpdateQuestion<FilesUpdateQuestionConfig>(
     createFilesQuestionSchema,
     mapFilesQuestion,
   ),
