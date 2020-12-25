@@ -8,15 +8,20 @@ type Questionnaire implements Node & NamedNode {
   questions: [Question!]!
 }
 
-input CreateQuestionnaireInput {
-  name: String!
-  questionnaireConfigurationId: ID!
-}
-
 type Query {
   questionnaires(input: FilterInput!): [Questionnaire!]!
 }
 
+input CreateQuestionnaireInput {
+  name: String!
+  questionnaireConfigurationId: ID!
+}
+input UpdateQuestionnaireInput {
+  id: ID!
+  name: String!
+}
+
 type Mutation {
   createQuestionnaire(input: CreateQuestionnaireInput!): Questionnaire!
+  updateQuestionnaire(input: UpdateQuestionnaireInput!): Questionnaire!
 }

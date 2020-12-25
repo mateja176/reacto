@@ -1,12 +1,17 @@
 import { mongoose } from '@typegoose/typegoose';
-import { Mutation, Query } from '../../generated/graphql';
+import { AdminRole, Mutation, Query } from '../../generated/graphql';
 import {
+  Forbidden,
   NotAuthenticatedError,
+  NotFoundError,
   QuestionnaireConfigurationNotFound,
 } from '../../utils/errors';
 import { filterInputSchema, ValidatedFilterInput } from '../../utils/validate';
 import { mapQuestionnaire, questionTemplateToQuestion } from './map';
-import { createQuestionnaireInputSchema } from './validate';
+import {
+  createQuestionnaireInputSchema,
+  updateQuestionnaireInputSchema,
+} from './validate';
 
 const questionnaires: Query['questionnaires'] = async (_, args, context) => {
   const {
@@ -88,6 +93,42 @@ const createQuestionnaire: Mutation['createQuestionnaire'] = async (
   return mapQuestionnaire(context.models)(questionnaireDoc);
 };
 
+const updateQuestionnaire: Mutation['updateQuestionnaire'] = async (
+  _,
+  args,
+  context,
+) => {
+  await updateQuestionnaireInputSchema.validateAsync(args.input);
+
+  if (!context.user) {
+    throw new NotAuthenticatedError();
+  }
+  if (
+    !(
+      context.user.role === AdminRole.admin || context.user.id === args.input.id
+    )
+  ) {
+    throw new Forbidden();
+  }
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  const questionnaireDoc = await context.models.Questionnaire.findOneAndUpdate(
+    { _id: args.input.id },
+    {
+      name: args.input.name,
+    },
+  );
+
+  if (!questionnaireDoc) {
+    throw new NotFoundError();
+  }
+
+  return mapQuestionnaire(context.models)(questionnaireDoc);
+};
+
 export const questionnaireMutation = {
   createQuestionnaire,
+  updateQuestionnaire,
 };
