@@ -31,6 +31,7 @@ import {
   MultiNumbersQuestionTemplate,
   MultiStringsQuestion,
   MultiStringsQuestionTemplate,
+  Mutation,
   NumberQuestion,
   NumberQuestionTemplate,
   NumbersQuestion,
@@ -58,7 +59,11 @@ import {
   NotFoundError,
   QuestionnaireConfigurationNotFound,
 } from '../../utils/errors';
-import { filterInputSchema, ValidatedFilterInput } from '../../utils/validate';
+import {
+  filterInputSchema,
+  idSchema,
+  ValidatedFilterInput,
+} from '../../utils/validate';
 import {
   mapFileQuestion,
   mapFileQuestionTemplate,
@@ -531,6 +536,41 @@ export const createUpdateQuestion = <
   return output;
 };
 
+const deleteQuestion: Mutation['deleteQuestion'] = async (_, args, context) => {
+  await idSchema.validateAsync(args.id);
+
+  if (!context.user) {
+    throw new NotAuthenticatedError();
+  }
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  const questionDoc = (await context.models.Question.findByIdAndDelete(
+    args.id,
+  )) as DocumentType<
+    Omit<QuestionClass, 'questionnaire'> & { questionnaire: QuestionnaireClass }
+  >;
+
+  if (!questionDoc) {
+    throw new NotFoundError();
+  }
+
+  if (
+    !(
+      context.user.role === AdminRole.admin ||
+      context.user.id === String(questionDoc.questionnaire.user)
+    )
+  ) {
+    throw new Forbidden();
+  }
+
+  await session.commitTransaction();
+  session.endSession();
+
+  return args.id;
+};
+
 export const questionMutation = {
   createYesNoQuestion: createCreateQuestion<YesNoQuestionConfig>(
     createYesNoQuestionSchema,
@@ -604,4 +644,5 @@ export const questionMutation = {
     createFilesQuestionSchema,
     mapFilesQuestion,
   ),
+  deleteQuestion,
 };

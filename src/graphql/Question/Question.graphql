@@ -278,4 +278,5 @@ type Mutation {
   ): MultiNumbersQuestion!
   updateFileQuestion(input: UpdateFileQuestionInput!): FileQuestion!
   updateFilesQuestion(input: UpdateFilesQuestionInput!): FilesQuestion!
+  deleteQuestion(id: ID!): ID!
 }
