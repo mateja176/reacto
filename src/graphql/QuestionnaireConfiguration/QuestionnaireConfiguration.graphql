@@ -7,19 +7,28 @@ type QuestionnaireConfiguration implements Node & NamedNode {
   questionTemplates: [QuestionTemplate!]!
 }
 
-input CreateQuestionnaireConfigurationInput {
-  name: String!
-  type: String!
-}
-
 type Query {
   questionnaireConfigurations(
     input: FilterInput!
   ): [QuestionnaireConfiguration!]!
 }
 
+input CreateQuestionnaireConfigurationInput {
+  name: String!
+  type: String!
+}
+
+input UpdateQuestionnaireConfigurationInput {
+  id: ID!
+  name: String!
+  type: String!
+}
+
 type Mutation {
   createQuestionnaireConfiguration(
     input: CreateQuestionnaireConfigurationInput!
+  ): QuestionnaireConfiguration!
+  updateQuestionnaireConfiguration(
+    input: UpdateQuestionnaireConfigurationInput!
   ): QuestionnaireConfiguration!
 }
