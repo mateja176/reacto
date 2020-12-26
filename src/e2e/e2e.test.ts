@@ -17,7 +17,7 @@ import {
 } from '../generated/sdk';
 import {
   createCompanyAndUser,
-  createQuestionnaireConfigurationClass,
+  createQuestionnaireConfigurationDoc,
 } from '../helpers/db';
 import { createHeaders } from '../helpers/helpers';
 import { userDocToJWTUser } from '../helpers/map';
@@ -135,8 +135,8 @@ describe('e2e', () => {
     test('create', async () => {
       const {
         sdk,
-        questionnaireConfigurationId,
-      } = await createQuestionnaireConfigurationClass(models, seedInput);
+        questionnaireConfigurationDoc,
+      } = await createQuestionnaireConfigurationDoc(models, seedInput);
 
       const type = 'Test';
       const {
@@ -144,7 +144,7 @@ describe('e2e', () => {
       } = await sdk.CreateQuestionnaireWithStringQuestion({
         input: {
           name: 'Test Questionnaire',
-          questionnaireConfigurationId: questionnaireConfigurationId.toHexString(),
+          questionnaireConfigurationId: questionnaireConfigurationDoc._id.toHexString(),
         },
       });
 

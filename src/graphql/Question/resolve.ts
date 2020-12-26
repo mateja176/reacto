@@ -5,6 +5,10 @@ import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
 import { Context } from '../../Context';
 import {
   AdminRole,
+  BooleanQuestion,
+  BooleanQuestionTemplate,
+  CreateBooleanQuestionInput,
+  CreateBooleanQuestionTemplateInput,
   CreateFileQuestionInput,
   CreateFileQuestionTemplateInput,
   CreateFilesQuestionInput,
@@ -21,8 +25,6 @@ import {
   CreateStringQuestionTemplateInput,
   CreateStringsQuestionInput,
   CreateStringsQuestionTemplateInput,
-  CreateYesNoQuestionInput,
-  CreateYesNoQuestionTemplateInput,
   FileQuestion,
   FileQuestionTemplate,
   FilesQuestion,
@@ -41,6 +43,7 @@ import {
   StringQuestionTemplate,
   StringsQuestion,
   StringsQuestionTemplate,
+  UpdateBooleanQuestionInput,
   UpdateFileQuestionInput,
   UpdateFilesQuestionInput,
   UpdateMultiNumbersQuestionInput,
@@ -49,9 +52,6 @@ import {
   UpdateNumbersQuestionInput,
   UpdateStringQuestionInput,
   UpdateStringsQuestionInput,
-  UpdateYesNoQuestionInput,
-  YesNoQuestion,
-  YesNoQuestionTemplate,
 } from '../../generated/graphql';
 import {
   Forbidden,
@@ -65,6 +65,8 @@ import {
   ValidatedFilterInput,
 } from '../../utils/validate';
 import {
+  mapBooleanQuestion,
+  mapBooleanQuestionTemplate,
   mapFileQuestion,
   mapFileQuestionTemplate,
   mapFilesQuestion,
@@ -82,10 +84,10 @@ import {
   mapStringQuestionTemplate,
   mapStringsQuestion,
   mapStringsQuestionTemplate,
-  mapYesNoQuestion,
-  mapYesNoQuestionTemplate,
 } from './map';
 import {
+  createBooleanQuestionSchema,
+  createBooleanQuestionTemplateSchema,
   createFileQuestionSchema,
   createFileQuestionTemplateSchema,
   createFilesQuestionSchema,
@@ -102,8 +104,7 @@ import {
   createStringQuestionTemplateSchema,
   createStringsQuestionSchema,
   createStringsQuestionTemplateSchema,
-  createYesNoQuestionSchema,
-  createYesNoQuestionTemplateSchema,
+  updateBooleanQuestionSchema,
   updateFileQuestionSchema,
   updateFilesQuestionSchema,
   updateMultiNumbersQuestionSchema,
@@ -111,7 +112,6 @@ import {
   updateNumberQuestionSchema,
   updateNumbersQuestionSchema,
   updateStringsQuestionSchema,
-  updateYesNoQuestionSchema,
 } from './validate';
 
 const questionTemplates: Query['questionTemplates'] = async (
@@ -141,11 +141,11 @@ export const questionTemplateQuery = {
   questionTemplates,
 };
 
-type YesNoQuestionTemplateConfig = {
-  schema: typeof createYesNoQuestionTemplateSchema;
-  map: typeof mapYesNoQuestionTemplate;
-  input: CreateYesNoQuestionTemplateInput;
-  output: YesNoQuestionTemplate;
+type BooleanQuestionTemplateConfig = {
+  schema: typeof createBooleanQuestionTemplateSchema;
+  map: typeof mapBooleanQuestionTemplate;
+  input: CreateBooleanQuestionTemplateInput;
+  output: BooleanQuestionTemplate;
 };
 type StringQuestionTemplateConfig = {
   schema: typeof createStringsQuestionTemplateSchema;
@@ -198,7 +198,7 @@ type FilesQuestionTemplateConfig = {
 
 export const createCreateQuestionTemplate = <
   Config extends
-    | YesNoQuestionTemplateConfig
+    | BooleanQuestionTemplateConfig
     | StringQuestionTemplateConfig
     | StringsQuestionTemplateConfig
     | MultiStringsQuestionTemplateConfig
@@ -290,9 +290,9 @@ const deleteQuestionTemplate: Mutation['deleteQuestionTemplate'] = async (
 };
 
 export const questionTemplateMutation = {
-  createYesNoQuestionTemplate: createCreateQuestionTemplate<YesNoQuestionTemplateConfig>(
-    createYesNoQuestionTemplateSchema,
-    mapYesNoQuestionTemplate,
+  createBooleanQuestionTemplate: createCreateQuestionTemplate<BooleanQuestionTemplateConfig>(
+    createBooleanQuestionTemplateSchema,
+    mapBooleanQuestionTemplate,
   ),
   createStringQuestionTemplate: createCreateQuestionTemplate<StringQuestionTemplateConfig>(
     createStringQuestionTemplateSchema,
@@ -329,11 +329,11 @@ export const questionTemplateMutation = {
   deleteQuestionTemplate,
 };
 
-type YesNoQuestionConfig = {
-  schema: typeof createYesNoQuestionSchema;
-  map: typeof mapYesNoQuestion;
-  input: CreateYesNoQuestionInput;
-  output: YesNoQuestion;
+type BooleanQuestionConfig = {
+  schema: typeof createBooleanQuestionSchema;
+  map: typeof mapBooleanQuestion;
+  input: CreateBooleanQuestionInput;
+  output: BooleanQuestion;
 };
 type StringQuestionConfig = {
   schema: typeof createStringsQuestionSchema;
@@ -386,7 +386,7 @@ type FilesQuestionConfig = {
 
 export const createCreateQuestion = <
   Config extends
-    | YesNoQuestionConfig
+    | BooleanQuestionConfig
     | StringQuestionConfig
     | StringsQuestionConfig
     | MultiStringsQuestionConfig
@@ -446,11 +446,11 @@ export const createCreateQuestion = <
   return output;
 };
 
-type YesNoUpdateQuestionConfig = [
-  typeof updateYesNoQuestionSchema,
-  typeof mapYesNoQuestion,
-  UpdateYesNoQuestionInput,
-  YesNoQuestion,
+type BooleanUpdateQuestionConfig = [
+  typeof updateBooleanQuestionSchema,
+  typeof mapBooleanQuestion,
+  UpdateBooleanQuestionInput,
+  BooleanQuestion,
 ];
 type StringUpdateQuestionConfig = [
   typeof updateStringsQuestionSchema,
@@ -503,7 +503,7 @@ type FilesUpdateQuestionConfig = [
 
 export const createUpdateQuestion = <
   Config extends
-    | YesNoUpdateQuestionConfig
+    | BooleanUpdateQuestionConfig
     | StringUpdateQuestionConfig
     | StringsUpdateQuestionConfig
     | MultiStringsUpdateQuestionConfig
@@ -605,9 +605,9 @@ const deleteQuestion: Mutation['deleteQuestion'] = async (_, args, context) => {
 };
 
 export const questionMutation = {
-  createYesNoQuestion: createCreateQuestion<YesNoQuestionConfig>(
-    createYesNoQuestionSchema,
-    mapYesNoQuestion,
+  createBooleanQuestion: createCreateQuestion<BooleanQuestionConfig>(
+    createBooleanQuestionSchema,
+    mapBooleanQuestion,
   ),
   createStringQuestion: createCreateQuestion<StringQuestionConfig>(
     createStringQuestionSchema,
@@ -641,9 +641,9 @@ export const questionMutation = {
     createFilesQuestionSchema,
     mapFilesQuestion,
   ),
-  updateYesNoQuestion: createUpdateQuestion<YesNoUpdateQuestionConfig>(
-    createYesNoQuestionSchema,
-    mapYesNoQuestion,
+  updateBooleanQuestion: createUpdateQuestion<BooleanUpdateQuestionConfig>(
+    createBooleanQuestionSchema,
+    mapBooleanQuestion,
   ),
   updateStringQuestion: createUpdateQuestion<StringUpdateQuestionConfig>(
     createStringQuestionSchema,

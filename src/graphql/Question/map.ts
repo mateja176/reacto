@@ -2,6 +2,8 @@ import { DocumentType } from '@typegoose/typegoose';
 import { QuestionClass } from '../../classes/Question/Question';
 import { QuestionTemplateClass } from '../../classes/Question/QuestionTemplate';
 import {
+  BooleanQuestion,
+  BooleanQuestionTemplate,
   FileQuestion,
   FileQuestionTemplate,
   FilesQuestion,
@@ -20,13 +22,12 @@ import {
   StringQuestionTemplate,
   StringsQuestion,
   StringsQuestionTemplate,
-  YesNoQuestion,
-  YesNoQuestionTemplate,
 } from '../../generated/graphql';
 import { Models } from '../../services/models';
 import { MapClass, mapDoc } from '../../utils/map';
 import { createFind } from '../../utils/query';
 import {
+  mapBooleanAnswer,
   mapFileAnswer,
   mapFilesAnswer,
   mapMultiNumbersAnswer,
@@ -35,7 +36,6 @@ import {
   mapNumbersAnswer,
   mapStringAnswer,
   mapStringsAnswer,
-  mapYesNoAnswer,
 } from '../Answer/map';
 import { mapQuestionnaire } from '../Questionnaire/map';
 import { mapQuestionnaireConfiguration } from '../QuestionnaireConfiguration/map';
@@ -72,13 +72,13 @@ export const mapQuestionTemplateDoc = <Q extends QuestionTemplate>(
   );
 };
 
-const mapYesNoQuestionTemplateClass = (
+const mapBooleanQuestionTemplateClass = (
   base: QuestionTemplateBase,
   cls: MapClass<QuestionTemplateClass>,
-): YesNoQuestionTemplate => {
+): BooleanQuestionTemplate => {
   if (cls.boolean) {
     return {
-      __typename: 'YesNoQuestionTemplate',
+      __typename: 'BooleanQuestionTemplate',
       ...base,
       default: cls.boolean.default ?? null,
     };
@@ -86,8 +86,8 @@ const mapYesNoQuestionTemplateClass = (
     throw new InvalidQuestionTemplateError();
   }
 };
-export const mapYesNoQuestionTemplate = mapQuestionTemplateDoc(
-  mapYesNoQuestionTemplateClass,
+export const mapBooleanQuestionTemplate = mapQuestionTemplateDoc(
+  mapBooleanQuestionTemplateClass,
 );
 const mapStringQuestionTemplateClass = (
   base: QuestionTemplateBase,
@@ -246,7 +246,7 @@ export const mapQuestionTemplate = (models: Models) => (
   };
 
   if (cls.boolean) {
-    return mapYesNoQuestionTemplateClass(base, cls);
+    return mapBooleanQuestionTemplateClass(base, cls);
   } else if (cls.string) {
     return mapStringQuestionTemplateClass(base, cls);
   } else if (cls.strings) {
@@ -302,20 +302,20 @@ export const mapQuestionDoc = <Q extends Question>(
   });
 };
 
-const mapYesNoQuestionClass = (
+const mapBooleanQuestionClass = (
   models: Models,
   cls: MapClass<QuestionClass>,
   base: QuestionBase,
-): YesNoQuestion => {
+): BooleanQuestion => {
   if (cls.boolean) {
     return {
-      __typename: 'YesNoQuestion',
+      __typename: 'BooleanQuestion',
       ...base,
       default: cls.boolean.default ?? null,
       answer: cls.answer
         ? createFind({
             Model: models.Answer,
-            map: mapYesNoAnswer(models),
+            map: mapBooleanAnswer(models),
             ref: cls.answer,
           })
         : null,
@@ -324,7 +324,7 @@ const mapYesNoQuestionClass = (
     throw new InvalidQuestionError();
   }
 };
-export const mapYesNoQuestion = mapQuestionDoc(mapYesNoQuestionClass);
+export const mapBooleanQuestion = mapQuestionDoc(mapBooleanQuestionClass);
 
 const mapStringQuestionClass = (
   models: Models,
@@ -546,7 +546,7 @@ export const mapQuestion = (models: Models) => (
   };
 
   if (cls.boolean) {
-    return mapYesNoQuestionClass(models, cls, base);
+    return mapBooleanQuestionClass(models, cls, base);
   } else if (cls.string) {
     return mapStringQuestionClass(models, cls, base);
   } else if (cls.strings) {

@@ -1,14 +1,14 @@
 import Joi from 'joi';
-import { CreateYesNoAnswerInput } from '../../generated/graphql';
+import { CreateBooleanAnswerInput } from '../../generated/graphql';
 import { idSchema } from '../../utils/validate';
 
 const createAnswerBaseSchemaMap: Joi.SchemaMap<
-  Pick<CreateYesNoAnswerInput, 'questionId'>
+  Pick<CreateBooleanAnswerInput, 'questionId'>
 > = {
   questionId: idSchema,
 };
 
-export const createYesNoAnswerSchema = Joi.object({
+export const createBooleanAnswerSchema = Joi.object({
   ...createAnswerBaseSchemaMap,
   answer: Joi.boolean().required(),
 }).required();
@@ -45,7 +45,7 @@ export const createFilesAnswerSchema = Joi.object({
   answer: Joi.array().items(Joi.string().required()).required(),
 }).required();
 
-export const updateYesNoAnswerSchema = Joi.object({
+export const updateBooleanAnswerSchema = Joi.object({
   answer: Joi.boolean().required(),
 }).required();
 export const updateStringAnswerSchema = Joi.object({

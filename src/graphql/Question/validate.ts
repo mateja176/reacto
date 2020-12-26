@@ -1,5 +1,7 @@
 import joi from 'joi';
 import {
+  CreateBooleanQuestionInput,
+  CreateBooleanQuestionTemplateInput,
   CreateFileQuestionInput,
   CreateFileQuestionTemplateInput,
   CreateFilesQuestionInput,
@@ -16,9 +18,8 @@ import {
   CreateStringQuestionTemplateInput,
   CreateStringsQuestionInput,
   CreateStringsQuestionTemplateInput,
-  CreateYesNoQuestionInput,
-  CreateYesNoQuestionTemplateInput,
   QuestionBase,
+  UpdateBooleanQuestionInput,
   UpdateFileQuestionInput,
   UpdateFilesQuestionInput,
   UpdateMultiNumbersQuestionInput,
@@ -27,7 +28,6 @@ import {
   UpdateNumbersQuestionInput,
   UpdateStringQuestionInput,
   UpdateStringsQuestionInput,
-  UpdateYesNoQuestionInput,
 } from '../../generated/graphql';
 import { idSchema } from '../../utils/validate';
 
@@ -40,14 +40,15 @@ const baseSchemaMap: joi.SchemaMap<Base> = {
 };
 
 const createQuestionTemplateBaseSchemaMap: joi.SchemaMap<
-  Base & Pick<CreateYesNoQuestionTemplateInput, 'questionnaireConfigurationId'>
+  Base &
+    Pick<CreateBooleanQuestionTemplateInput, 'questionnaireConfigurationId'>
 > = {
   ...baseSchemaMap,
   questionnaireConfigurationId: idSchema,
 };
 
-export const createYesNoQuestionTemplateSchema = joi
-  .object<CreateYesNoQuestionTemplateInput>({
+export const createBooleanQuestionTemplateSchema = joi
+  .object<CreateBooleanQuestionTemplateInput>({
     ...createQuestionTemplateBaseSchemaMap,
     default: joi.boolean(),
   })
@@ -103,7 +104,7 @@ export const createFilesQuestionTemplateSchema = joi
 
 // Question
 const createQuestionBaseSchemaMap: joi.SchemaMap<
-  Base & Pick<CreateYesNoQuestionInput, 'questionnaireId'>
+  Base & Pick<CreateBooleanQuestionInput, 'questionnaireId'>
 > = {
   name: joi.string().required(),
   label: joi.string().required(),
@@ -111,8 +112,8 @@ const createQuestionBaseSchemaMap: joi.SchemaMap<
   questionnaireId: idSchema,
 };
 
-export const createYesNoQuestionSchema = joi
-  .object<CreateYesNoQuestionInput>({
+export const createBooleanQuestionSchema = joi
+  .object<CreateBooleanQuestionInput>({
     ...createQuestionBaseSchemaMap,
     default: joi.boolean(),
   })
@@ -167,7 +168,7 @@ export const createFilesQuestionSchema = joi
   .required();
 
 const updateQuestionBaseSchemaMap: joi.SchemaMap<
-  Omit<UpdateYesNoQuestionInput, 'default'>
+  Omit<UpdateBooleanQuestionInput, 'default'>
 > = {
   id: joi.string(),
   name: joi.string(),
@@ -176,8 +177,8 @@ const updateQuestionBaseSchemaMap: joi.SchemaMap<
   rule: joi.string(), // TODO create parser
 };
 
-export const updateYesNoQuestionSchema = joi
-  .object<UpdateYesNoQuestionInput>({
+export const updateBooleanQuestionSchema = joi
+  .object<UpdateBooleanQuestionInput>({
     ...updateQuestionBaseSchemaMap,
     default: joi.boolean(),
   })

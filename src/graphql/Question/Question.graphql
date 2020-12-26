@@ -1,11 +1,11 @@
-type YesNoQuestion implements Node & NamedNode & QuestionBase {
+type BooleanQuestion implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
   rule: String
   optional: Boolean!
   questionnaire: Questionnaire!
-  answer: YesNoAnswer
+  answer: BooleanAnswer
   default: Boolean
 }
 type StringQuestion implements Node & NamedNode & QuestionBase {
@@ -94,7 +94,7 @@ type FilesQuestion implements Node & NamedNode & QuestionBase {
 }
 
 union Question =
-    YesNoQuestion
+    BooleanQuestion
   | StringQuestion
   | StringsQuestion
   | MultiStringsQuestion
@@ -104,7 +104,7 @@ union Question =
   | FileQuestion
   | FilesQuestion
 
-input CreateYesNoQuestionInput {
+input CreateBooleanQuestionInput {
   name: String!
   label: String!
   rule: String
@@ -177,7 +177,7 @@ input CreateFilesQuestionInput {
   default: [String!]
 }
 
-input UpdateYesNoQuestionInput {
+input UpdateBooleanQuestionInput {
   id: ID!
   name: String
   label: String
@@ -251,7 +251,7 @@ input UpdateFilesQuestionInput {
 }
 
 type Mutation {
-  createYesNoQuestion(input: CreateYesNoQuestionInput!): YesNoQuestion!
+  createBooleanQuestion(input: CreateBooleanQuestionInput!): BooleanQuestion!
   createStringQuestion(input: CreateStringQuestionInput!): StringQuestion!
   createStringsQuestion(input: CreateStringsQuestionInput!): StringsQuestion!
   createMultiStringsQuestion(
@@ -265,7 +265,7 @@ type Mutation {
   createFileQuestion(input: CreateFileQuestionInput!): FileQuestion!
   createFilesQuestion(input: CreateFilesQuestionInput!): FilesQuestion!
 
-  updateYesNoQuestion(input: UpdateYesNoQuestionInput!): YesNoQuestion!
+  updateBooleanQuestion(input: UpdateBooleanQuestionInput!): BooleanQuestion!
   updateStringQuestion(input: UpdateStringQuestionInput!): StringQuestion!
   updateStringsQuestion(input: UpdateStringsQuestionInput!): StringsQuestion!
   updateMultiStringsQuestion(

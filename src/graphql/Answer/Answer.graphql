@@ -3,7 +3,7 @@ interface IAnswer implements Node {
   question: Question!
 }
 
-type YesNoAnswer implements Node & IAnswer {
+type BooleanAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
   answer: Boolean!
@@ -52,7 +52,7 @@ type FilesAnswer implements Node & IAnswer {
 }
 
 union Answer =
-    YesNoAnswer
+    BooleanAnswer
   | StringAnswer
   | StringsAnswer
   | MultiStringsAnswer
@@ -62,7 +62,7 @@ union Answer =
   | FileAnswer
   | FilesAnswer
 
-input CreateYesNoAnswerInput {
+input CreateBooleanAnswerInput {
   questionId: ID!
   answer: Boolean!
 }
@@ -99,7 +99,7 @@ input CreateFilesAnswerInput {
   answer: [String!]!
 }
 
-input UpdateYesNoAnswerInput {
+input UpdateBooleanAnswerInput {
   id: ID!
   answer: Boolean!
 }
@@ -137,7 +137,7 @@ input UpdateFilesAnswerInput {
 }
 
 type Mutation {
-  createYesNoAnswer(input: CreateYesNoAnswerInput!): YesNoAnswer!
+  createBooleanAnswer(input: CreateBooleanAnswerInput!): BooleanAnswer!
   createStringAnswer(input: CreateStringAnswerInput!): StringAnswer!
   createStringsAnswer(input: CreateStringsAnswerInput!): StringsAnswer!
   createMultiStringsAnswer(
@@ -151,7 +151,7 @@ type Mutation {
   createFileAnswer(input: CreateFileAnswerInput!): FileAnswer!
   createFilesAnswer(input: CreateFilesAnswerInput!): FilesAnswer!
 
-  updateYesNoAnswer(input: UpdateYesNoAnswerInput!): YesNoAnswer!
+  updateBooleanAnswer(input: UpdateBooleanAnswerInput!): BooleanAnswer!
   updateStringAnswer(input: UpdateStringAnswerInput!): StringAnswer!
   updateStringsAnswer(input: UpdateStringsAnswerInput!): StringsAnswer!
   updateMultiStringsAnswer(

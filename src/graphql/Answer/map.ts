@@ -2,6 +2,7 @@ import { DocumentType } from '@typegoose/typegoose';
 import { AnswerClass } from '../../classes/Answer/Answer';
 import {
   Answer,
+  BooleanAnswer,
   FileAnswer,
   FilesAnswer,
   MultiNumbersAnswer,
@@ -10,12 +11,12 @@ import {
   NumbersAnswer,
   StringAnswer,
   StringsAnswer,
-  YesNoAnswer,
 } from '../../generated/graphql';
 import { Models } from '../../services/models';
 import { MapClass, mapDoc } from '../../utils/map';
 import { createFind } from '../../utils/query';
 import {
+  mapBooleanQuestion,
   mapFileQuestion,
   mapFilesQuestion,
   mapMultiNumbersQuestion,
@@ -24,7 +25,6 @@ import {
   mapNumbersQuestion,
   mapStringQuestion,
   mapStringsQuestion,
-  mapYesNoQuestion,
 } from '../Question/map';
 
 export class InvalidAnswerError extends Error {
@@ -44,17 +44,17 @@ export const mapAnswerDoc = <A extends Answer>(
   const { id } = cls;
   return map(models, cls, { id });
 };
-export const mapYesNoAnswer = mapAnswerDoc(
-  (models, cls, base): YesNoAnswer => {
+export const mapBooleanAnswer = mapAnswerDoc(
+  (models, cls, base): BooleanAnswer => {
     const { question, boolean } = cls;
 
     if (boolean) {
       return {
-        __typename: 'YesNoAnswer',
+        __typename: 'BooleanAnswer',
         ...base,
         question: createFind({
           Model: models.Question,
-          map: mapYesNoQuestion(models),
+          map: mapBooleanQuestion(models),
           ref: question,
         }),
         answer: boolean,

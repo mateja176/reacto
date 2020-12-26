@@ -1,4 +1,4 @@
-type YesNoQuestionTemplate implements Node & NamedNode & QuestionBase {
+type BooleanQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
   name: String!
   label: String!
@@ -81,7 +81,7 @@ type FilesQuestionTemplate implements Node & NamedNode & QuestionBase {
 }
 
 union QuestionTemplate =
-    YesNoQuestionTemplate
+    BooleanQuestionTemplate
   | StringQuestionTemplate
   | StringsQuestionTemplate
   | MultiStringsQuestionTemplate
@@ -95,7 +95,7 @@ type Query {
   questionTemplates(input: FilterInput!): [QuestionTemplate!]!
 }
 
-input CreateYesNoQuestionTemplateInput {
+input CreateBooleanQuestionTemplateInput {
   name: String!
   label: String!
   rule: String
@@ -168,9 +168,9 @@ input CreateFilesQuestionTemplateInput {
   default: [String!]
 }
 type Mutation {
-  createYesNoQuestionTemplate(
-    input: CreateYesNoQuestionTemplateInput!
-  ): YesNoQuestionTemplate!
+  createBooleanQuestionTemplate(
+    input: CreateBooleanQuestionTemplateInput!
+  ): BooleanQuestionTemplate!
   createStringQuestionTemplate(
     input: CreateStringQuestionTemplateInput!
   ): StringQuestionTemplate!

@@ -6,6 +6,8 @@ import { QuestionClass } from '../../classes/Question/Question';
 import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
 import {
   AdminRole,
+  BooleanAnswer,
+  CreateBooleanAnswerInput,
   CreateFileAnswerInput,
   CreateFilesAnswerInput,
   CreateMultiNumbersAnswerInput,
@@ -14,7 +16,6 @@ import {
   CreateNumbersAnswerInput,
   CreateStringAnswerInput,
   CreateStringsAnswerInput,
-  CreateYesNoAnswerInput,
   FileAnswer,
   FilesAnswer,
   MultiNumbersAnswer,
@@ -24,6 +25,7 @@ import {
   NumbersAnswer,
   StringAnswer,
   StringsAnswer,
+  UpdateBooleanAnswerInput,
   UpdateFileAnswerInput,
   UpdateFilesAnswerInput,
   UpdateMultiNumbersAnswerInput,
@@ -32,8 +34,6 @@ import {
   UpdateNumbersAnswerInput,
   UpdateStringAnswerInput,
   UpdateStringsAnswerInput,
-  UpdateYesNoAnswerInput,
-  YesNoAnswer,
 } from '../../generated/graphql';
 import {
   Forbidden,
@@ -41,6 +41,7 @@ import {
   NotFoundError,
 } from '../../utils/errors';
 import {
+  mapBooleanAnswer,
   mapFileAnswer,
   mapFilesAnswer,
   mapMultiNumbersAnswer,
@@ -49,9 +50,9 @@ import {
   mapNumbersAnswer,
   mapStringAnswer,
   mapStringsAnswer,
-  mapYesNoAnswer,
 } from './map';
 import {
+  createBooleanAnswerSchema,
   createFileAnswerSchema,
   createFilesAnswerSchema,
   createMultiNumbersAnswerSchema,
@@ -60,7 +61,7 @@ import {
   createNumbersAnswerSchema,
   createStringAnswerSchema,
   createStringsAnswerSchema,
-  createYesNoAnswerSchema,
+  updateBooleanAnswerSchema,
   updateFileAnswerSchema,
   updateFilesAnswerSchema,
   updateMultiNumbersAnswerSchema,
@@ -68,14 +69,13 @@ import {
   updateNumberAnswerSchema,
   updateNumbersAnswerSchema,
   updateStringsAnswerSchema,
-  updateYesNoAnswerSchema,
 } from './validate';
 
-type YesNoAnswerConfig = {
-  schema: typeof createYesNoAnswerSchema;
-  map: typeof mapYesNoAnswer;
-  input: CreateYesNoAnswerInput;
-  output: YesNoAnswer;
+type BooleanAnswerConfig = {
+  schema: typeof createBooleanAnswerSchema;
+  map: typeof mapBooleanAnswer;
+  input: CreateBooleanAnswerInput;
+  output: BooleanAnswer;
 };
 type StringAnswerConfig = {
   schema: typeof createStringsAnswerSchema;
@@ -128,7 +128,7 @@ type FilesAnswerConfig = {
 
 export const createCreateAnswer = <
   Config extends
-    | YesNoAnswerConfig
+    | BooleanAnswerConfig
     | StringAnswerConfig
     | StringsAnswerConfig
     | MultiStringsAnswerConfig
@@ -198,11 +198,11 @@ export const createCreateAnswer = <
   return output;
 };
 
-type YesNoAnswerUpdateConfig = [
-  typeof updateYesNoAnswerSchema,
-  typeof mapYesNoAnswer,
-  UpdateYesNoAnswerInput,
-  YesNoAnswer,
+type BooleanAnswerUpdateConfig = [
+  typeof updateBooleanAnswerSchema,
+  typeof mapBooleanAnswer,
+  UpdateBooleanAnswerInput,
+  BooleanAnswer,
 ];
 type StringAnswerUpdateConfig = [
   typeof updateStringsAnswerSchema,
@@ -255,7 +255,7 @@ type FilesAnswerUpdateConfig = [
 
 export const createUpdateAnswer = <
   Config extends
-    | YesNoAnswerUpdateConfig
+    | BooleanAnswerUpdateConfig
     | StringAnswerUpdateConfig
     | StringsAnswerUpdateConfig
     | MultiStringsAnswerUpdateConfig
@@ -316,9 +316,9 @@ export const createUpdateAnswer = <
 };
 
 export const answerMutation = {
-  createYesNoAnswer: createCreateAnswer<YesNoAnswerConfig>(
-    createYesNoAnswerSchema,
-    mapYesNoAnswer,
+  createBooleanAnswer: createCreateAnswer<BooleanAnswerConfig>(
+    createBooleanAnswerSchema,
+    mapBooleanAnswer,
   ),
   createStringAnswer: createCreateAnswer<StringAnswerConfig>(
     createStringAnswerSchema,
@@ -353,9 +353,9 @@ export const answerMutation = {
     mapFilesAnswer,
   ),
 
-  updateYesNoAnswer: createUpdateAnswer<YesNoAnswerUpdateConfig>(
-    createYesNoAnswerSchema,
-    mapYesNoAnswer,
+  updateBooleanAnswer: createUpdateAnswer<BooleanAnswerUpdateConfig>(
+    createBooleanAnswerSchema,
+    mapBooleanAnswer,
   ),
   updateStringAnswer: createUpdateAnswer<StringAnswerUpdateConfig>(
     createStringAnswerSchema,
