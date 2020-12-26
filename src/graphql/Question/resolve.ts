@@ -257,6 +257,38 @@ export const createCreateQuestionTemplate = <
   return output;
 };
 
+const deleteQuestionTemplate: Mutation['deleteQuestionTemplate'] = async (
+  _,
+  args,
+  context,
+) => {
+  await idSchema.validateAsync(args.id);
+
+  if (!context.user) {
+    throw new NotAuthenticatedError();
+  }
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  const questionTemplateDoc = await context.models.QuestionTemplate.findByIdAndDelete(
+    args.id,
+  );
+
+  if (!questionTemplateDoc) {
+    throw new NotFoundError();
+  }
+
+  if (context.user.role !== AdminRole.admin) {
+    throw new Forbidden();
+  }
+
+  await session.commitTransaction();
+  session.endSession();
+
+  return args.id;
+};
+
 export const questionTemplateMutation = {
   createYesNoQuestionTemplate: createCreateQuestionTemplate<YesNoQuestionTemplateConfig>(
     createYesNoQuestionTemplateSchema,
@@ -294,6 +326,7 @@ export const questionTemplateMutation = {
     createFilesQuestionTemplateSchema,
     mapFilesQuestionTemplate,
   ),
+  deleteQuestionTemplate,
 };
 
 type YesNoQuestionConfig = [

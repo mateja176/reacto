@@ -195,4 +195,5 @@ type Mutation {
   createFilesQuestionTemplate(
     input: CreateFilesQuestionTemplateInput!
   ): FilesQuestionTemplate!
+  deleteQuestionTemplate(id: ID!): ID!
 }
