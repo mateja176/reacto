@@ -284,28 +284,32 @@ export class UnknownQuestionError extends Error {
 type QuestionBase = Base & Pick<Question, 'questionnaire'>;
 
 export const mapQuestionDoc = <Q extends Question>(
-  map: (models: Models, cls: MapClass<QuestionClass>, base: QuestionBase) => Q,
+  map: (models: Models, base: QuestionBase, cls: MapClass<QuestionClass>) => Q,
 ) => (models: Models) => (doc: DocumentType<QuestionClass>) => {
   const cls = mapDoc(doc);
   const { id, label, name, rule, optional, questionnaire } = cls;
-  return map(models, cls, {
-    id,
-    label,
-    name,
-    rule: rule ?? null,
-    optional,
-    questionnaire: createFind({
-      Model: models.Questionnaire,
-      map: mapQuestionnaire(models),
-      ref: questionnaire,
-    }),
-  });
+  return map(
+    models,
+    {
+      id,
+      label,
+      name,
+      rule: rule ?? null,
+      optional,
+      questionnaire: createFind({
+        Model: models.Questionnaire,
+        map: mapQuestionnaire(models),
+        ref: questionnaire,
+      }),
+    },
+    cls,
+  );
 };
 
 const mapBooleanQuestionClass = (
   models: Models,
-  cls: MapClass<QuestionClass>,
   base: QuestionBase,
+  cls: MapClass<QuestionClass>,
 ): BooleanQuestion => {
   if (cls.boolean) {
     return {
@@ -328,8 +332,8 @@ export const mapBooleanQuestion = mapQuestionDoc(mapBooleanQuestionClass);
 
 const mapStringQuestionClass = (
   models: Models,
-  cls: MapClass<QuestionClass>,
   base: QuestionBase,
+  cls: MapClass<QuestionClass>,
 ): StringQuestion => {
   if (cls.string) {
     return {
@@ -352,8 +356,8 @@ export const mapStringQuestion = mapQuestionDoc(mapStringQuestionClass);
 
 const mapStringsQuestionClass = (
   models: Models,
-  cls: MapClass<QuestionClass>,
   base: QuestionBase,
+  cls: MapClass<QuestionClass>,
 ): StringsQuestion => {
   if (cls.strings) {
     return {
@@ -377,8 +381,8 @@ export const mapStringsQuestion = mapQuestionDoc(mapStringsQuestionClass);
 
 const mapMultiStringsQuestionClass = (
   models: Models,
-  cls: MapClass<QuestionClass>,
   base: QuestionBase,
+  cls: MapClass<QuestionClass>,
 ): MultiStringsQuestion => {
   if (cls.multiStrings) {
     return {
@@ -404,8 +408,8 @@ export const mapMultiStringsQuestion = mapQuestionDoc(
 
 const mapNumberQuestionClass = (
   models: Models,
-  cls: MapClass<QuestionClass>,
   base: QuestionBase,
+  cls: MapClass<QuestionClass>,
 ): NumberQuestion => {
   if (cls.number) {
     return {
@@ -428,8 +432,8 @@ export const mapNumberQuestion = mapQuestionDoc(mapNumberQuestionClass);
 
 const mapNumbersQuestionClass = (
   models: Models,
-  cls: MapClass<QuestionClass>,
   base: QuestionBase,
+  cls: MapClass<QuestionClass>,
 ): NumbersQuestion => {
   if (cls.numbers) {
     return {
@@ -453,8 +457,8 @@ export const mapNumbersQuestion = mapQuestionDoc(mapNumbersQuestionClass);
 
 const mapMultiNumbersQuestionClass = (
   models: Models,
-  cls: MapClass<QuestionClass>,
   base: QuestionBase,
+  cls: MapClass<QuestionClass>,
 ): MultiNumbersQuestion => {
   if (cls.multiNumbers) {
     return {
@@ -480,8 +484,8 @@ export const mapMultiNumbersQuestion = mapQuestionDoc(
 
 const mapFileQuestionClass = (
   models: Models,
-  cls: MapClass<QuestionClass>,
   base: QuestionBase,
+  cls: MapClass<QuestionClass>,
 ): FileQuestion => {
   if (cls.file) {
     return {
@@ -504,8 +508,8 @@ export const mapFileQuestion = mapQuestionDoc(mapFileQuestionClass);
 
 const mapFilesQuestionClass = (
   models: Models,
-  cls: MapClass<QuestionClass>,
   base: QuestionBase,
+  cls: MapClass<QuestionClass>,
 ): FilesQuestion => {
   if (cls.files) {
     return {
@@ -546,23 +550,23 @@ export const mapQuestion = (models: Models) => (
   };
 
   if (cls.boolean) {
-    return mapBooleanQuestionClass(models, cls, base);
+    return mapBooleanQuestionClass(models, base, cls);
   } else if (cls.string) {
-    return mapStringQuestionClass(models, cls, base);
+    return mapStringQuestionClass(models, base, cls);
   } else if (cls.strings) {
-    return mapStringsQuestionClass(models, cls, base);
+    return mapStringsQuestionClass(models, base, cls);
   } else if (cls.multiStrings) {
-    return mapMultiStringsQuestionClass(models, cls, base);
+    return mapMultiStringsQuestionClass(models, base, cls);
   } else if (cls.number) {
-    return mapNumberQuestionClass(models, cls, base);
+    return mapNumberQuestionClass(models, base, cls);
   } else if (cls.numbers) {
-    return mapNumbersQuestionClass(models, cls, base);
+    return mapNumbersQuestionClass(models, base, cls);
   } else if (cls.multiNumbers) {
-    return mapMultiNumbersQuestionClass(models, cls, base);
+    return mapMultiNumbersQuestionClass(models, base, cls);
   } else if (cls.file) {
-    return mapFileQuestionClass(models, cls, base);
+    return mapFileQuestionClass(models, base, cls);
   } else if (cls.files) {
-    return mapFilesQuestionClass(models, cls, base);
+    return mapFilesQuestionClass(models, base, cls);
   } else {
     throw new UnknownQuestionError();
   }
