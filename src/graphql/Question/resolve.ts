@@ -446,60 +446,60 @@ export const createCreateQuestion = <
   return output;
 };
 
-type BooleanUpdateQuestionConfig = [
-  typeof updateBooleanQuestionSchema,
-  typeof mapBooleanQuestion,
-  UpdateBooleanQuestionInput,
-  BooleanQuestion,
-];
-type StringUpdateQuestionConfig = [
-  typeof updateStringsQuestionSchema,
-  typeof mapStringQuestion,
-  UpdateStringQuestionInput,
-  StringQuestion,
-];
-type StringsUpdateQuestionConfig = [
-  typeof updateStringsQuestionSchema,
-  typeof mapStringsQuestion,
-  UpdateStringsQuestionInput,
-  StringsQuestion,
-];
-type MultiStringsUpdateQuestionConfig = [
-  typeof updateMultiStringsQuestionSchema,
-  typeof mapMultiStringsQuestion,
-  UpdateMultiStringsQuestionInput,
-  MultiStringsQuestion,
-];
-type NumberUpdateQuestionConfig = [
-  typeof updateNumberQuestionSchema,
-  typeof mapNumberQuestion,
-  UpdateNumberQuestionInput,
-  NumberQuestion,
-];
-type NumbersUpdateQuestionConfig = [
-  typeof updateNumbersQuestionSchema,
-  typeof mapNumbersQuestion,
-  UpdateNumbersQuestionInput,
-  NumbersQuestion,
-];
-type MultiNumbersUpdateQuestionConfig = [
-  typeof updateMultiNumbersQuestionSchema,
-  typeof mapMultiNumbersQuestion,
-  UpdateMultiNumbersQuestionInput,
-  MultiNumbersQuestion,
-];
-type FileUpdateQuestionConfig = [
-  typeof updateFileQuestionSchema,
-  typeof mapFileQuestion,
-  UpdateFileQuestionInput,
-  FileQuestion,
-];
-type FilesUpdateQuestionConfig = [
-  typeof updateFilesQuestionSchema,
-  typeof mapFilesQuestion,
-  UpdateFilesQuestionInput,
-  FilesQuestion,
-];
+type BooleanUpdateQuestionConfig = {
+  schema: typeof updateBooleanQuestionSchema;
+  map: typeof mapBooleanQuestion;
+  input: UpdateBooleanQuestionInput;
+  output: BooleanQuestion;
+};
+type StringUpdateQuestionConfig = {
+  schema: typeof updateStringsQuestionSchema;
+  map: typeof mapStringQuestion;
+  input: UpdateStringQuestionInput;
+  output: StringQuestion;
+};
+type StringsUpdateQuestionConfig = {
+  schema: typeof updateStringsQuestionSchema;
+  map: typeof mapStringsQuestion;
+  input: UpdateStringsQuestionInput;
+  output: StringsQuestion;
+};
+type MultiStringsUpdateQuestionConfig = {
+  schema: typeof updateMultiStringsQuestionSchema;
+  map: typeof mapMultiStringsQuestion;
+  input: UpdateMultiStringsQuestionInput;
+  output: MultiStringsQuestion;
+};
+type NumberUpdateQuestionConfig = {
+  schema: typeof updateNumberQuestionSchema;
+  map: typeof mapNumberQuestion;
+  input: UpdateNumberQuestionInput;
+  output: NumberQuestion;
+};
+type NumbersUpdateQuestionConfig = {
+  schema: typeof updateNumbersQuestionSchema;
+  map: typeof mapNumbersQuestion;
+  input: UpdateNumbersQuestionInput;
+  output: NumbersQuestion;
+};
+type MultiNumbersUpdateQuestionConfig = {
+  schema: typeof updateMultiNumbersQuestionSchema;
+  map: typeof mapMultiNumbersQuestion;
+  input: UpdateMultiNumbersQuestionInput;
+  output: MultiNumbersQuestion;
+};
+type FileUpdateQuestionConfig = {
+  schema: typeof updateFileQuestionSchema;
+  map: typeof mapFileQuestion;
+  input: UpdateFileQuestionInput;
+  output: FileQuestion;
+};
+type FilesUpdateQuestionConfig = {
+  schema: typeof updateFilesQuestionSchema;
+  map: typeof mapFilesQuestion;
+  input: UpdateFilesQuestionInput;
+  output: FilesQuestion;
+};
 
 export const createUpdateQuestion = <
   Config extends
@@ -513,15 +513,15 @@ export const createUpdateQuestion = <
     | FileUpdateQuestionConfig
     | FilesUpdateQuestionConfig
 >(
-  schema: Config[0],
-  map: Config[1],
+  schema: Config['schema'],
+  map: Config['map'],
 ) => async (
   _: never,
   args: {
-    input: Config[2];
+    input: Config['input'];
   },
   context: Context,
-): Promise<Config[3]> => {
+): Promise<Config['output']> => {
   await schema.validateAsync(args.input);
 
   const {
