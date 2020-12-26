@@ -1,4 +1,5 @@
 import { DocumentType } from '@typegoose/typegoose';
+import { CreateQuery } from 'mongoose';
 import { QuestionClass } from '../../classes/Question/Question';
 import { QuestionTemplateClass } from '../../classes/Question/QuestionTemplate';
 import {
@@ -39,6 +40,97 @@ import {
 } from '../Answer/map';
 import { mapQuestionnaire } from '../Questionnaire/map';
 import { mapQuestionnaireConfiguration } from '../QuestionnaireConfiguration/map';
+import { CreateQuestionTemplateDocConfig } from './interfaces';
+
+export const createQuestionTemplateDoc = (
+  config: CreateQuestionTemplateDocConfig,
+): CreateQuery<QuestionTemplateClass> => {
+  const {
+    label,
+    name,
+    optional,
+    rule,
+    questionnaireConfigurationId,
+  } = config.input;
+
+  const questionBase = {
+    label,
+    name,
+    optional,
+    rule: rule ?? undefined,
+    questionnaireConfiguration: questionnaireConfigurationId,
+  };
+
+  switch (config.type) {
+    case 'boolean':
+      return {
+        ...questionBase,
+        boolean: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'string':
+      return {
+        ...questionBase,
+        string: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'strings':
+      return {
+        ...questionBase,
+        strings: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+        },
+      };
+    case 'multiStrings':
+      return {
+        ...questionBase,
+        multiStrings: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+        },
+      };
+    case 'number':
+      return {
+        ...questionBase,
+        number: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'numbers':
+      return {
+        ...questionBase,
+        numbers: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+        },
+      };
+    case 'multiNumbers':
+      return {
+        ...questionBase,
+        multiNumbers: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+        },
+      };
+    case 'file':
+      return {
+        ...questionBase,
+        file: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'files':
+      return {
+        ...questionBase,
+        files: {
+          default: config.input.default ?? undefined,
+        },
+      };
+  }
+};
 
 export class InvalidQuestionTemplateError extends Error {
   constructor() {
@@ -115,6 +207,7 @@ const mapStringsQuestionTemplateClass = (
       __typename: 'StringsQuestionTemplate',
       ...base,
       default: cls.strings.default ?? null,
+      options: cls.strings.options,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -132,6 +225,7 @@ const mapMultiStringsQuestionTemplateClass = (
       __typename: 'MultiStringsQuestionTemplate',
       ...base,
       default: cls.multiStrings.default ?? null,
+      options: cls.multiStrings.options,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -165,7 +259,8 @@ const mapNumbersQuestionTemplateClass = (
     return {
       __typename: 'NumbersQuestionTemplate',
       ...base,
-      default: cls.numbers.default,
+      default: cls.numbers.default ?? null,
+      options: cls.numbers.options,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -182,7 +277,8 @@ const mapMultiNumbersQuestionTemplateClass = (
     return {
       __typename: 'MultiNumbersQuestionTemplate',
       ...base,
-      default: cls.multiNumbers.default,
+      default: cls.multiNumbers.default ?? null,
+      options: cls.multiNumbers.options,
     };
   } else {
     throw new InvalidQuestionTemplateError();

@@ -127,6 +127,7 @@ input CreateStringsQuestionInput {
   optional: Boolean!
   questionnaireId: ID!
   default: String
+  options: [String!]!
 }
 input CreateMultiStringsQuestionInput {
   name: String!
@@ -135,6 +136,7 @@ input CreateMultiStringsQuestionInput {
   optional: Boolean!
   questionnaireId: ID!
   default: [String!]
+  options: [String!]!
 }
 input CreateNumberQuestionInput {
   name: String!
@@ -151,6 +153,7 @@ input CreateNumbersQuestionInput {
   optional: Boolean!
   questionnaireId: ID!
   default: Float
+  options: [Float!]!
 }
 input CreateMultiNumbersQuestionInput {
   name: String!
@@ -159,6 +162,7 @@ input CreateMultiNumbersQuestionInput {
   optional: Boolean!
   questionnaireId: ID!
   default: [Float!]
+  options: [Float!]!
 }
 input CreateFileQuestionInput {
   name: String!

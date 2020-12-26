@@ -6,43 +6,25 @@ import { Context } from '../../Context';
 import {
   AdminRole,
   BooleanQuestion,
-  BooleanQuestionTemplate,
   CreateBooleanQuestionInput,
-  CreateBooleanQuestionTemplateInput,
   CreateFileQuestionInput,
-  CreateFileQuestionTemplateInput,
   CreateFilesQuestionInput,
-  CreateFilesQuestionTemplateInput,
   CreateMultiNumbersQuestionInput,
-  CreateMultiNumbersQuestionTemplateInput,
   CreateMultiStringsQuestionInput,
-  CreateMultiStringsQuestionTemplateInput,
   CreateNumberQuestionInput,
-  CreateNumberQuestionTemplateInput,
   CreateNumbersQuestionInput,
-  CreateNumbersQuestionTemplateInput,
   CreateStringQuestionInput,
-  CreateStringQuestionTemplateInput,
   CreateStringsQuestionInput,
-  CreateStringsQuestionTemplateInput,
   FileQuestion,
-  FileQuestionTemplate,
   FilesQuestion,
-  FilesQuestionTemplate,
   MultiNumbersQuestion,
-  MultiNumbersQuestionTemplate,
   MultiStringsQuestion,
-  MultiStringsQuestionTemplate,
   Mutation,
   NumberQuestion,
-  NumberQuestionTemplate,
   NumbersQuestion,
-  NumbersQuestionTemplate,
   Query,
   StringQuestion,
-  StringQuestionTemplate,
   StringsQuestion,
-  StringsQuestionTemplate,
   UpdateBooleanQuestionInput,
   UpdateFileQuestionInput,
   UpdateFilesQuestionInput,
@@ -65,6 +47,20 @@ import {
   ValidatedFilterInput,
 } from '../../utils/validate';
 import {
+  BooleanQuestionTemplateConfig,
+  CreateQuestionTemplateDocConfig,
+  FileQuestionTemplateConfig,
+  FilesQuestionTemplateConfig,
+  MultiNumbersQuestionTemplateConfig,
+  MultiStringsQuestionTemplateConfig,
+  NumberQuestionTemplateConfig,
+  NumbersQuestionTemplateConfig,
+  QuestionTemplateConfig,
+  StringQuestionTemplateConfig,
+  StringsQuestionTemplateConfig,
+} from './interfaces';
+import {
+  createQuestionTemplateDoc,
   mapBooleanQuestion,
   mapBooleanQuestionTemplate,
   mapFileQuestion,
@@ -141,73 +137,10 @@ export const questionTemplateQuery = {
   questionTemplates,
 };
 
-type BooleanQuestionTemplateConfig = {
-  schema: typeof createBooleanQuestionTemplateSchema;
-  map: typeof mapBooleanQuestionTemplate;
-  input: CreateBooleanQuestionTemplateInput;
-  output: BooleanQuestionTemplate;
-};
-type StringQuestionTemplateConfig = {
-  schema: typeof createStringsQuestionTemplateSchema;
-  map: typeof mapStringQuestionTemplate;
-  input: CreateStringQuestionTemplateInput;
-  output: StringQuestionTemplate;
-};
-type StringsQuestionTemplateConfig = {
-  schema: typeof createStringsQuestionTemplateSchema;
-  map: typeof mapStringsQuestionTemplate;
-  input: CreateStringsQuestionTemplateInput;
-  output: StringsQuestionTemplate;
-};
-type MultiStringsQuestionTemplateConfig = {
-  schema: typeof createMultiStringsQuestionTemplateSchema;
-  map: typeof mapMultiStringsQuestionTemplate;
-  input: CreateMultiStringsQuestionTemplateInput;
-  output: MultiStringsQuestionTemplate;
-};
-type NumberQuestionTemplateConfig = {
-  schema: typeof createNumberQuestionTemplateSchema;
-  map: typeof mapNumberQuestionTemplate;
-  input: CreateNumberQuestionTemplateInput;
-  output: NumberQuestionTemplate;
-};
-type NumbersQuestionTemplateConfig = {
-  schema: typeof createNumbersQuestionTemplateSchema;
-  map: typeof mapNumbersQuestionTemplate;
-  input: CreateNumbersQuestionTemplateInput;
-  output: NumbersQuestionTemplate;
-};
-type MultiNumbersQuestionTemplateConfig = {
-  schema: typeof createMultiNumbersQuestionTemplateSchema;
-  map: typeof mapMultiNumbersQuestionTemplate;
-  input: CreateMultiNumbersQuestionTemplateInput;
-  output: MultiNumbersQuestionTemplate;
-};
-type FileQuestionTemplateConfig = {
-  schema: typeof createFileQuestionTemplateSchema;
-  map: typeof mapFileQuestionTemplate;
-  input: CreateFileQuestionTemplateInput;
-  output: FileQuestionTemplate;
-};
-type FilesQuestionTemplateConfig = {
-  schema: typeof createFilesQuestionTemplateSchema;
-  map: typeof mapFilesQuestionTemplate;
-  input: CreateFilesQuestionTemplateInput;
-  output: FilesQuestionTemplate;
-};
-
 export const createCreateQuestionTemplate = <
-  Config extends
-    | BooleanQuestionTemplateConfig
-    | StringQuestionTemplateConfig
-    | StringsQuestionTemplateConfig
-    | MultiStringsQuestionTemplateConfig
-    | NumberQuestionTemplateConfig
-    | NumbersQuestionTemplateConfig
-    | MultiNumbersQuestionTemplateConfig
-    | FileQuestionTemplateConfig
-    | FilesQuestionTemplateConfig
+  Config extends QuestionTemplateConfig
 >(
+  type: Config['type'],
   schema: Config['schema'],
   map: Config['map'],
 ) => async (
@@ -218,10 +151,6 @@ export const createCreateQuestionTemplate = <
   context: Context,
 ): Promise<Config['output']> => {
   await schema.validateAsync(args.input);
-
-  const {
-    input: { rule, questionnaireConfigurationId, ...questionBase },
-  } = args;
 
   if (!context.user) {
     throw new NotAuthenticatedError();
@@ -234,14 +163,15 @@ export const createCreateQuestionTemplate = <
   const session = await mongoose.startSession();
   session.startTransaction();
 
-  const doc = await context.models.QuestionTemplate.create({
-    ...questionBase,
-    rule: rule ?? undefined,
-    questionnaireConfiguration: questionnaireConfigurationId,
-  });
+  const doc = await context.models.QuestionTemplate.create(
+    createQuestionTemplateDoc({
+      type,
+      input: args.input,
+    } as CreateQuestionTemplateDocConfig),
+  );
 
   const questionnaireConfiguration = await context.models.QuestionnaireConfiguration.findOneAndUpdate(
-    { _id: questionnaireConfigurationId },
+    { _id: args.input.questionnaireConfigurationId },
     { $push: { questionTemplates: doc._id } },
   );
 
@@ -291,38 +221,47 @@ const deleteQuestionTemplate: Mutation['deleteQuestionTemplate'] = async (
 
 export const questionTemplateMutation = {
   createBooleanQuestionTemplate: createCreateQuestionTemplate<BooleanQuestionTemplateConfig>(
+    'boolean',
     createBooleanQuestionTemplateSchema,
     mapBooleanQuestionTemplate,
   ),
   createStringQuestionTemplate: createCreateQuestionTemplate<StringQuestionTemplateConfig>(
+    'string',
     createStringQuestionTemplateSchema,
     mapStringQuestionTemplate,
   ),
   createStringsQuestionTemplate: createCreateQuestionTemplate<StringsQuestionTemplateConfig>(
+    'strings',
     createStringsQuestionTemplateSchema,
     mapStringsQuestionTemplate,
   ),
   createMultiStringsQuestionTemplate: createCreateQuestionTemplate<MultiStringsQuestionTemplateConfig>(
+    'multiStrings',
     createMultiStringsQuestionTemplateSchema,
     mapMultiStringsQuestionTemplate,
   ),
   createNumberQuestionTemplate: createCreateQuestionTemplate<NumberQuestionTemplateConfig>(
+    'number',
     createNumberQuestionTemplateSchema,
     mapNumberQuestionTemplate,
   ),
   createNumbersQuestionTemplate: createCreateQuestionTemplate<NumbersQuestionTemplateConfig>(
+    'numbers',
     createNumbersQuestionTemplateSchema,
     mapNumbersQuestionTemplate,
   ),
   createMultiNumbersQuestionTemplate: createCreateQuestionTemplate<MultiNumbersQuestionTemplateConfig>(
+    'multiNumbers',
     createMultiNumbersQuestionTemplateSchema,
     mapMultiNumbersQuestionTemplate,
   ),
   createFileQuestionTemplate: createCreateQuestionTemplate<FileQuestionTemplateConfig>(
+    'file',
     createFileQuestionTemplateSchema,
     mapFileQuestionTemplate,
   ),
   createFilesQuestionTemplate: createCreateQuestionTemplate<FilesQuestionTemplateConfig>(
+    'files',
     createFilesQuestionTemplateSchema,
     mapFilesQuestionTemplate,
   ),

@@ -24,6 +24,7 @@ type StringsQuestionTemplate implements Node & NamedNode & QuestionBase {
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: String
+  options: [String!]!
 }
 type MultiStringsQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
@@ -33,6 +34,7 @@ type MultiStringsQuestionTemplate implements Node & NamedNode & QuestionBase {
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: [String!]
+  options: [String!]!
 }
 type NumberQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
@@ -51,6 +53,7 @@ type NumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: Float
+  options: [Float!]!
 }
 type MultiNumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
@@ -60,6 +63,7 @@ type MultiNumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   default: [Float!]
+  options: [Float!]!
 }
 type FileQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
@@ -118,6 +122,7 @@ input CreateStringsQuestionTemplateInput {
   optional: Boolean!
   questionnaireConfigurationId: ID!
   default: String
+  options: [String!]!
 }
 input CreateMultiStringsQuestionTemplateInput {
   name: String!
@@ -126,6 +131,7 @@ input CreateMultiStringsQuestionTemplateInput {
   optional: Boolean!
   questionnaireConfigurationId: ID!
   default: [String!]
+  options: [String!]!
 }
 input CreateNumberQuestionTemplateInput {
   name: String!
@@ -142,6 +148,7 @@ input CreateNumbersQuestionTemplateInput {
   optional: Boolean!
   questionnaireConfigurationId: ID!
   default: Float
+  options: [Float!]!
 }
 input CreateMultiNumbersQuestionTemplateInput {
   name: String!
@@ -150,6 +157,7 @@ input CreateMultiNumbersQuestionTemplateInput {
   optional: Boolean!
   questionnaireConfigurationId: ID!
   default: [Float!]
+  options: [Float!]!
 }
 input CreateFileQuestionTemplateInput {
   name: String!
