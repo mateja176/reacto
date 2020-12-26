@@ -71,60 +71,60 @@ import {
   updateYesNoAnswerSchema,
 } from './validate';
 
-type YesNoAnswerConfig = [
-  typeof createYesNoAnswerSchema,
-  typeof mapYesNoAnswer,
-  CreateYesNoAnswerInput,
-  YesNoAnswer,
-];
-type StringAnswerConfig = [
-  typeof createStringsAnswerSchema,
-  typeof mapStringAnswer,
-  CreateStringAnswerInput,
-  StringAnswer,
-];
-type StringsAnswerConfig = [
-  typeof createStringsAnswerSchema,
-  typeof mapStringsAnswer,
-  CreateStringsAnswerInput,
-  StringsAnswer,
-];
-type MultiStringsAnswerConfig = [
-  typeof createMultiStringsAnswerSchema,
-  typeof mapMultiStringsAnswer,
-  CreateMultiStringsAnswerInput,
-  MultiStringsAnswer,
-];
-type NumberAnswerConfig = [
-  typeof createNumberAnswerSchema,
-  typeof mapNumberAnswer,
-  CreateNumberAnswerInput,
-  NumberAnswer,
-];
-type NumbersAnswerConfig = [
-  typeof createNumbersAnswerSchema,
-  typeof mapNumbersAnswer,
-  CreateNumbersAnswerInput,
-  NumbersAnswer,
-];
-type MultiNumbersAnswerConfig = [
-  typeof createMultiNumbersAnswerSchema,
-  typeof mapMultiNumbersAnswer,
-  CreateMultiNumbersAnswerInput,
-  MultiNumbersAnswer,
-];
-type FileAnswerConfig = [
-  typeof createFileAnswerSchema,
-  typeof mapFileAnswer,
-  CreateFileAnswerInput,
-  FileAnswer,
-];
-type FilesAnswerConfig = [
-  typeof createFilesAnswerSchema,
-  typeof mapFilesAnswer,
-  CreateFilesAnswerInput,
-  FilesAnswer,
-];
+type YesNoAnswerConfig = {
+  schema: typeof createYesNoAnswerSchema;
+  map: typeof mapYesNoAnswer;
+  input: CreateYesNoAnswerInput;
+  output: YesNoAnswer;
+};
+type StringAnswerConfig = {
+  schema: typeof createStringsAnswerSchema;
+  map: typeof mapStringAnswer;
+  input: CreateStringAnswerInput;
+  output: StringAnswer;
+};
+type StringsAnswerConfig = {
+  schema: typeof createStringsAnswerSchema;
+  map: typeof mapStringsAnswer;
+  input: CreateStringsAnswerInput;
+  output: StringsAnswer;
+};
+type MultiStringsAnswerConfig = {
+  schema: typeof createMultiStringsAnswerSchema;
+  map: typeof mapMultiStringsAnswer;
+  input: CreateMultiStringsAnswerInput;
+  output: MultiStringsAnswer;
+};
+type NumberAnswerConfig = {
+  schema: typeof createNumberAnswerSchema;
+  map: typeof mapNumberAnswer;
+  input: CreateNumberAnswerInput;
+  output: NumberAnswer;
+};
+type NumbersAnswerConfig = {
+  schema: typeof createNumbersAnswerSchema;
+  map: typeof mapNumbersAnswer;
+  input: CreateNumbersAnswerInput;
+  output: NumbersAnswer;
+};
+type MultiNumbersAnswerConfig = {
+  schema: typeof createMultiNumbersAnswerSchema;
+  map: typeof mapMultiNumbersAnswer;
+  input: CreateMultiNumbersAnswerInput;
+  output: MultiNumbersAnswer;
+};
+type FileAnswerConfig = {
+  schema: typeof createFileAnswerSchema;
+  map: typeof mapFileAnswer;
+  input: CreateFileAnswerInput;
+  output: FileAnswer;
+};
+type FilesAnswerConfig = {
+  schema: typeof createFilesAnswerSchema;
+  map: typeof mapFilesAnswer;
+  input: CreateFilesAnswerInput;
+  output: FilesAnswer;
+};
 
 export const createCreateAnswer = <
   Config extends
@@ -138,15 +138,15 @@ export const createCreateAnswer = <
     | FileAnswerConfig
     | FilesAnswerConfig
 >(
-  schema: Config[0],
-  map: Config[1],
+  schema: Config['schema'],
+  map: Config['map'],
 ) => async (
   _: never,
   args: {
-    input: Config[2];
+    input: Config['input'];
   },
   context: Context,
-): Promise<Config[3]> => {
+): Promise<Config['output']> => {
   await schema.validateAsync(args.input);
 
   const {

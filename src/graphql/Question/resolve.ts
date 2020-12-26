@@ -141,60 +141,60 @@ export const questionTemplateQuery = {
   questionTemplates,
 };
 
-type YesNoQuestionTemplateConfig = [
-  typeof createYesNoQuestionTemplateSchema,
-  typeof mapYesNoQuestionTemplate,
-  CreateYesNoQuestionTemplateInput,
-  YesNoQuestionTemplate,
-];
-type StringQuestionTemplateConfig = [
-  typeof createStringsQuestionTemplateSchema,
-  typeof mapStringQuestionTemplate,
-  CreateStringQuestionTemplateInput,
-  StringQuestionTemplate,
-];
-type StringsQuestionTemplateConfig = [
-  typeof createStringsQuestionTemplateSchema,
-  typeof mapStringsQuestionTemplate,
-  CreateStringsQuestionTemplateInput,
-  StringsQuestionTemplate,
-];
-type MultiStringsQuestionTemplateConfig = [
-  typeof createMultiStringsQuestionTemplateSchema,
-  typeof mapMultiStringsQuestionTemplate,
-  CreateMultiStringsQuestionTemplateInput,
-  MultiStringsQuestionTemplate,
-];
-type NumberQuestionTemplateConfig = [
-  typeof createNumberQuestionTemplateSchema,
-  typeof mapNumberQuestionTemplate,
-  CreateNumberQuestionTemplateInput,
-  NumberQuestionTemplate,
-];
-type NumbersQuestionTemplateConfig = [
-  typeof createNumbersQuestionTemplateSchema,
-  typeof mapNumbersQuestionTemplate,
-  CreateNumbersQuestionTemplateInput,
-  NumbersQuestionTemplate,
-];
-type MultiNumbersQuestionTemplateConfig = [
-  typeof createMultiNumbersQuestionTemplateSchema,
-  typeof mapMultiNumbersQuestionTemplate,
-  CreateMultiNumbersQuestionTemplateInput,
-  MultiNumbersQuestionTemplate,
-];
-type FileQuestionTemplateConfig = [
-  typeof createFileQuestionTemplateSchema,
-  typeof mapFileQuestionTemplate,
-  CreateFileQuestionTemplateInput,
-  FileQuestionTemplate,
-];
-type FilesQuestionTemplateConfig = [
-  typeof createFilesQuestionTemplateSchema,
-  typeof mapFilesQuestionTemplate,
-  CreateFilesQuestionTemplateInput,
-  FilesQuestionTemplate,
-];
+type YesNoQuestionTemplateConfig = {
+  schema: typeof createYesNoQuestionTemplateSchema;
+  map: typeof mapYesNoQuestionTemplate;
+  input: CreateYesNoQuestionTemplateInput;
+  output: YesNoQuestionTemplate;
+};
+type StringQuestionTemplateConfig = {
+  schema: typeof createStringsQuestionTemplateSchema;
+  map: typeof mapStringQuestionTemplate;
+  input: CreateStringQuestionTemplateInput;
+  output: StringQuestionTemplate;
+};
+type StringsQuestionTemplateConfig = {
+  schema: typeof createStringsQuestionTemplateSchema;
+  map: typeof mapStringsQuestionTemplate;
+  input: CreateStringsQuestionTemplateInput;
+  output: StringsQuestionTemplate;
+};
+type MultiStringsQuestionTemplateConfig = {
+  schema: typeof createMultiStringsQuestionTemplateSchema;
+  map: typeof mapMultiStringsQuestionTemplate;
+  input: CreateMultiStringsQuestionTemplateInput;
+  output: MultiStringsQuestionTemplate;
+};
+type NumberQuestionTemplateConfig = {
+  schema: typeof createNumberQuestionTemplateSchema;
+  map: typeof mapNumberQuestionTemplate;
+  input: CreateNumberQuestionTemplateInput;
+  output: NumberQuestionTemplate;
+};
+type NumbersQuestionTemplateConfig = {
+  schema: typeof createNumbersQuestionTemplateSchema;
+  map: typeof mapNumbersQuestionTemplate;
+  input: CreateNumbersQuestionTemplateInput;
+  output: NumbersQuestionTemplate;
+};
+type MultiNumbersQuestionTemplateConfig = {
+  schema: typeof createMultiNumbersQuestionTemplateSchema;
+  map: typeof mapMultiNumbersQuestionTemplate;
+  input: CreateMultiNumbersQuestionTemplateInput;
+  output: MultiNumbersQuestionTemplate;
+};
+type FileQuestionTemplateConfig = {
+  schema: typeof createFileQuestionTemplateSchema;
+  map: typeof mapFileQuestionTemplate;
+  input: CreateFileQuestionTemplateInput;
+  output: FileQuestionTemplate;
+};
+type FilesQuestionTemplateConfig = {
+  schema: typeof createFilesQuestionTemplateSchema;
+  map: typeof mapFilesQuestionTemplate;
+  input: CreateFilesQuestionTemplateInput;
+  output: FilesQuestionTemplate;
+};
 
 export const createCreateQuestionTemplate = <
   Config extends
@@ -208,15 +208,15 @@ export const createCreateQuestionTemplate = <
     | FileQuestionTemplateConfig
     | FilesQuestionTemplateConfig
 >(
-  schema: Config[0],
-  map: Config[1],
+  schema: Config['schema'],
+  map: Config['map'],
 ) => async (
   _: never,
   args: {
-    input: Config[2];
+    input: Config['input'];
   },
   context: Context,
-): Promise<Config[3]> => {
+): Promise<Config['output']> => {
   await schema.validateAsync(args.input);
 
   const {
@@ -329,60 +329,60 @@ export const questionTemplateMutation = {
   deleteQuestionTemplate,
 };
 
-type YesNoQuestionConfig = [
-  typeof createYesNoQuestionSchema,
-  typeof mapYesNoQuestion,
-  CreateYesNoQuestionInput,
-  YesNoQuestion,
-];
-type StringQuestionConfig = [
-  typeof createStringsQuestionSchema,
-  typeof mapStringQuestion,
-  CreateStringQuestionInput,
-  StringQuestion,
-];
-type StringsQuestionConfig = [
-  typeof createStringsQuestionSchema,
-  typeof mapStringsQuestion,
-  CreateStringsQuestionInput,
-  StringsQuestion,
-];
-type MultiStringsQuestionConfig = [
-  typeof createMultiStringsQuestionSchema,
-  typeof mapMultiStringsQuestion,
-  CreateMultiStringsQuestionInput,
-  MultiStringsQuestion,
-];
-type NumberQuestionConfig = [
-  typeof createNumberQuestionSchema,
-  typeof mapNumberQuestion,
-  CreateNumberQuestionInput,
-  NumberQuestion,
-];
-type NumbersQuestionConfig = [
-  typeof createNumbersQuestionSchema,
-  typeof mapNumbersQuestion,
-  CreateNumbersQuestionInput,
-  NumbersQuestion,
-];
-type MultiNumbersQuestionConfig = [
-  typeof createMultiNumbersQuestionSchema,
-  typeof mapMultiNumbersQuestion,
-  CreateMultiNumbersQuestionInput,
-  MultiNumbersQuestion,
-];
-type FileQuestionConfig = [
-  typeof createFileQuestionSchema,
-  typeof mapFileQuestion,
-  CreateFileQuestionInput,
-  FileQuestion,
-];
-type FilesQuestionConfig = [
-  typeof createFilesQuestionSchema,
-  typeof mapFilesQuestion,
-  CreateFilesQuestionInput,
-  FilesQuestion,
-];
+type YesNoQuestionConfig = {
+  schema: typeof createYesNoQuestionSchema;
+  map: typeof mapYesNoQuestion;
+  input: CreateYesNoQuestionInput;
+  output: YesNoQuestion;
+};
+type StringQuestionConfig = {
+  schema: typeof createStringsQuestionSchema;
+  map: typeof mapStringQuestion;
+  input: CreateStringQuestionInput;
+  output: StringQuestion;
+};
+type StringsQuestionConfig = {
+  schema: typeof createStringsQuestionSchema;
+  map: typeof mapStringsQuestion;
+  input: CreateStringsQuestionInput;
+  output: StringsQuestion;
+};
+type MultiStringsQuestionConfig = {
+  schema: typeof createMultiStringsQuestionSchema;
+  map: typeof mapMultiStringsQuestion;
+  input: CreateMultiStringsQuestionInput;
+  output: MultiStringsQuestion;
+};
+type NumberQuestionConfig = {
+  schema: typeof createNumberQuestionSchema;
+  map: typeof mapNumberQuestion;
+  input: CreateNumberQuestionInput;
+  output: NumberQuestion;
+};
+type NumbersQuestionConfig = {
+  schema: typeof createNumbersQuestionSchema;
+  map: typeof mapNumbersQuestion;
+  input: CreateNumbersQuestionInput;
+  output: NumbersQuestion;
+};
+type MultiNumbersQuestionConfig = {
+  schema: typeof createMultiNumbersQuestionSchema;
+  map: typeof mapMultiNumbersQuestion;
+  input: CreateMultiNumbersQuestionInput;
+  output: MultiNumbersQuestion;
+};
+type FileQuestionConfig = {
+  schema: typeof createFileQuestionSchema;
+  map: typeof mapFileQuestion;
+  input: CreateFileQuestionInput;
+  output: FileQuestion;
+};
+type FilesQuestionConfig = {
+  schema: typeof createFilesQuestionSchema;
+  map: typeof mapFilesQuestion;
+  input: CreateFilesQuestionInput;
+  output: FilesQuestion;
+};
 
 export const createCreateQuestion = <
   Config extends
@@ -396,15 +396,15 @@ export const createCreateQuestion = <
     | FileQuestionConfig
     | FilesQuestionConfig
 >(
-  schema: Config[0],
-  map: Config[1],
+  schema: Config['schema'],
+  map: Config['map'],
 ) => async (
   _: never,
   args: {
-    input: Config[2];
+    input: Config['input'];
   },
   context: Context,
-): Promise<Config[3]> => {
+): Promise<Config['output']> => {
   await schema.validateAsync(args.input);
 
   const {
