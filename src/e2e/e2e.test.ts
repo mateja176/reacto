@@ -15,6 +15,7 @@ import {
   RegisterRegularMutationVariables,
   Role,
 } from '../generated/sdk';
+import { createQuestionnaireClass } from '../helpers/db';
 import { createHeaders } from '../helpers/helpers';
 import { userDocToJWTUser } from '../helpers/map';
 import {
@@ -133,36 +134,10 @@ describe('e2e', () => {
 
   describe('questionnaire', () => {
     test('create', async () => {
-      const { companyDoc, userDoc } = await createCompanyAndUser(models)(
-        seedInput,
-      );
-
-      const questionnaireConfigurationId = mongoose.Types.ObjectId();
-
-      const questionTemplate = await models.QuestionTemplate.create({
-        name: 'Test Template',
-        label: 'How are you?',
-        optional: false,
-        questionnaireConfiguration: questionnaireConfigurationId,
-        string: {},
-      });
-
-      await models.QuestionnaireConfiguration.create({
-        _id: questionnaireConfigurationId,
-        name: 'Test Questionnaire Configuration',
-        type: 'Test',
-        company: companyDoc._id,
-        user: userDoc._id,
-        questionTemplates: [questionTemplate._id],
-      });
-
-      const token = createToken(userDocToJWTUser(userDoc));
-
-      const sdk = getSdk(
-        new GraphQLClient(endpoint, {
-          headers: createHeaders(token),
-        }),
-      );
+      const {
+        sdk,
+        questionnaireConfigurationId,
+      } = await createQuestionnaireClass(models, seedInput);
 
       const type = 'Test';
       const {
