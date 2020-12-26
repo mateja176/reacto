@@ -15,14 +15,13 @@ import {
   RegisterRegularMutationVariables,
   Role,
 } from '../generated/sdk';
-import { createQuestionnaireClass } from '../helpers/db';
-import { createHeaders } from '../helpers/helpers';
-import { userDocToJWTUser } from '../helpers/map';
 import {
   createCompanyAndUser,
-  SeedInput,
-  seedInputSchema,
-} from '../helpers/seed';
+  createQuestionnaireConfigurationClass,
+} from '../helpers/db';
+import { createHeaders } from '../helpers/helpers';
+import { userDocToJWTUser } from '../helpers/map';
+import { SeedInput, seedInputSchema } from '../helpers/seed';
 import createToken from '../services/createToken';
 import env from '../services/env';
 import { createModels, Models } from '../services/models';
@@ -137,7 +136,7 @@ describe('e2e', () => {
       const {
         sdk,
         questionnaireConfigurationId,
-      } = await createQuestionnaireClass(models, seedInput);
+      } = await createQuestionnaireConfigurationClass(models, seedInput);
 
       const type = 'Test';
       const {

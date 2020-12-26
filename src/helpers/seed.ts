@@ -1,12 +1,11 @@
 import { mongoose } from '@typegoose/typegoose';
 import { CommanderStatic } from 'commander';
 import Joi from 'joi';
-import { Role } from '../classes/User/User';
 import { mongodbConfig } from '../config/mongodb';
 import env from '../services/env';
-import hashPassword from '../services/hashPassword';
-import { createModels, Models } from '../services/models';
+import { createModels } from '../services/models';
 import { passwordSchema } from '../utils/validate';
+import { createCompanyAndUser } from './db';
 
 export interface SeedInput {
   name: string;
@@ -19,35 +18,6 @@ export const seedInputSchema = Joi.object<SeedInput>({
   email: Joi.string().required().email(),
   password: passwordSchema,
 }).required();
-
-export const createCompanyAndUser = (models: Models) => async ({
-  name,
-  email,
-  password,
-}: SeedInput) => {
-  const userId = mongoose.Types.ObjectId();
-
-  const reacto = await models.Company.create({
-    name: 'Reacto',
-    owner: userId,
-    pendingUsers: [],
-    users: [],
-    questionnaireConfigurations: [],
-    questionnaires: [],
-  });
-
-  const userDoc = await models.User.create({
-    _id: userId,
-    name,
-    email,
-    passwordHash: await hashPassword(password),
-    role: Role.admin,
-    questionnaires: [],
-    company: reacto._id,
-  });
-
-  return { userDoc, companyDoc: reacto };
-};
 
 const seed = async (input: SeedInput) => {
   const validatedInput: SeedInput = await seedInputSchema.validateAsync(input);

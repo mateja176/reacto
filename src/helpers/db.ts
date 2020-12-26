@@ -1,14 +1,45 @@
 import { mongoose } from '@typegoose/typegoose';
 import { GraphQLClient } from 'graphql-request';
+import { Role } from '../classes/User/User';
 import { endpoint } from '../config/config';
 import { getSdk } from '../generated/sdk';
 import createToken from '../services/createToken';
+import hashPassword from '../services/hashPassword';
 import { Models } from '../services/models';
 import { createHeaders } from './helpers';
 import { userDocToJWTUser } from './map';
-import { createCompanyAndUser, SeedInput } from './seed';
+import { SeedInput } from './seed';
 
-export const createQuestionnaireClass = async (
+export const createCompanyAndUser = (models: Models) => async ({
+  name,
+  email,
+  password,
+}: SeedInput) => {
+  const userId = mongoose.Types.ObjectId();
+
+  const reacto = await models.Company.create({
+    name: 'Reacto',
+    owner: userId,
+    pendingUsers: [],
+    users: [],
+    questionnaireConfigurations: [],
+    questionnaires: [],
+  });
+
+  const userDoc = await models.User.create({
+    _id: userId,
+    name,
+    email,
+    passwordHash: await hashPassword(password),
+    role: Role.admin,
+    questionnaires: [],
+    company: reacto._id,
+  });
+
+  return { userDoc, companyDoc: reacto };
+};
+
+export const createQuestionnaireConfigurationClass = async (
   models: Models,
   seedInput: SeedInput,
 ) => {
