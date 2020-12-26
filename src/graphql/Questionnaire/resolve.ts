@@ -6,6 +6,7 @@ import {
   NotFoundError,
   QuestionnaireConfigurationNotFound,
 } from '../../utils/errors';
+import { docToId } from '../../utils/map';
 import { filterInputSchema, ValidatedFilterInput } from '../../utils/validate';
 import { mapQuestionnaire, questionTemplateToQuestion } from './map';
 import {
@@ -74,7 +75,7 @@ const createQuestionnaire: Mutation['createQuestionnaire'] = async (
     type: questionnaireConfigurationDoc.type,
     company: context.user.company.id,
     user: context.user.id,
-    inheritedQuestions: inheritedQuestionDocs.map(({ _id }) => _id),
+    inheritedQuestions: inheritedQuestionDocs.map(docToId),
     questions: [],
   });
 

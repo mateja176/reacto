@@ -1,4 +1,4 @@
-import { DocumentType } from '@typegoose/typegoose';
+import { DocumentType, mongoose } from '@typegoose/typegoose';
 
 //* https://stackoverflow.com/questions/12495891/what-is-the-v-field-in-mongoose
 export type MapClass<C> = Omit<C, '_id' | '__v'> & { id: string };
@@ -7,3 +7,5 @@ export const mapDoc = <C>(doc: DocumentType<C>): MapClass<C> => {
   const { _id, __v, ...cls } = doc.toJSON();
   return { ...cls, id: _id };
 };
+
+export const docToId = ({ _id }: { _id: mongoose.Types.ObjectId }) => _id;
