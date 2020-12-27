@@ -131,7 +131,7 @@ input CreateStringsQuestionInput {
   optional: Boolean!
   questionnaireId: ID!
   options: [String!]!
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: String
 }
 input CreateMultiStringsQuestionInput {
@@ -141,7 +141,7 @@ input CreateMultiStringsQuestionInput {
   optional: Boolean!
   questionnaireId: ID!
   options: [String!]!
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: [String!]
 }
 input CreateNumberQuestionInput {
@@ -159,7 +159,7 @@ input CreateNumbersQuestionInput {
   optional: Boolean!
   questionnaireId: ID!
   options: [Float!]!
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: Float
 }
 input CreateMultiNumbersQuestionInput {
@@ -169,7 +169,7 @@ input CreateMultiNumbersQuestionInput {
   optional: Boolean!
   questionnaireId: ID!
   options: [Float!]!
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: [Float!]
 }
 input CreateFileQuestionInput {
@@ -212,7 +212,7 @@ input UpdateStringsQuestionInput {
   rule: String
   optional: Boolean
   options: [String!]
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: String
 }
 input UpdateMultiStringsQuestionInput {
@@ -222,7 +222,7 @@ input UpdateMultiStringsQuestionInput {
   rule: String
   optional: Boolean
   options: [String!]
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: [String!]
 }
 input UpdateNumberQuestionInput {
@@ -240,7 +240,7 @@ input UpdateNumbersQuestionInput {
   rule: String
   optional: Boolean
   options: [Float!]
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: Float
 }
 input UpdateMultiNumbersQuestionInput {
@@ -250,7 +250,7 @@ input UpdateMultiNumbersQuestionInput {
   rule: String
   optional: Boolean
   options: [Float!]
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: [Float!]
 }
 input UpdateFileQuestionInput {

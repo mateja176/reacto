@@ -85,7 +85,7 @@ export const createQuestionTemplateDoc = (
         strings: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount ?? 0,
+          otherOptionsCount: config.input.otherOptionsCount,
         },
       };
     case 'multiStrings':
@@ -94,7 +94,7 @@ export const createQuestionTemplateDoc = (
         multiStrings: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount ?? 0,
+          otherOptionsCount: config.input.otherOptionsCount,
         },
       };
     case 'number':
@@ -110,7 +110,7 @@ export const createQuestionTemplateDoc = (
         numbers: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount ?? 0,
+          otherOptionsCount: config.input.otherOptionsCount,
         },
       };
     case 'multiNumbers':
@@ -119,7 +119,7 @@ export const createQuestionTemplateDoc = (
         multiNumbers: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount ?? 0,
+          otherOptionsCount: config.input.otherOptionsCount,
         },
       };
     case 'file':
@@ -411,7 +411,7 @@ export const createQuestionDoc = (
         strings: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount ?? 0,
+          otherOptionsCount: config.input.otherOptionsCount,
         },
       };
     case 'multiStrings':
@@ -420,7 +420,7 @@ export const createQuestionDoc = (
         multiStrings: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount ?? 0,
+          otherOptionsCount: config.input.otherOptionsCount,
         },
       };
     case 'number':
@@ -436,7 +436,7 @@ export const createQuestionDoc = (
         numbers: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount ?? 0,
+          otherOptionsCount: config.input.otherOptionsCount,
         },
       };
     case 'multiNumbers':
@@ -445,7 +445,7 @@ export const createQuestionDoc = (
         multiNumbers: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount ?? 0,
+          otherOptionsCount: config.input.otherOptionsCount,
         },
       };
     case 'file':

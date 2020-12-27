@@ -109,7 +109,7 @@ input CreateBooleanQuestionTemplateInput {
   rule: String
   optional: Boolean!
   questionnaireConfigurationId: ID!
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: Boolean
 }
 input CreateStringQuestionTemplateInput {
@@ -127,7 +127,7 @@ input CreateStringsQuestionTemplateInput {
   optional: Boolean!
   questionnaireConfigurationId: ID!
   options: [String!]!
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: String
 }
 input CreateMultiStringsQuestionTemplateInput {
@@ -137,7 +137,7 @@ input CreateMultiStringsQuestionTemplateInput {
   optional: Boolean!
   questionnaireConfigurationId: ID!
   options: [String!]!
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: [String!]
 }
 input CreateNumberQuestionTemplateInput {
@@ -155,7 +155,7 @@ input CreateNumbersQuestionTemplateInput {
   optional: Boolean!
   questionnaireConfigurationId: ID!
   options: [Float!]!
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: Float
 }
 input CreateMultiNumbersQuestionTemplateInput {
@@ -165,7 +165,7 @@ input CreateMultiNumbersQuestionTemplateInput {
   optional: Boolean!
   questionnaireConfigurationId: ID!
   options: [Float!]!
-  otherOptionsCount: Int
+  otherOptionsCount: Int!
   default: [Float!]
 }
 input CreateFileQuestionTemplateInput {
