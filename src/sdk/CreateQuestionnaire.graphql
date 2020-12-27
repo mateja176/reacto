@@ -1,0 +1,7 @@
+mutation CreateQuestionnaire($input: CreateQuestionnaireInput!) {
+  createQuestionnaire(input: $input) {
+    id
+    name
+    type
+  }
+}
