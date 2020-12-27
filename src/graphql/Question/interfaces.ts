@@ -321,54 +321,63 @@ export type CreateQuestionDocConfig =
     };
 
 export type BooleanUpdateQuestionConfig = {
+  type: 'boolean';
   schema: typeof updateBooleanQuestionSchema;
   map: typeof mapBooleanQuestion;
   input: UpdateBooleanQuestionInput;
   output: BooleanQuestion;
 };
 export type StringUpdateQuestionConfig = {
+  type: 'string';
   schema: typeof updateStringsQuestionSchema;
   map: typeof mapStringQuestion;
   input: UpdateStringQuestionInput;
   output: StringQuestion;
 };
 export type StringsUpdateQuestionConfig = {
+  type: 'strings';
   schema: typeof updateStringsQuestionSchema;
   map: typeof mapStringsQuestion;
   input: UpdateStringsQuestionInput;
   output: StringsQuestion;
 };
 export type MultiStringsUpdateQuestionConfig = {
+  type: 'multiStrings';
   schema: typeof updateMultiStringsQuestionSchema;
   map: typeof mapMultiStringsQuestion;
   input: UpdateMultiStringsQuestionInput;
   output: MultiStringsQuestion;
 };
 export type NumberUpdateQuestionConfig = {
+  type: 'number';
   schema: typeof updateNumberQuestionSchema;
   map: typeof mapNumberQuestion;
   input: UpdateNumberQuestionInput;
   output: NumberQuestion;
 };
 export type NumbersUpdateQuestionConfig = {
+  type: 'numbers';
   schema: typeof updateNumbersQuestionSchema;
   map: typeof mapNumbersQuestion;
   input: UpdateNumbersQuestionInput;
   output: NumbersQuestion;
 };
 export type MultiNumbersUpdateQuestionConfig = {
+  type: 'multiNumbers';
   schema: typeof updateMultiNumbersQuestionSchema;
   map: typeof mapMultiNumbersQuestion;
   input: UpdateMultiNumbersQuestionInput;
   output: MultiNumbersQuestion;
 };
 export type FileUpdateQuestionConfig = {
+  type: 'file';
   schema: typeof updateFileQuestionSchema;
   map: typeof mapFileQuestion;
   input: UpdateFileQuestionInput;
   output: FileQuestion;
 };
 export type FilesUpdateQuestionConfig = {
+  type: 'files';
   schema: typeof updateFilesQuestionSchema;
   map: typeof mapFilesQuestion;
   input: UpdateFilesQuestionInput;

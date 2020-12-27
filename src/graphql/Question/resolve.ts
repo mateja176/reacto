@@ -297,6 +297,7 @@ export const createCreateQuestion = <Config extends QuestionConfig>(
 };
 
 export const createUpdateQuestion = <Config extends UpdateQuestionConfig>(
+  type: Config['type'],
   schema: Config['schema'],
   map: Config['map'],
 ) => async (
@@ -435,38 +436,47 @@ export const questionMutation = {
     mapFilesQuestion,
   ),
   updateBooleanQuestion: createUpdateQuestion<BooleanUpdateQuestionConfig>(
+    'boolean',
     createBooleanQuestionSchema,
     mapBooleanQuestion,
   ),
   updateStringQuestion: createUpdateQuestion<StringUpdateQuestionConfig>(
+    'string',
     createStringQuestionSchema,
     mapStringQuestion,
   ),
   updateStringsQuestion: createUpdateQuestion<StringsUpdateQuestionConfig>(
+    'strings',
     createStringsQuestionSchema,
     mapStringsQuestion,
   ),
   updateMultiStringsQuestion: createUpdateQuestion<MultiStringsUpdateQuestionConfig>(
+    'multiStrings',
     createMultiStringsQuestionSchema,
     mapMultiStringsQuestion,
   ),
   updateNumberQuestion: createUpdateQuestion<NumberUpdateQuestionConfig>(
+    'number',
     createNumberQuestionSchema,
     mapNumberQuestion,
   ),
   updateNumbersQuestion: createUpdateQuestion<NumbersUpdateQuestionConfig>(
+    'numbers',
     createNumbersQuestionSchema,
     mapNumbersQuestion,
   ),
   updateMultiNumbersQuestion: createUpdateQuestion<MultiNumbersUpdateQuestionConfig>(
+    'multiNumbers',
     createMultiNumbersQuestionSchema,
     mapMultiNumbersQuestion,
   ),
   updateFileQuestion: createUpdateQuestion<FileUpdateQuestionConfig>(
+    'file',
     createFileQuestionSchema,
     mapFileQuestion,
   ),
   updateFilesQuestion: createUpdateQuestion<FilesUpdateQuestionConfig>(
+    'files',
     createFilesQuestionSchema,
     mapFilesQuestion,
   ),
