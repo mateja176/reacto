@@ -1,6 +1,35 @@
+import { DocumentType } from '@typegoose/typegoose';
 import Joi from 'joi';
+import { QuestionClass } from '../../classes/Question/Question';
 import { CreateBooleanAnswerInput } from '../../generated/graphql';
+import { AnswerType } from '../../interfaces/Type';
 import { idSchema } from '../../utils/validate';
+
+export const doesAnswerMatchQuestion = (
+  type: AnswerType,
+  questionDoc: DocumentType<QuestionClass>,
+): boolean => {
+  switch (type) {
+    case 'boolean':
+      return !!questionDoc.boolean;
+    case 'string':
+      return !!questionDoc.string;
+    case 'strings':
+      return !!questionDoc.strings;
+    case 'multiStrings':
+      return !!questionDoc.multiStrings;
+    case 'number':
+      return !!questionDoc.number;
+    case 'numbers':
+      return !!questionDoc.numbers;
+    case 'multiNumbers':
+      return !!questionDoc.multiNumbers;
+    case 'file':
+      return !!questionDoc.file;
+    case 'files':
+      return !!questionDoc.files;
+  }
+};
 
 const createAnswerBaseSchemaMap: Joi.SchemaMap<
   Pick<CreateBooleanAnswerInput, 'questionId'>

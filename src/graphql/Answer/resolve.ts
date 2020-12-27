@@ -55,6 +55,7 @@ import {
   createNumbersAnswerSchema,
   createStringAnswerSchema,
   createStringsAnswerSchema,
+  doesAnswerMatchQuestion,
 } from './validate';
 
 export const createCreateAnswer = <Config extends AnswerConfig>(
@@ -108,6 +109,12 @@ export const createCreateAnswer = <Config extends AnswerConfig>(
     )
   ) {
     throw new Forbidden();
+  }
+
+  if (!doesAnswerMatchQuestion(type, questionDoc)) {
+    throw new ApolloError(
+      "The referenced question's type does not match the answer type.",
+    );
   }
 
   await session.commitTransaction();
