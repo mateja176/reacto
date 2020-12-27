@@ -54,6 +54,7 @@ import {
   updateMultiStringsAnswerSchema,
   updateNumberAnswerSchema,
   updateNumbersAnswerSchema,
+  updateStringAnswerSchema,
   updateStringsAnswerSchema,
 } from './validate';
 
@@ -144,54 +145,63 @@ export type CreateAnswerDocConfig =
   | { type: 'files'; input: CreateFilesAnswerInput };
 
 export type BooleanAnswerUpdateConfig = {
+  type: 'boolean';
   schema: typeof updateBooleanAnswerSchema;
   map: typeof mapBooleanAnswer;
   input: UpdateBooleanAnswerInput;
   output: BooleanAnswer;
 };
 export type StringAnswerUpdateConfig = {
-  schema: typeof updateStringsAnswerSchema;
+  type: 'string';
+  schema: typeof updateStringAnswerSchema;
   map: typeof mapStringAnswer;
   input: UpdateStringAnswerInput;
   output: StringAnswer;
 };
 export type StringsAnswerUpdateConfig = {
+  type: 'strings';
   schema: typeof updateStringsAnswerSchema;
   map: typeof mapStringsAnswer;
   input: UpdateStringsAnswerInput;
   output: StringsAnswer;
 };
 export type MultiStringsAnswerUpdateConfig = {
+  type: 'multiStrings';
   schema: typeof updateMultiStringsAnswerSchema;
   map: typeof mapMultiStringsAnswer;
   input: UpdateMultiStringsAnswerInput;
   output: MultiStringsAnswer;
 };
 export type NumberAnswerUpdateConfig = {
+  type: 'number';
   schema: typeof updateNumberAnswerSchema;
   map: typeof mapNumberAnswer;
   input: UpdateNumberAnswerInput;
   output: NumberAnswer;
 };
 export type NumbersAnswerUpdateConfig = {
+  type: 'numbers';
   schema: typeof updateNumbersAnswerSchema;
   map: typeof mapNumbersAnswer;
   input: UpdateNumbersAnswerInput;
   output: NumbersAnswer;
 };
 export type MultiNumbersAnswerUpdateConfig = {
+  type: 'multiNumbers';
   schema: typeof updateMultiNumbersAnswerSchema;
   map: typeof mapMultiNumbersAnswer;
   input: UpdateMultiNumbersAnswerInput;
   output: MultiNumbersAnswer;
 };
 export type FileAnswerUpdateConfig = {
+  type: 'file';
   schema: typeof updateFileAnswerSchema;
   map: typeof mapFileAnswer;
   input: UpdateFileAnswerInput;
   output: FileAnswer;
 };
 export type FilesAnswerUpdateConfig = {
+  type: 'files';
   schema: typeof updateFilesAnswerSchema;
   map: typeof mapFilesAnswer;
   input: UpdateFilesAnswerInput;
@@ -208,3 +218,14 @@ export type UpdateAnswerConfig =
   | MultiNumbersAnswerUpdateConfig
   | FileAnswerUpdateConfig
   | FilesAnswerUpdateConfig;
+
+export type UpdateAnswerDocConfig =
+  | { type: 'boolean'; input: UpdateBooleanAnswerInput }
+  | { type: 'string'; input: UpdateStringAnswerInput }
+  | { type: 'strings'; input: UpdateStringsAnswerInput }
+  | { type: 'multiStrings'; input: UpdateMultiStringsAnswerInput }
+  | { type: 'number'; input: UpdateNumberAnswerInput }
+  | { type: 'numbers'; input: UpdateNumbersAnswerInput }
+  | { type: 'multiNumbers'; input: UpdateMultiNumbersAnswerInput }
+  | { type: 'file'; input: UpdateFileAnswerInput }
+  | { type: 'files'; input: UpdateFilesAnswerInput };

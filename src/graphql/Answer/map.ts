@@ -27,7 +27,7 @@ import {
   mapStringQuestion,
   mapStringsQuestion,
 } from '../Question/map';
-import { CreateAnswerDocConfig } from './interfaces';
+import { CreateAnswerDocConfig, UpdateAnswerDocConfig } from './interfaces';
 
 export const createAnswerDoc = (
   config: CreateAnswerDocConfig,
@@ -84,6 +84,49 @@ export const createAnswerDoc = (
     case 'files':
       return {
         ...answerBase,
+        files: config.input.answer,
+      };
+  }
+};
+
+export const createUpdateAnswerDoc = (
+  config: UpdateAnswerDocConfig,
+): Omit<AnswerClass, 'question'> => {
+  switch (config.type) {
+    case 'boolean':
+      return {
+        boolean: config.input.answer,
+      };
+    case 'string':
+      return {
+        string: config.input.answer,
+      };
+    case 'strings':
+      return {
+        strings: config.input.answer,
+      };
+    case 'multiStrings':
+      return {
+        multiStrings: config.input.answer,
+      };
+    case 'number':
+      return {
+        number: config.input.answer,
+      };
+    case 'numbers':
+      return {
+        numbers: config.input.answer,
+      };
+    case 'multiNumbers':
+      return {
+        multiNumbers: config.input.answer,
+      };
+    case 'file':
+      return {
+        file: config.input.answer,
+      };
+    case 'files':
+      return {
         files: config.input.answer,
       };
   }

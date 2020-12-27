@@ -32,9 +32,11 @@ import {
   StringsAnswerConfig,
   StringsAnswerUpdateConfig,
   UpdateAnswerConfig,
+  UpdateAnswerDocConfig,
 } from './interfaces';
 import {
   createAnswerDoc,
+  createUpdateAnswerDoc,
   mapBooleanAnswer,
   mapFileAnswer,
   mapFilesAnswer,
@@ -127,6 +129,7 @@ export const createCreateAnswer = <Config extends AnswerConfig>(
 };
 
 export const createUpdateAnswer = <Config extends UpdateAnswerConfig>(
+  type: Config['type'],
   schema: Config['schema'],
   map: Config['map'],
 ) => async (
@@ -142,11 +145,16 @@ export const createUpdateAnswer = <Config extends UpdateAnswerConfig>(
     throw new NotAuthenticatedError();
   }
 
+  const { ...answerUpdate } = createUpdateAnswerDoc({
+    type,
+    input: args.input,
+  } as UpdateAnswerDocConfig);
+
   const doc = (await context.models.Answer.findOneAndUpdate(
     {
       _id: args.input.id,
     },
-    { answer: args.input.answer },
+    answerUpdate,
     { new: true },
   ).populate({
     path: 'question',
@@ -226,38 +234,47 @@ export const answerMutation = {
   ),
 
   updateBooleanAnswer: createUpdateAnswer<BooleanAnswerUpdateConfig>(
+    'boolean',
     createBooleanAnswerSchema,
     mapBooleanAnswer,
   ),
   updateStringAnswer: createUpdateAnswer<StringAnswerUpdateConfig>(
+    'string',
     createStringAnswerSchema,
     mapStringAnswer,
   ),
   updateStringsAnswer: createUpdateAnswer<StringsAnswerUpdateConfig>(
+    'strings',
     createStringsAnswerSchema,
     mapStringsAnswer,
   ),
   updateMultiStringsAnswer: createUpdateAnswer<MultiStringsAnswerUpdateConfig>(
+    'multiStrings',
     createMultiStringsAnswerSchema,
     mapMultiStringsAnswer,
   ),
   updateNumberAnswer: createUpdateAnswer<NumberAnswerUpdateConfig>(
+    'number',
     createNumberAnswerSchema,
     mapNumberAnswer,
   ),
   updateNumbersAnswer: createUpdateAnswer<NumbersAnswerUpdateConfig>(
+    'numbers',
     createNumbersAnswerSchema,
     mapNumbersAnswer,
   ),
   updateMultiNumbersAnswer: createUpdateAnswer<MultiNumbersAnswerUpdateConfig>(
+    'multiNumbers',
     createMultiNumbersAnswerSchema,
     mapMultiNumbersAnswer,
   ),
   updateFileAnswer: createUpdateAnswer<FileAnswerUpdateConfig>(
+    'file',
     createFileAnswerSchema,
     mapFileAnswer,
   ),
   updateFilesAnswer: createUpdateAnswer<FilesAnswerUpdateConfig>(
+    'files',
     createFilesAnswerSchema,
     mapFilesAnswer,
   ),
