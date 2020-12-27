@@ -166,7 +166,7 @@ export const createCreateAnswer = <
   });
 
   const questionDoc = (await context.models.Question.findOneAndUpdate(
-    { _id: args.input.questionId },
+    { _id: questionId },
     { answer: doc._id },
   ).populate('questionnaire')) as DocumentType<
     Omit<QuestionClass, 'questionnaire'> & {
