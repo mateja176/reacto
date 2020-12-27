@@ -98,10 +98,11 @@ export const createCreateAnswer = <Config extends AnswerConfig>(
 
   // * if the user is not permitted to perform this action the transaction is never going to be committed
   if (
-    context.user.id !== questionDoc.questionnaire.user ||
     !(
-      context.user.role === AdminRole.admin &&
-      context.user.company.id === String(questionDoc.questionnaire.company)
+      (context.user.role === AdminRole.admin &&
+        context.user.company.id ===
+          String(questionDoc.questionnaire.company)) ||
+      context.user.id === String(questionDoc.questionnaire.user)
     )
   ) {
     throw new Forbidden();
