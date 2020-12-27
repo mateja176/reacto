@@ -145,16 +145,14 @@ export const createUpdateAnswer = <Config extends UpdateAnswerConfig>(
     throw new NotAuthenticatedError();
   }
 
-  const { ...answerUpdate } = createUpdateAnswerDocPayload({
-    type,
-    input: args.input,
-  } as UpdateAnswerDocConfig);
-
   const doc = (await context.models.Answer.findOneAndUpdate(
     {
       _id: args.input.id,
     },
-    answerUpdate,
+    createUpdateAnswerDocPayload({
+      type,
+      input: args.input,
+    } as UpdateAnswerDocConfig),
     { new: true },
   ).populate({
     path: 'question',
