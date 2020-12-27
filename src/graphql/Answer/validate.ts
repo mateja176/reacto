@@ -8,7 +8,7 @@ import { idSchema } from '../../utils/validate';
 
 export const isAnswerAllowed = (
   type: AnswerType,
-  answer: DocumentType<AnswerClass>,
+  answerDoc: DocumentType<AnswerClass>,
   questionDoc: DocumentType<QuestionClass>,
 ): boolean => {
   return !!(() => {
@@ -20,21 +20,47 @@ export const isAnswerAllowed = (
       case 'strings':
         return (
           questionDoc.strings?.allowOtherOption ||
-          (answer.strings &&
-            questionDoc.strings?.options.includes(answer.strings))
+          (answerDoc.strings &&
+            questionDoc.strings?.options.includes(answerDoc.strings))
         );
       case 'multiStrings':
-        return questionDoc.multiStrings;
+        if (answerDoc.multiStrings && questionDoc.multiStrings) {
+          const otherAnswersCount = answerDoc.multiStrings.reduce(
+            (otherQuestionsCount, answer) =>
+              questionDoc.multiStrings?.options.includes(answer)
+                ? otherQuestionsCount
+                : otherQuestionsCount + 1,
+            0,
+          );
+          return (
+            otherAnswersCount <= questionDoc.multiStrings.otherOptionsCount
+          );
+        } else {
+          return false;
+        }
       case 'number':
         return questionDoc.number;
       case 'numbers':
         return (
           questionDoc.numbers?.allowOtherOption ||
-          (answer.numbers &&
-            questionDoc.numbers?.options.includes(answer.numbers))
+          (answerDoc.numbers &&
+            questionDoc.numbers?.options.includes(answerDoc.numbers))
         );
       case 'multiNumbers':
-        return questionDoc.multiNumbers;
+        if (answerDoc.multiNumbers && questionDoc.multiNumbers) {
+          const otherAnswersCount = answerDoc.multiNumbers.reduce(
+            (otherQuestionsCount, answer) =>
+              questionDoc.multiNumbers?.options.includes(answer)
+                ? otherQuestionsCount
+                : otherQuestionsCount + 1,
+            0,
+          );
+          return (
+            otherAnswersCount <= questionDoc.multiNumbers.otherOptionsCount
+          );
+        } else {
+          return false;
+        }
       case 'file':
         return questionDoc.file;
       case 'files':
