@@ -4,6 +4,9 @@ type Questionnaire implements Node & NamedNode {
   type: String!
   company: Company!
   user: User!
+  """
+  Inherited from QuestionnaireConfiguration - readonly
+  """
   inheritedQuestions: [Question!]!
   questions: [Question!]!
 }

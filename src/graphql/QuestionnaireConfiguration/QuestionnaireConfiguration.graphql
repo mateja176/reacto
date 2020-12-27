@@ -1,6 +1,9 @@
 type QuestionnaireConfiguration implements Node & NamedNode {
   id: ID!
   name: String!
+  """
+  User defined, for example: E-Commerce, Blog, Social Media
+  """
   type: String!
   company: Company!
   user: User!
