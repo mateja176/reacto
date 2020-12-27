@@ -17,6 +17,15 @@ import {
   NumbersAnswer,
   StringAnswer,
   StringsAnswer,
+  UpdateBooleanAnswerInput,
+  UpdateFileAnswerInput,
+  UpdateFilesAnswerInput,
+  UpdateMultiNumbersAnswerInput,
+  UpdateMultiStringsAnswerInput,
+  UpdateNumberAnswerInput,
+  UpdateNumbersAnswerInput,
+  UpdateStringAnswerInput,
+  UpdateStringsAnswerInput,
 } from '../../generated/graphql';
 import {
   mapBooleanAnswer,
@@ -38,6 +47,14 @@ import {
   createNumberAnswerSchema,
   createNumbersAnswerSchema,
   createStringsAnswerSchema,
+  updateBooleanAnswerSchema,
+  updateFileAnswerSchema,
+  updateFilesAnswerSchema,
+  updateMultiNumbersAnswerSchema,
+  updateMultiStringsAnswerSchema,
+  updateNumberAnswerSchema,
+  updateNumbersAnswerSchema,
+  updateStringsAnswerSchema,
 } from './validate';
 
 export type BooleanAnswerConfig = {
@@ -105,3 +122,69 @@ export type AnswerConfig =
   | MultiNumbersAnswerConfig
   | FileAnswerConfig
   | FilesAnswerConfig;
+
+export type BooleanAnswerUpdateConfig = {
+  schema: typeof updateBooleanAnswerSchema;
+  map: typeof mapBooleanAnswer;
+  input: UpdateBooleanAnswerInput;
+  output: BooleanAnswer;
+};
+export type StringAnswerUpdateConfig = {
+  schema: typeof updateStringsAnswerSchema;
+  map: typeof mapStringAnswer;
+  input: UpdateStringAnswerInput;
+  output: StringAnswer;
+};
+export type StringsAnswerUpdateConfig = {
+  schema: typeof updateStringsAnswerSchema;
+  map: typeof mapStringsAnswer;
+  input: UpdateStringsAnswerInput;
+  output: StringsAnswer;
+};
+export type MultiStringsAnswerUpdateConfig = {
+  schema: typeof updateMultiStringsAnswerSchema;
+  map: typeof mapMultiStringsAnswer;
+  input: UpdateMultiStringsAnswerInput;
+  output: MultiStringsAnswer;
+};
+export type NumberAnswerUpdateConfig = {
+  schema: typeof updateNumberAnswerSchema;
+  map: typeof mapNumberAnswer;
+  input: UpdateNumberAnswerInput;
+  output: NumberAnswer;
+};
+export type NumbersAnswerUpdateConfig = {
+  schema: typeof updateNumbersAnswerSchema;
+  map: typeof mapNumbersAnswer;
+  input: UpdateNumbersAnswerInput;
+  output: NumbersAnswer;
+};
+export type MultiNumbersAnswerUpdateConfig = {
+  schema: typeof updateMultiNumbersAnswerSchema;
+  map: typeof mapMultiNumbersAnswer;
+  input: UpdateMultiNumbersAnswerInput;
+  output: MultiNumbersAnswer;
+};
+export type FileAnswerUpdateConfig = {
+  schema: typeof updateFileAnswerSchema;
+  map: typeof mapFileAnswer;
+  input: UpdateFileAnswerInput;
+  output: FileAnswer;
+};
+export type FilesAnswerUpdateConfig = {
+  schema: typeof updateFilesAnswerSchema;
+  map: typeof mapFilesAnswer;
+  input: UpdateFilesAnswerInput;
+  output: FilesAnswer;
+};
+
+export type UpdateAnswerConfig =
+  | BooleanAnswerUpdateConfig
+  | StringAnswerUpdateConfig
+  | StringsAnswerUpdateConfig
+  | MultiStringsAnswerUpdateConfig
+  | NumberAnswerUpdateConfig
+  | NumbersAnswerUpdateConfig
+  | MultiNumbersAnswerUpdateConfig
+  | FileAnswerUpdateConfig
+  | FilesAnswerUpdateConfig;

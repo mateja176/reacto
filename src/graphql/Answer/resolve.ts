@@ -4,28 +4,7 @@ import { Context } from 'vm';
 import { AnswerClass } from '../../classes/Answer/Answer';
 import { QuestionClass } from '../../classes/Question/Question';
 import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
-import {
-  AdminRole,
-  BooleanAnswer,
-  FileAnswer,
-  FilesAnswer,
-  MultiNumbersAnswer,
-  MultiStringsAnswer,
-  Nullable,
-  NumberAnswer,
-  NumbersAnswer,
-  StringAnswer,
-  StringsAnswer,
-  UpdateBooleanAnswerInput,
-  UpdateFileAnswerInput,
-  UpdateFilesAnswerInput,
-  UpdateMultiNumbersAnswerInput,
-  UpdateMultiStringsAnswerInput,
-  UpdateNumberAnswerInput,
-  UpdateNumbersAnswerInput,
-  UpdateStringAnswerInput,
-  UpdateStringsAnswerInput,
-} from '../../generated/graphql';
+import { AdminRole, Nullable } from '../../generated/graphql';
 import {
   Forbidden,
   NotAuthenticatedError,
@@ -34,14 +13,24 @@ import {
 import {
   AnswerConfig,
   BooleanAnswerConfig,
+  BooleanAnswerUpdateConfig,
   FileAnswerConfig,
+  FileAnswerUpdateConfig,
   FilesAnswerConfig,
+  FilesAnswerUpdateConfig,
   MultiNumbersAnswerConfig,
+  MultiNumbersAnswerUpdateConfig,
   MultiStringsAnswerConfig,
+  MultiStringsAnswerUpdateConfig,
   NumberAnswerConfig,
+  NumberAnswerUpdateConfig,
   NumbersAnswerConfig,
+  NumbersAnswerUpdateConfig,
   StringAnswerConfig,
+  StringAnswerUpdateConfig,
   StringsAnswerConfig,
+  StringsAnswerUpdateConfig,
+  UpdateAnswerConfig,
 } from './interfaces';
 import {
   mapBooleanAnswer,
@@ -64,14 +53,6 @@ import {
   createNumbersAnswerSchema,
   createStringAnswerSchema,
   createStringsAnswerSchema,
-  updateBooleanAnswerSchema,
-  updateFileAnswerSchema,
-  updateFilesAnswerSchema,
-  updateMultiNumbersAnswerSchema,
-  updateMultiStringsAnswerSchema,
-  updateNumberAnswerSchema,
-  updateNumbersAnswerSchema,
-  updateStringsAnswerSchema,
 } from './validate';
 
 export const createCreateAnswer = <Config extends AnswerConfig>(
@@ -135,73 +116,7 @@ export const createCreateAnswer = <Config extends AnswerConfig>(
   return output;
 };
 
-type BooleanAnswerUpdateConfig = {
-  schema: typeof updateBooleanAnswerSchema;
-  map: typeof mapBooleanAnswer;
-  input: UpdateBooleanAnswerInput;
-  output: BooleanAnswer;
-};
-type StringAnswerUpdateConfig = {
-  schema: typeof updateStringsAnswerSchema;
-  map: typeof mapStringAnswer;
-  input: UpdateStringAnswerInput;
-  output: StringAnswer;
-};
-type StringsAnswerUpdateConfig = {
-  schema: typeof updateStringsAnswerSchema;
-  map: typeof mapStringsAnswer;
-  input: UpdateStringsAnswerInput;
-  output: StringsAnswer;
-};
-type MultiStringsAnswerUpdateConfig = {
-  schema: typeof updateMultiStringsAnswerSchema;
-  map: typeof mapMultiStringsAnswer;
-  input: UpdateMultiStringsAnswerInput;
-  output: MultiStringsAnswer;
-};
-type NumberAnswerUpdateConfig = {
-  schema: typeof updateNumberAnswerSchema;
-  map: typeof mapNumberAnswer;
-  input: UpdateNumberAnswerInput;
-  output: NumberAnswer;
-};
-type NumbersAnswerUpdateConfig = {
-  schema: typeof updateNumbersAnswerSchema;
-  map: typeof mapNumbersAnswer;
-  input: UpdateNumbersAnswerInput;
-  output: NumbersAnswer;
-};
-type MultiNumbersAnswerUpdateConfig = {
-  schema: typeof updateMultiNumbersAnswerSchema;
-  map: typeof mapMultiNumbersAnswer;
-  input: UpdateMultiNumbersAnswerInput;
-  output: MultiNumbersAnswer;
-};
-type FileAnswerUpdateConfig = {
-  schema: typeof updateFileAnswerSchema;
-  map: typeof mapFileAnswer;
-  input: UpdateFileAnswerInput;
-  output: FileAnswer;
-};
-type FilesAnswerUpdateConfig = {
-  schema: typeof updateFilesAnswerSchema;
-  map: typeof mapFilesAnswer;
-  input: UpdateFilesAnswerInput;
-  output: FilesAnswer;
-};
-
-export const createUpdateAnswer = <
-  Config extends
-    | BooleanAnswerUpdateConfig
-    | StringAnswerUpdateConfig
-    | StringsAnswerUpdateConfig
-    | MultiStringsAnswerUpdateConfig
-    | NumberAnswerUpdateConfig
-    | NumbersAnswerUpdateConfig
-    | MultiNumbersAnswerUpdateConfig
-    | FileAnswerUpdateConfig
-    | FilesAnswerUpdateConfig
->(
+export const createUpdateAnswer = <Config extends UpdateAnswerConfig>(
   schema: Config['schema'],
   map: Config['map'],
 ) => async (
