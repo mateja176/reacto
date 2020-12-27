@@ -11,31 +11,49 @@ type BooleanAnswer implements Node & IAnswer {
 type StringAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
+  """
+  Textual
+  """
   answer: String!
 }
 type StringsAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
+  """
+  Select Textual
+  """
   answer: String!
 }
 type MultiStringsAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
+  """
+  Multi-select Textual
+  """
   answer: [String!]!
 }
 type NumberAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
+  """
+  Numerical
+  """
   answer: Float!
 }
 type NumbersAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
+  """
+  Select Numerical
+  """
   answer: Float!
 }
 type MultiNumbersAnswer implements Node & IAnswer {
   id: ID!
   question: Question!
+  """
+  Multi-select Numerical
+  """
   answer: [Float!]!
 }
 type FileAnswer implements Node & IAnswer {

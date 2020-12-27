@@ -12,20 +12,20 @@ export class AnswerClass {
   public question: Ref<QuestionClass>;
   @prop()
   public boolean?: boolean;
-  @prop({ comment: 'Textual' })
+  @prop()
   public string?: string;
-  @prop({ array: true, comment: 'Select Textual' })
+  @prop({ array: true })
   public strings?: string;
-  @prop({ array: true, comment: 'Multi-select Textual' })
+  @prop({ array: true })
   public multiStrings?: string[];
-  @prop({ comment: 'Numerical' })
+  @prop()
   public number?: number;
-  @prop({ array: true, comment: 'Select Numerical' })
+  @prop({ array: true })
   public numbers?: number;
-  @prop({ array: true, comment: 'Multi-select Numerical' })
+  @prop({ array: true })
   public multiNumbers?: number[];
-  @prop({ comment: 'File URL' })
+  @prop()
   public file?: string;
-  @prop({ comment: "File URL's" })
+  @prop()
   public files?: string[];
 }
