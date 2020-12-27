@@ -3,29 +3,7 @@ import { isNil } from 'ramda';
 import { QuestionClass } from '../../classes/Question/Question';
 import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
 import { Context } from '../../Context';
-import {
-  AdminRole,
-  BooleanQuestion,
-  FileQuestion,
-  FilesQuestion,
-  MultiNumbersQuestion,
-  MultiStringsQuestion,
-  Mutation,
-  NumberQuestion,
-  NumbersQuestion,
-  Query,
-  StringQuestion,
-  StringsQuestion,
-  UpdateBooleanQuestionInput,
-  UpdateFileQuestionInput,
-  UpdateFilesQuestionInput,
-  UpdateMultiNumbersQuestionInput,
-  UpdateMultiStringsQuestionInput,
-  UpdateNumberQuestionInput,
-  UpdateNumbersQuestionInput,
-  UpdateStringQuestionInput,
-  UpdateStringsQuestionInput,
-} from '../../generated/graphql';
+import { AdminRole, Mutation, Query } from '../../generated/graphql';
 import {
   Forbidden,
   NotAuthenticatedError,
@@ -40,26 +18,36 @@ import {
 import {
   BooleanQuestionConfig,
   BooleanQuestionTemplateConfig,
+  BooleanUpdateQuestionConfig,
   CreateQuestionDocConfig,
   CreateQuestionTemplateDocConfig,
   FileQuestionConfig,
   FileQuestionTemplateConfig,
   FilesQuestionConfig,
   FilesQuestionTemplateConfig,
+  FilesUpdateQuestionConfig,
+  FileUpdateQuestionConfig,
   MultiNumbersQuestionConfig,
   MultiNumbersQuestionTemplateConfig,
+  MultiNumbersUpdateQuestionConfig,
   MultiStringsQuestionConfig,
   MultiStringsQuestionTemplateConfig,
+  MultiStringsUpdateQuestionConfig,
   NumberQuestionConfig,
   NumberQuestionTemplateConfig,
   NumbersQuestionConfig,
   NumbersQuestionTemplateConfig,
+  NumbersUpdateQuestionConfig,
+  NumberUpdateQuestionConfig,
   QuestionConfig,
   QuestionTemplateConfig,
   StringQuestionConfig,
   StringQuestionTemplateConfig,
   StringsQuestionConfig,
   StringsQuestionTemplateConfig,
+  StringsUpdateQuestionConfig,
+  StringUpdateQuestionConfig,
+  UpdateQuestionConfig,
 } from './interfaces';
 import {
   createQuestionDoc,
@@ -103,14 +91,6 @@ import {
   createStringQuestionTemplateSchema,
   createStringsQuestionSchema,
   createStringsQuestionTemplateSchema,
-  updateBooleanQuestionSchema,
-  updateFileQuestionSchema,
-  updateFilesQuestionSchema,
-  updateMultiNumbersQuestionSchema,
-  updateMultiStringsQuestionSchema,
-  updateNumberQuestionSchema,
-  updateNumbersQuestionSchema,
-  updateStringsQuestionSchema,
 } from './validate';
 
 const questionTemplates: Query['questionTemplates'] = async (
@@ -316,73 +296,7 @@ export const createCreateQuestion = <Config extends QuestionConfig>(
   return output;
 };
 
-type BooleanUpdateQuestionConfig = {
-  schema: typeof updateBooleanQuestionSchema;
-  map: typeof mapBooleanQuestion;
-  input: UpdateBooleanQuestionInput;
-  output: BooleanQuestion;
-};
-type StringUpdateQuestionConfig = {
-  schema: typeof updateStringsQuestionSchema;
-  map: typeof mapStringQuestion;
-  input: UpdateStringQuestionInput;
-  output: StringQuestion;
-};
-type StringsUpdateQuestionConfig = {
-  schema: typeof updateStringsQuestionSchema;
-  map: typeof mapStringsQuestion;
-  input: UpdateStringsQuestionInput;
-  output: StringsQuestion;
-};
-type MultiStringsUpdateQuestionConfig = {
-  schema: typeof updateMultiStringsQuestionSchema;
-  map: typeof mapMultiStringsQuestion;
-  input: UpdateMultiStringsQuestionInput;
-  output: MultiStringsQuestion;
-};
-type NumberUpdateQuestionConfig = {
-  schema: typeof updateNumberQuestionSchema;
-  map: typeof mapNumberQuestion;
-  input: UpdateNumberQuestionInput;
-  output: NumberQuestion;
-};
-type NumbersUpdateQuestionConfig = {
-  schema: typeof updateNumbersQuestionSchema;
-  map: typeof mapNumbersQuestion;
-  input: UpdateNumbersQuestionInput;
-  output: NumbersQuestion;
-};
-type MultiNumbersUpdateQuestionConfig = {
-  schema: typeof updateMultiNumbersQuestionSchema;
-  map: typeof mapMultiNumbersQuestion;
-  input: UpdateMultiNumbersQuestionInput;
-  output: MultiNumbersQuestion;
-};
-type FileUpdateQuestionConfig = {
-  schema: typeof updateFileQuestionSchema;
-  map: typeof mapFileQuestion;
-  input: UpdateFileQuestionInput;
-  output: FileQuestion;
-};
-type FilesUpdateQuestionConfig = {
-  schema: typeof updateFilesQuestionSchema;
-  map: typeof mapFilesQuestion;
-  input: UpdateFilesQuestionInput;
-  output: FilesQuestion;
-};
-
-export const createUpdateQuestion = <
-  Config extends
-    | BooleanUpdateQuestionConfig
-    | StringUpdateQuestionConfig
-    | StringsUpdateQuestionConfig
-    | MultiStringsUpdateQuestionConfig
-    | NumberUpdateQuestionConfig
-    | NumbersUpdateQuestionConfig
-    | MultiNumbersUpdateQuestionConfig
-    | FileUpdateQuestionConfig
-    | FilesUpdateQuestionConfig
->(
+export const createUpdateQuestion = <Config extends UpdateQuestionConfig>(
   schema: Config['schema'],
   map: Config['map'],
 ) => async (

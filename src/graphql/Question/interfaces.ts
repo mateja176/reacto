@@ -35,6 +35,15 @@ import {
   StringQuestionTemplate,
   StringsQuestion,
   StringsQuestionTemplate,
+  UpdateBooleanQuestionInput,
+  UpdateFileQuestionInput,
+  UpdateFilesQuestionInput,
+  UpdateMultiNumbersQuestionInput,
+  UpdateMultiStringsQuestionInput,
+  UpdateNumberQuestionInput,
+  UpdateNumbersQuestionInput,
+  UpdateStringQuestionInput,
+  UpdateStringsQuestionInput,
 } from '../../generated/graphql';
 import {
   mapBooleanQuestion,
@@ -73,6 +82,14 @@ import {
   createNumbersQuestionTemplateSchema,
   createStringsQuestionSchema,
   createStringsQuestionTemplateSchema,
+  updateBooleanQuestionSchema,
+  updateFileQuestionSchema,
+  updateFilesQuestionSchema,
+  updateMultiNumbersQuestionSchema,
+  updateMultiStringsQuestionSchema,
+  updateNumberQuestionSchema,
+  updateNumbersQuestionSchema,
+  updateStringsQuestionSchema,
 } from './validate';
 
 export type BooleanQuestionTemplateConfig = {
@@ -302,3 +319,69 @@ export type CreateQuestionDocConfig =
       type: 'files';
       input: CreateFilesQuestionInput;
     };
+
+export type BooleanUpdateQuestionConfig = {
+  schema: typeof updateBooleanQuestionSchema;
+  map: typeof mapBooleanQuestion;
+  input: UpdateBooleanQuestionInput;
+  output: BooleanQuestion;
+};
+export type StringUpdateQuestionConfig = {
+  schema: typeof updateStringsQuestionSchema;
+  map: typeof mapStringQuestion;
+  input: UpdateStringQuestionInput;
+  output: StringQuestion;
+};
+export type StringsUpdateQuestionConfig = {
+  schema: typeof updateStringsQuestionSchema;
+  map: typeof mapStringsQuestion;
+  input: UpdateStringsQuestionInput;
+  output: StringsQuestion;
+};
+export type MultiStringsUpdateQuestionConfig = {
+  schema: typeof updateMultiStringsQuestionSchema;
+  map: typeof mapMultiStringsQuestion;
+  input: UpdateMultiStringsQuestionInput;
+  output: MultiStringsQuestion;
+};
+export type NumberUpdateQuestionConfig = {
+  schema: typeof updateNumberQuestionSchema;
+  map: typeof mapNumberQuestion;
+  input: UpdateNumberQuestionInput;
+  output: NumberQuestion;
+};
+export type NumbersUpdateQuestionConfig = {
+  schema: typeof updateNumbersQuestionSchema;
+  map: typeof mapNumbersQuestion;
+  input: UpdateNumbersQuestionInput;
+  output: NumbersQuestion;
+};
+export type MultiNumbersUpdateQuestionConfig = {
+  schema: typeof updateMultiNumbersQuestionSchema;
+  map: typeof mapMultiNumbersQuestion;
+  input: UpdateMultiNumbersQuestionInput;
+  output: MultiNumbersQuestion;
+};
+export type FileUpdateQuestionConfig = {
+  schema: typeof updateFileQuestionSchema;
+  map: typeof mapFileQuestion;
+  input: UpdateFileQuestionInput;
+  output: FileQuestion;
+};
+export type FilesUpdateQuestionConfig = {
+  schema: typeof updateFilesQuestionSchema;
+  map: typeof mapFilesQuestion;
+  input: UpdateFilesQuestionInput;
+  output: FilesQuestion;
+};
+
+export type UpdateQuestionConfig =
+  | BooleanUpdateQuestionConfig
+  | StringUpdateQuestionConfig
+  | StringsUpdateQuestionConfig
+  | MultiStringsUpdateQuestionConfig
+  | NumberUpdateQuestionConfig
+  | NumbersUpdateQuestionConfig
+  | MultiNumbersUpdateQuestionConfig
+  | FileUpdateQuestionConfig
+  | FilesUpdateQuestionConfig;
