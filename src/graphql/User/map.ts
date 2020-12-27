@@ -10,7 +10,7 @@ import {
   User,
 } from '../../generated/graphql';
 import { Models } from '../../services/models';
-import { MapClass, mapDoc } from '../../utils/map';
+import { mapDoc, WithId } from '../../utils/map';
 import { createFind, createFindMany } from '../../utils/query';
 import { mapCompany } from '../Company/map';
 import { mapQuestionnaire } from '../Questionnaire/map';
@@ -27,9 +27,7 @@ export type UserBase = Pick<
   'id' | 'email' | 'name' | 'company' | 'questionnaires'
 >;
 
-const getUserBase = (models: Models) => (
-  cls: MapClass<UserClass>,
-): UserBase => {
+const getUserBase = (models: Models) => (cls: WithId<UserClass>): UserBase => {
   return {
     id: cls.id,
     email: cls.email,
@@ -49,7 +47,7 @@ const getUserBase = (models: Models) => (
 
 export const mapAdminUserClass = (models: Models) => (
   base: UserBase,
-  cls: MapClass<UserClass>,
+  cls: WithId<UserClass>,
 ): AdminUser => {
   if (cls.questionnaireConfigurations) {
     return {
@@ -74,7 +72,7 @@ export const mapAdminUser = (models: Models) => (
 };
 export const mapRegularUserClass = (
   base: UserBase,
-  _: MapClass<UserClass>, // eslint-disable-line @typescript-eslint/no-unused-vars
+  _: WithId<UserClass>, // eslint-disable-line @typescript-eslint/no-unused-vars
 ): RegularUser => {
   return {
     __typename: 'RegularUser',
@@ -83,7 +81,7 @@ export const mapRegularUserClass = (
   };
 };
 export const mapUserClass = (models: Models) => (
-  cls: MapClass<UserClass>,
+  cls: WithId<UserClass>,
 ): User => {
   const base: UserBase = getUserBase(models)(cls);
   if (cls.role === Role.admin) {

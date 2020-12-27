@@ -14,7 +14,7 @@ import {
   StringsAnswer,
 } from '../../generated/graphql';
 import { Models } from '../../services/models';
-import { MapClass, mapDoc } from '../../utils/map';
+import { mapDoc, WithId } from '../../utils/map';
 import { createFind } from '../../utils/query';
 import {
   mapBooleanQuestion,
@@ -98,7 +98,7 @@ export class InvalidAnswerError extends Error {
 export const mapAnswerDoc = <A extends Answer>(
   map: (
     models: Models,
-    cls: MapClass<AnswerClass>,
+    cls: WithId<AnswerClass>,
     answerBase: Pick<Answer, 'id'>,
   ) => A,
 ) => (models: Models) => (doc: DocumentType<AnswerClass>) => {

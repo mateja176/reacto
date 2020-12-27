@@ -9,7 +9,7 @@ import {
   NotFoundError,
   QuestionnaireConfigurationNotFound,
 } from '../../utils/errors';
-import { MapClass } from '../../utils/map';
+import { WithId } from '../../utils/map';
 import {
   filterInputSchema,
   idSchema,
@@ -354,7 +354,7 @@ export const createUpdateQuestion = <Config extends UpdateQuestionConfig>(
   await session.commitTransaction();
   session.endSession();
 
-  const newQuestionDoc: MapClass<QuestionClass> = {
+  const newQuestionDoc: WithId<QuestionClass> = {
     ...createUpdateQuestionDoc({
       type,
       input: args.input,

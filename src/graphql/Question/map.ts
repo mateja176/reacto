@@ -25,7 +25,7 @@ import {
   StringsQuestionTemplate,
 } from '../../generated/graphql';
 import { Models } from '../../services/models';
-import { MapClass, mapDoc } from '../../utils/map';
+import { mapDoc, WithId } from '../../utils/map';
 import { createFind } from '../../utils/query';
 import {
   mapBooleanAnswer,
@@ -151,7 +151,7 @@ type QuestionTemplateBase = Base &
   Pick<QuestionTemplate, 'questionnaireConfiguration'>;
 
 export const mapQuestionTemplateDoc = <Q extends QuestionTemplate>(
-  map: (base: QuestionTemplateBase, cls: MapClass<QuestionTemplateClass>) => Q,
+  map: (base: QuestionTemplateBase, cls: WithId<QuestionTemplateClass>) => Q,
 ) => (models: Models) => (doc: DocumentType<QuestionTemplateClass>): Q => {
   const cls = mapDoc(doc);
   const { id, label, name, rule, optional, questionnaireConfiguration } = cls;
@@ -174,7 +174,7 @@ export const mapQuestionTemplateDoc = <Q extends QuestionTemplate>(
 
 const mapBooleanQuestionTemplateClass = (
   base: QuestionTemplateBase,
-  cls: MapClass<QuestionTemplateClass>,
+  cls: WithId<QuestionTemplateClass>,
 ): BooleanQuestionTemplate => {
   if (cls.boolean) {
     return {
@@ -191,7 +191,7 @@ export const mapBooleanQuestionTemplate = mapQuestionTemplateDoc(
 );
 const mapStringQuestionTemplateClass = (
   base: QuestionTemplateBase,
-  cls: MapClass<QuestionTemplateClass>,
+  cls: WithId<QuestionTemplateClass>,
 ): StringQuestionTemplate => {
   if (cls.string) {
     return {
@@ -208,7 +208,7 @@ export const mapStringQuestionTemplate = mapQuestionTemplateDoc(
 );
 const mapStringsQuestionTemplateClass = (
   base: QuestionTemplateBase,
-  cls: MapClass<QuestionTemplateClass>,
+  cls: WithId<QuestionTemplateClass>,
 ): StringsQuestionTemplate => {
   if (cls.strings) {
     return {
@@ -227,7 +227,7 @@ export const mapStringsQuestionTemplate = mapQuestionTemplateDoc(
 );
 const mapMultiStringsQuestionTemplateClass = (
   base: QuestionTemplateBase,
-  cls: MapClass<QuestionTemplateClass>,
+  cls: WithId<QuestionTemplateClass>,
 ): MultiStringsQuestionTemplate => {
   if (cls.multiStrings) {
     return {
@@ -246,7 +246,7 @@ export const mapMultiStringsQuestionTemplate = mapQuestionTemplateDoc(
 );
 const mapNumberQuestionTemplateClass = (
   base: QuestionTemplateBase,
-  cls: MapClass<QuestionTemplateClass>,
+  cls: WithId<QuestionTemplateClass>,
 ): NumberQuestionTemplate => {
   if (cls.number) {
     return {
@@ -263,7 +263,7 @@ export const mapNumberQuestionTemplate = mapQuestionTemplateDoc(
 );
 const mapNumbersQuestionTemplateClass = (
   base: QuestionTemplateBase,
-  cls: MapClass<QuestionTemplateClass>,
+  cls: WithId<QuestionTemplateClass>,
 ): NumbersQuestionTemplate => {
   if (cls.numbers) {
     return {
@@ -282,7 +282,7 @@ export const mapNumbersQuestionTemplate = mapQuestionTemplateDoc(
 );
 const mapMultiNumbersQuestionTemplateClass = (
   base: QuestionTemplateBase,
-  cls: MapClass<QuestionTemplateClass>,
+  cls: WithId<QuestionTemplateClass>,
 ): MultiNumbersQuestionTemplate => {
   if (cls.multiNumbers) {
     return {
@@ -301,7 +301,7 @@ export const mapMultiNumbersQuestionTemplate = mapQuestionTemplateDoc(
 );
 const mapFileQuestionTemplateClass = (
   base: QuestionTemplateBase,
-  cls: MapClass<QuestionTemplateClass>,
+  cls: WithId<QuestionTemplateClass>,
 ): FileQuestionTemplate => {
   if (cls.file) {
     return {
@@ -318,7 +318,7 @@ export const mapFileQuestionTemplate = mapQuestionTemplateDoc(
 );
 const mapFilesQuestionTemplateClass = (
   base: QuestionTemplateBase,
-  cls: MapClass<QuestionTemplateClass>,
+  cls: WithId<QuestionTemplateClass>,
 ): FilesQuestionTemplate => {
   if (cls.files) {
     return {
@@ -567,13 +567,13 @@ export class UnknownQuestionError extends Error {
 type QuestionBase = Base & Pick<Question, 'questionnaire'>;
 
 const isQuestionDoc = (
-  doc: DocumentType<QuestionClass> | MapClass<QuestionClass>,
+  doc: DocumentType<QuestionClass> | WithId<QuestionClass>,
 ): doc is DocumentType<QuestionClass> => '_id' in doc;
 
 export const mapQuestionDoc = <Q extends Question>(
-  map: (models: Models, base: QuestionBase, cls: MapClass<QuestionClass>) => Q,
+  map: (models: Models, base: QuestionBase, cls: WithId<QuestionClass>) => Q,
 ) => (models: Models) => (
-  doc: DocumentType<QuestionClass> | MapClass<QuestionClass>,
+  doc: DocumentType<QuestionClass> | WithId<QuestionClass>,
 ) => {
   const cls = isQuestionDoc(doc) ? mapDoc(doc) : doc;
   const { id, label, name, rule, optional, questionnaire } = cls;
@@ -598,7 +598,7 @@ export const mapQuestionDoc = <Q extends Question>(
 const mapBooleanQuestionClass = (
   models: Models,
   base: QuestionBase,
-  cls: MapClass<QuestionClass>,
+  cls: WithId<QuestionClass>,
 ): BooleanQuestion => {
   if (cls.boolean) {
     return {
@@ -622,7 +622,7 @@ export const mapBooleanQuestion = mapQuestionDoc(mapBooleanQuestionClass);
 const mapStringQuestionClass = (
   models: Models,
   base: QuestionBase,
-  cls: MapClass<QuestionClass>,
+  cls: WithId<QuestionClass>,
 ): StringQuestion => {
   if (cls.string) {
     return {
@@ -646,7 +646,7 @@ export const mapStringQuestion = mapQuestionDoc(mapStringQuestionClass);
 const mapStringsQuestionClass = (
   models: Models,
   base: QuestionBase,
-  cls: MapClass<QuestionClass>,
+  cls: WithId<QuestionClass>,
 ): StringsQuestion => {
   if (cls.strings) {
     return {
@@ -672,7 +672,7 @@ export const mapStringsQuestion = mapQuestionDoc(mapStringsQuestionClass);
 const mapMultiStringsQuestionClass = (
   models: Models,
   base: QuestionBase,
-  cls: MapClass<QuestionClass>,
+  cls: WithId<QuestionClass>,
 ): MultiStringsQuestion => {
   if (cls.multiStrings) {
     return {
@@ -700,7 +700,7 @@ export const mapMultiStringsQuestion = mapQuestionDoc(
 const mapNumberQuestionClass = (
   models: Models,
   base: QuestionBase,
-  cls: MapClass<QuestionClass>,
+  cls: WithId<QuestionClass>,
 ): NumberQuestion => {
   if (cls.number) {
     return {
@@ -724,7 +724,7 @@ export const mapNumberQuestion = mapQuestionDoc(mapNumberQuestionClass);
 const mapNumbersQuestionClass = (
   models: Models,
   base: QuestionBase,
-  cls: MapClass<QuestionClass>,
+  cls: WithId<QuestionClass>,
 ): NumbersQuestion => {
   if (cls.numbers) {
     return {
@@ -750,7 +750,7 @@ export const mapNumbersQuestion = mapQuestionDoc(mapNumbersQuestionClass);
 const mapMultiNumbersQuestionClass = (
   models: Models,
   base: QuestionBase,
-  cls: MapClass<QuestionClass>,
+  cls: WithId<QuestionClass>,
 ): MultiNumbersQuestion => {
   if (cls.multiNumbers) {
     return {
@@ -778,7 +778,7 @@ export const mapMultiNumbersQuestion = mapQuestionDoc(
 const mapFileQuestionClass = (
   models: Models,
   base: QuestionBase,
-  cls: MapClass<QuestionClass>,
+  cls: WithId<QuestionClass>,
 ): FileQuestion => {
   if (cls.file) {
     return {
@@ -802,7 +802,7 @@ export const mapFileQuestion = mapQuestionDoc(mapFileQuestionClass);
 const mapFilesQuestionClass = (
   models: Models,
   base: QuestionBase,
-  cls: MapClass<QuestionClass>,
+  cls: WithId<QuestionClass>,
 ): FilesQuestion => {
   if (cls.files) {
     return {
