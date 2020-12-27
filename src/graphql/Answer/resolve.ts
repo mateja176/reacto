@@ -14,6 +14,7 @@ import {
   AnswerConfig,
   BooleanAnswerConfig,
   BooleanAnswerUpdateConfig,
+  CreateAnswerDocConfig,
   FileAnswerConfig,
   FileAnswerUpdateConfig,
   FilesAnswerConfig,
@@ -33,6 +34,7 @@ import {
   UpdateAnswerConfig,
 } from './interfaces';
 import {
+  createAnswerDoc,
   mapBooleanAnswer,
   mapFileAnswer,
   mapFilesAnswer,
@@ -56,6 +58,7 @@ import {
 } from './validate';
 
 export const createCreateAnswer = <Config extends AnswerConfig>(
+  type: Config['type'],
   schema: Config['schema'],
   map: Config['map'],
 ) => async (
@@ -67,10 +70,6 @@ export const createCreateAnswer = <Config extends AnswerConfig>(
 ): Promise<Config['output']> => {
   await schema.validateAsync(args.input);
 
-  const {
-    input: { questionId, ...answerBase },
-  } = args;
-
   if (!context.user) {
     throw new NotAuthenticatedError();
   }
@@ -78,13 +77,15 @@ export const createCreateAnswer = <Config extends AnswerConfig>(
   const session = await mongoose.startSession();
   session.startTransaction();
 
-  const doc = await context.models.Answer.create({
-    ...answerBase,
-    question: questionId,
-  });
+  const doc = await context.models.Answer.create(
+    createAnswerDoc({
+      type,
+      input: args.input,
+    } as CreateAnswerDocConfig),
+  );
 
   const questionDoc = (await context.models.Question.findOneAndUpdate(
-    { _id: questionId },
+    { _id: args.input.questionId },
     { answer: doc._id },
     { new: true },
   ).populate('questionnaire')) as DocumentType<
@@ -172,38 +173,47 @@ export const createUpdateAnswer = <Config extends UpdateAnswerConfig>(
 
 export const answerMutation = {
   createBooleanAnswer: createCreateAnswer<BooleanAnswerConfig>(
+    'boolean',
     createBooleanAnswerSchema,
     mapBooleanAnswer,
   ),
   createStringAnswer: createCreateAnswer<StringAnswerConfig>(
+    'string',
     createStringAnswerSchema,
     mapStringAnswer,
   ),
   createStringsAnswer: createCreateAnswer<StringsAnswerConfig>(
+    'strings',
     createStringsAnswerSchema,
     mapStringsAnswer,
   ),
   createMultiStringsAnswer: createCreateAnswer<MultiStringsAnswerConfig>(
+    'multiStrings',
     createMultiStringsAnswerSchema,
     mapMultiStringsAnswer,
   ),
   createNumberAnswer: createCreateAnswer<NumberAnswerConfig>(
+    'number',
     createNumberAnswerSchema,
     mapNumberAnswer,
   ),
   createNumbersAnswer: createCreateAnswer<NumbersAnswerConfig>(
+    'numbers',
     createNumbersAnswerSchema,
     mapNumbersAnswer,
   ),
   createMultiNumbersAnswer: createCreateAnswer<MultiNumbersAnswerConfig>(
+    'multiNumbers',
     createMultiNumbersAnswerSchema,
     mapMultiNumbersAnswer,
   ),
   createFileAnswer: createCreateAnswer<FileAnswerConfig>(
+    'file',
     createFileAnswerSchema,
     mapFileAnswer,
   ),
   createFilesAnswer: createCreateAnswer<FilesAnswerConfig>(
+    'files',
     createFilesAnswerSchema,
     mapFilesAnswer,
   ),

@@ -58,54 +58,63 @@ import {
 } from './validate';
 
 export type BooleanAnswerConfig = {
+  type: 'boolean';
   schema: typeof createBooleanAnswerSchema;
   map: typeof mapBooleanAnswer;
   input: CreateBooleanAnswerInput;
   output: BooleanAnswer;
 };
 export type StringAnswerConfig = {
+  type: 'string';
   schema: typeof createStringsAnswerSchema;
   map: typeof mapStringAnswer;
   input: CreateStringAnswerInput;
   output: StringAnswer;
 };
 export type StringsAnswerConfig = {
+  type: 'strings';
   schema: typeof createStringsAnswerSchema;
   map: typeof mapStringsAnswer;
   input: CreateStringsAnswerInput;
   output: StringsAnswer;
 };
 export type MultiStringsAnswerConfig = {
+  type: 'multiStrings';
   schema: typeof createMultiStringsAnswerSchema;
   map: typeof mapMultiStringsAnswer;
   input: CreateMultiStringsAnswerInput;
   output: MultiStringsAnswer;
 };
 export type NumberAnswerConfig = {
+  type: 'number';
   schema: typeof createNumberAnswerSchema;
   map: typeof mapNumberAnswer;
   input: CreateNumberAnswerInput;
   output: NumberAnswer;
 };
 export type NumbersAnswerConfig = {
+  type: 'numbers';
   schema: typeof createNumbersAnswerSchema;
   map: typeof mapNumbersAnswer;
   input: CreateNumbersAnswerInput;
   output: NumbersAnswer;
 };
 export type MultiNumbersAnswerConfig = {
+  type: 'multiNumbers';
   schema: typeof createMultiNumbersAnswerSchema;
   map: typeof mapMultiNumbersAnswer;
   input: CreateMultiNumbersAnswerInput;
   output: MultiNumbersAnswer;
 };
 export type FileAnswerConfig = {
+  type: 'file';
   schema: typeof createFileAnswerSchema;
   map: typeof mapFileAnswer;
   input: CreateFileAnswerInput;
   output: FileAnswer;
 };
 export type FilesAnswerConfig = {
+  type: 'files';
   schema: typeof createFilesAnswerSchema;
   map: typeof mapFilesAnswer;
   input: CreateFilesAnswerInput;
@@ -122,6 +131,17 @@ export type AnswerConfig =
   | MultiNumbersAnswerConfig
   | FileAnswerConfig
   | FilesAnswerConfig;
+
+export type CreateAnswerDocConfig =
+  | { type: 'boolean'; input: CreateBooleanAnswerInput }
+  | { type: 'string'; input: CreateStringAnswerInput }
+  | { type: 'strings'; input: CreateStringsAnswerInput }
+  | { type: 'multiStrings'; input: CreateMultiStringsAnswerInput }
+  | { type: 'number'; input: CreateNumberAnswerInput }
+  | { type: 'numbers'; input: CreateNumbersAnswerInput }
+  | { type: 'multiNumbers'; input: CreateMultiNumbersAnswerInput }
+  | { type: 'file'; input: CreateFileAnswerInput }
+  | { type: 'files'; input: CreateFilesAnswerInput };
 
 export type BooleanAnswerUpdateConfig = {
   schema: typeof updateBooleanAnswerSchema;

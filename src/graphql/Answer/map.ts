@@ -1,4 +1,5 @@
 import { DocumentType } from '@typegoose/typegoose';
+import { CreateQuery } from 'mongoose';
 import { AnswerClass } from '../../classes/Answer/Answer';
 import {
   Answer,
@@ -26,6 +27,67 @@ import {
   mapStringQuestion,
   mapStringsQuestion,
 } from '../Question/map';
+import { CreateAnswerDocConfig } from './interfaces';
+
+export const createAnswerDoc = (
+  config: CreateAnswerDocConfig,
+): CreateQuery<AnswerClass> => {
+  const {
+    input: { questionId },
+  } = config;
+
+  const answerBase = {
+    question: questionId,
+  };
+
+  switch (config.type) {
+    case 'boolean':
+      return {
+        ...answerBase,
+        boolean: config.input.answer,
+      };
+    case 'string':
+      return {
+        ...answerBase,
+        string: config.input.answer,
+      };
+    case 'strings':
+      return {
+        ...answerBase,
+        strings: config.input.answer,
+      };
+    case 'multiStrings':
+      return {
+        ...answerBase,
+        multiStrings: config.input.answer,
+      };
+    case 'number':
+      return {
+        ...answerBase,
+        number: config.input.answer,
+      };
+    case 'numbers':
+      return {
+        ...answerBase,
+        numbers: config.input.answer,
+      };
+    case 'multiNumbers':
+      return {
+        ...answerBase,
+        multiNumbers: config.input.answer,
+      };
+    case 'file':
+      return {
+        ...answerBase,
+        file: config.input.answer,
+      };
+    case 'files':
+      return {
+        ...answerBase,
+        files: config.input.answer,
+      };
+  }
+};
 
 export class InvalidAnswerError extends Error {
   constructor() {
