@@ -29,7 +29,7 @@ import {
 } from '../Question/map';
 import { CreateAnswerDocConfig, UpdateAnswerDocConfig } from './interfaces';
 
-export const createAnswerDoc = (
+export const createAnswerDocPayload = (
   config: CreateAnswerDocConfig,
 ): CreateQuery<AnswerClass> => {
   const {
@@ -89,7 +89,7 @@ export const createAnswerDoc = (
   }
 };
 
-export const createUpdateAnswerDoc = (
+export const createUpdateAnswerDocPayload = (
   config: UpdateAnswerDocConfig,
 ): Omit<AnswerClass, 'question'> => {
   switch (config.type) {

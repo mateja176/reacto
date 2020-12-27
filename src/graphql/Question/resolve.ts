@@ -50,9 +50,9 @@ import {
   UpdateQuestionConfig,
 } from './interfaces';
 import {
-  createQuestionDoc,
-  createQuestionTemplateDoc,
-  createUpdateQuestionDoc,
+  createQuestionDocPayload,
+  createQuestionTemplateDocPayload,
+  createUpdateQuestionDocPayload,
   mapBooleanQuestion,
   mapBooleanQuestionTemplate,
   mapFileQuestion,
@@ -149,7 +149,7 @@ export const createCreateQuestionTemplate = <
   session.startTransaction();
 
   const doc = await context.models.QuestionTemplate.create(
-    createQuestionTemplateDoc({
+    createQuestionTemplateDocPayload({
       type,
       input: args.input,
     } as CreateQuestionTemplateDocConfig),
@@ -279,7 +279,10 @@ export const createCreateQuestion = <Config extends QuestionConfig>(
   session.startTransaction();
 
   const doc = await context.models.Question.create(
-    createQuestionDoc({ type, input: args.input } as CreateQuestionDocConfig),
+    createQuestionDocPayload({
+      type,
+      input: args.input,
+    } as CreateQuestionDocConfig),
   );
 
   const questionnaire = await context.models.Questionnaire.findOneAndUpdate(
@@ -322,7 +325,7 @@ export const createUpdateQuestion = <Config extends UpdateQuestionConfig>(
 
   const currentQuestionDoc = (await context.models.Question.findOneAndUpdate(
     { _id: args.input.id },
-    createUpdateQuestionDoc({
+    createUpdateQuestionDocPayload({
       type,
       input: args.input,
     } as UpdateQuestionConfig),
@@ -355,7 +358,7 @@ export const createUpdateQuestion = <Config extends UpdateQuestionConfig>(
   session.endSession();
 
   const newQuestionDoc: WithId<QuestionClass> = {
-    ...createUpdateQuestionDoc({
+    ...createUpdateQuestionDocPayload({
       type,
       input: args.input,
     } as UpdateQuestionConfig),

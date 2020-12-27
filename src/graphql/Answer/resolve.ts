@@ -35,8 +35,8 @@ import {
   UpdateAnswerDocConfig,
 } from './interfaces';
 import {
-  createAnswerDoc,
-  createUpdateAnswerDoc,
+  createAnswerDocPayload,
+  createUpdateAnswerDocPayload,
   mapBooleanAnswer,
   mapFileAnswer,
   mapFilesAnswer,
@@ -81,7 +81,7 @@ export const createCreateAnswer = <Config extends AnswerConfig>(
   session.startTransaction();
 
   const doc = await context.models.Answer.create(
-    createAnswerDoc({
+    createAnswerDocPayload({
       type,
       input: args.input,
     } as CreateAnswerDocConfig),
@@ -145,7 +145,7 @@ export const createUpdateAnswer = <Config extends UpdateAnswerConfig>(
     throw new NotAuthenticatedError();
   }
 
-  const { ...answerUpdate } = createUpdateAnswerDoc({
+  const { ...answerUpdate } = createUpdateAnswerDocPayload({
     type,
     input: args.input,
   } as UpdateAnswerDocConfig);

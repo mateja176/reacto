@@ -46,7 +46,7 @@ import {
   UpdateQuestionDocConfig,
 } from './interfaces';
 
-export const createQuestionTemplateDoc = (
+export const createQuestionTemplateDocPayload = (
   config: CreateQuestionTemplateDocConfig,
 ): CreateQuery<QuestionTemplateClass> => {
   const {
@@ -378,7 +378,7 @@ export const mapQuestionTemplate = (models: Models) => (
 
 // QUESTION
 
-export const createQuestionDoc = (
+export const createQuestionDocPayload = (
   config: CreateQuestionDocConfig,
 ): CreateQuery<QuestionClass> => {
   const { label, name, optional, rule, questionnaireId } = config.input;
@@ -465,7 +465,7 @@ export const createQuestionDoc = (
       };
   }
 };
-export const createUpdateQuestionDoc = (
+export const createUpdateQuestionDocPayload = (
   config: UpdateQuestionDocConfig,
 ): Omit<QuestionClass, 'questionnaire'> => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
