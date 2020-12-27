@@ -86,7 +86,7 @@ export const createQuestionTemplateDocPayload = (
         strings: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount,
+          allowOtherOption: config.input.allowOtherOption,
         },
       };
     case 'multiStrings':
@@ -111,7 +111,7 @@ export const createQuestionTemplateDocPayload = (
         numbers: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount,
+          allowOtherOption: config.input.allowOtherOption,
         },
       };
     case 'multiNumbers':
@@ -216,7 +216,7 @@ const mapStringsQuestionTemplateClass = (
       ...base,
       default: cls.strings.default ?? null,
       options: cls.strings.options,
-      otherOptionsCount: cls.strings.otherOptionsCount,
+      allowOtherOption: cls.strings.allowOtherOption,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -271,7 +271,7 @@ const mapNumbersQuestionTemplateClass = (
       ...base,
       default: cls.numbers.default ?? null,
       options: cls.numbers.options,
-      otherOptionsCount: cls.numbers.otherOptionsCount,
+      allowOtherOption: cls.numbers.allowOtherOption,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -412,7 +412,7 @@ export const createQuestionDocPayload = (
         strings: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount,
+          allowOtherOption: config.input.allowOtherOption,
         },
       };
     case 'multiStrings':
@@ -437,7 +437,7 @@ export const createQuestionDocPayload = (
         numbers: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount,
+          allowOtherOption: config.input.allowOtherOption,
         },
       };
     case 'multiNumbers':
@@ -499,7 +499,7 @@ export const createUpdateQuestionDocPayload = (
         strings: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount,
+          allowOtherOption: config.input.allowOtherOption,
         },
       };
     case 'multiStrings':
@@ -524,7 +524,7 @@ export const createUpdateQuestionDocPayload = (
         numbers: {
           default: config.input.default ?? undefined,
           options: config.input.options,
-          otherOptionsCount: config.input.otherOptionsCount,
+          allowOtherOption: config.input.allowOtherOption,
         },
       };
     case 'multiNumbers':
@@ -654,7 +654,7 @@ const mapStringsQuestionClass = (
       ...base,
       default: cls.strings.default ?? null,
       options: cls.strings.options,
-      otherOptionsCount: cls.strings.otherOptionsCount,
+      allowOtherOption: cls.strings.allowOtherOption,
       answer: cls.answer
         ? createFind({
             Model: models.Answer,
@@ -732,7 +732,7 @@ const mapNumbersQuestionClass = (
       ...base,
       default: cls.numbers.default ?? null,
       options: cls.numbers.options,
-      otherOptionsCount: cls.numbers.otherOptionsCount,
+      allowOtherOption: cls.numbers.allowOtherOption,
       answer: cls.answer
         ? createFind({
             Model: models.Answer,

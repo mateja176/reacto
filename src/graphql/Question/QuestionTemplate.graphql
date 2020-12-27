@@ -24,7 +24,7 @@ type StringsQuestionTemplate implements Node & NamedNode & QuestionBase {
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   options: [String!]!
-  otherOptionsCount: Int!
+  allowOtherOption: Boolean!
   default: String
 }
 type MultiStringsQuestionTemplate implements Node & NamedNode & QuestionBase {
@@ -55,7 +55,7 @@ type NumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
   options: [Float!]!
-  otherOptionsCount: Int!
+  allowOtherOption: Boolean!
   default: Float
 }
 type MultiNumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
@@ -109,7 +109,6 @@ input CreateBooleanQuestionTemplateInput {
   rule: String
   optional: Boolean!
   questionnaireConfigurationId: ID!
-  otherOptionsCount: Int!
   default: Boolean
 }
 input CreateStringQuestionTemplateInput {
@@ -127,7 +126,7 @@ input CreateStringsQuestionTemplateInput {
   optional: Boolean!
   questionnaireConfigurationId: ID!
   options: [String!]!
-  otherOptionsCount: Int!
+  allowOtherOption: Boolean!
   default: String
 }
 input CreateMultiStringsQuestionTemplateInput {
@@ -155,7 +154,7 @@ input CreateNumbersQuestionTemplateInput {
   optional: Boolean!
   questionnaireConfigurationId: ID!
   options: [Float!]!
-  otherOptionsCount: Int!
+  allowOtherOption: Boolean!
   default: Float
 }
 input CreateMultiNumbersQuestionTemplateInput {

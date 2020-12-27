@@ -28,7 +28,7 @@ export class QuestionBase implements Named, Ruled {
   @prop({ comment: 'Select Textual' })
   public strings?: {
     options: string[];
-    otherOptionsCount: number;
+    allowOtherOption: boolean;
     default?: string;
   };
   @prop({ comment: 'Multi-select Textual' })
@@ -42,7 +42,7 @@ export class QuestionBase implements Named, Ruled {
   @prop({ comment: 'Select Numerical' })
   public numbers?: {
     options: number[];
-    otherOptionsCount: number;
+    allowOtherOption: boolean;
     default?: number;
   };
   @prop({ comment: 'Multi-select Numerical' })

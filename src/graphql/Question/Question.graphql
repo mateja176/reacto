@@ -27,7 +27,7 @@ type StringsQuestion implements Node & NamedNode & QuestionBase {
   questionnaire: Questionnaire!
   answer: StringsAnswer
   options: [String!]!
-  otherOptionsCount: Int!
+  allowOtherOption: Boolean!
   default: String
 }
 type MultiStringsQuestion implements Node & NamedNode & QuestionBase {
@@ -61,7 +61,7 @@ type NumbersQuestion implements Node & NamedNode & QuestionBase {
   questionnaire: Questionnaire!
   answer: NumbersAnswer
   options: [Float!]!
-  otherOptionsCount: Int!
+  allowOtherOption: Boolean!
   default: Float
 }
 type MultiNumbersQuestion implements Node & NamedNode & QuestionBase {
@@ -131,7 +131,7 @@ input CreateStringsQuestionInput {
   optional: Boolean!
   questionnaireId: ID!
   options: [String!]!
-  otherOptionsCount: Int!
+  allowOtherOption: Boolean!
   default: String
 }
 input CreateMultiStringsQuestionInput {
@@ -159,7 +159,7 @@ input CreateNumbersQuestionInput {
   optional: Boolean!
   questionnaireId: ID!
   options: [Float!]!
-  otherOptionsCount: Int!
+  allowOtherOption: Boolean!
   default: Float
 }
 input CreateMultiNumbersQuestionInput {
@@ -212,7 +212,7 @@ input UpdateStringsQuestionInput {
   optional: Boolean!
   rule: String
   options: [String!]!
-  otherOptionsCount: Int!
+  allowOtherOption: Boolean!
   default: String
 }
 input UpdateMultiStringsQuestionInput {
@@ -240,7 +240,7 @@ input UpdateNumbersQuestionInput {
   optional: Boolean!
   rule: String
   options: [Float!]!
-  otherOptionsCount: Int!
+  allowOtherOption: Boolean!
   default: Float
 }
 input UpdateMultiNumbersQuestionInput {
