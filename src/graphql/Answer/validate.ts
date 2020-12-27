@@ -1,34 +1,46 @@
 import { DocumentType } from '@typegoose/typegoose';
 import Joi from 'joi';
+import { AnswerClass } from '../../classes/Answer/Answer';
 import { QuestionClass } from '../../classes/Question/Question';
 import { CreateBooleanAnswerInput } from '../../generated/graphql';
 import { AnswerType } from '../../interfaces/Type';
 import { idSchema } from '../../utils/validate';
 
-export const doesAnswerMatchQuestion = (
+export const isAnswerAllowed = (
   type: AnswerType,
+  answer: DocumentType<AnswerClass>,
   questionDoc: DocumentType<QuestionClass>,
 ): boolean => {
-  switch (type) {
-    case 'boolean':
-      return !!questionDoc.boolean;
-    case 'string':
-      return !!questionDoc.string;
-    case 'strings':
-      return !!questionDoc.strings;
-    case 'multiStrings':
-      return !!questionDoc.multiStrings;
-    case 'number':
-      return !!questionDoc.number;
-    case 'numbers':
-      return !!questionDoc.numbers;
-    case 'multiNumbers':
-      return !!questionDoc.multiNumbers;
-    case 'file':
-      return !!questionDoc.file;
-    case 'files':
-      return !!questionDoc.files;
-  }
+  return !!(() => {
+    switch (type) {
+      case 'boolean':
+        return questionDoc.boolean;
+      case 'string':
+        return questionDoc.string;
+      case 'strings':
+        return (
+          questionDoc.strings?.allowOtherOption ||
+          (answer.strings &&
+            questionDoc.strings?.options.includes(answer.strings))
+        );
+      case 'multiStrings':
+        return questionDoc.multiStrings;
+      case 'number':
+        return questionDoc.number;
+      case 'numbers':
+        return (
+          questionDoc.numbers?.allowOtherOption ||
+          (answer.numbers &&
+            questionDoc.numbers?.options.includes(answer.numbers))
+        );
+      case 'multiNumbers':
+        return questionDoc.multiNumbers;
+      case 'file':
+        return questionDoc.file;
+      case 'files':
+        return questionDoc.files;
+    }
+  })();
 };
 
 const createAnswerBaseSchemaMap: Joi.SchemaMap<

@@ -57,7 +57,7 @@ import {
   createNumbersAnswerSchema,
   createStringAnswerSchema,
   createStringsAnswerSchema,
-  doesAnswerMatchQuestion,
+  isAnswerAllowed,
 } from './validate';
 
 export const createCreateAnswer = <Config extends AnswerConfig>(
@@ -113,9 +113,9 @@ export const createCreateAnswer = <Config extends AnswerConfig>(
     throw new Forbidden();
   }
 
-  if (!doesAnswerMatchQuestion(type, questionDoc)) {
+  if (!isAnswerAllowed(type, doc, questionDoc)) {
     throw new ApolloError(
-      "The referenced question's type does not match the answer type.",
+      "The referenced question's type does not match the answer type or the answer is not among the allowed options.",
     );
   }
 
