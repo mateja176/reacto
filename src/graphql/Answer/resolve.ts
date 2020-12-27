@@ -198,60 +198,60 @@ export const createCreateAnswer = <
   return output;
 };
 
-type BooleanAnswerUpdateConfig = [
-  typeof updateBooleanAnswerSchema,
-  typeof mapBooleanAnswer,
-  UpdateBooleanAnswerInput,
-  BooleanAnswer,
-];
-type StringAnswerUpdateConfig = [
-  typeof updateStringsAnswerSchema,
-  typeof mapStringAnswer,
-  UpdateStringAnswerInput,
-  StringAnswer,
-];
-type StringsAnswerUpdateConfig = [
-  typeof updateStringsAnswerSchema,
-  typeof mapStringsAnswer,
-  UpdateStringsAnswerInput,
-  StringsAnswer,
-];
-type MultiStringsAnswerUpdateConfig = [
-  typeof updateMultiStringsAnswerSchema,
-  typeof mapMultiStringsAnswer,
-  UpdateMultiStringsAnswerInput,
-  MultiStringsAnswer,
-];
-type NumberAnswerUpdateConfig = [
-  typeof updateNumberAnswerSchema,
-  typeof mapNumberAnswer,
-  UpdateNumberAnswerInput,
-  NumberAnswer,
-];
-type NumbersAnswerUpdateConfig = [
-  typeof updateNumbersAnswerSchema,
-  typeof mapNumbersAnswer,
-  UpdateNumbersAnswerInput,
-  NumbersAnswer,
-];
-type MultiNumbersAnswerUpdateConfig = [
-  typeof updateMultiNumbersAnswerSchema,
-  typeof mapMultiNumbersAnswer,
-  UpdateMultiNumbersAnswerInput,
-  MultiNumbersAnswer,
-];
-type FileAnswerUpdateConfig = [
-  typeof updateFileAnswerSchema,
-  typeof mapFileAnswer,
-  UpdateFileAnswerInput,
-  FileAnswer,
-];
-type FilesAnswerUpdateConfig = [
-  typeof updateFilesAnswerSchema,
-  typeof mapFilesAnswer,
-  UpdateFilesAnswerInput,
-  FilesAnswer,
-];
+type BooleanAnswerUpdateConfig = {
+  schema: typeof updateBooleanAnswerSchema;
+  map: typeof mapBooleanAnswer;
+  input: UpdateBooleanAnswerInput;
+  output: BooleanAnswer;
+};
+type StringAnswerUpdateConfig = {
+  schema: typeof updateStringsAnswerSchema;
+  map: typeof mapStringAnswer;
+  input: UpdateStringAnswerInput;
+  output: StringAnswer;
+};
+type StringsAnswerUpdateConfig = {
+  schema: typeof updateStringsAnswerSchema;
+  map: typeof mapStringsAnswer;
+  input: UpdateStringsAnswerInput;
+  output: StringsAnswer;
+};
+type MultiStringsAnswerUpdateConfig = {
+  schema: typeof updateMultiStringsAnswerSchema;
+  map: typeof mapMultiStringsAnswer;
+  input: UpdateMultiStringsAnswerInput;
+  output: MultiStringsAnswer;
+};
+type NumberAnswerUpdateConfig = {
+  schema: typeof updateNumberAnswerSchema;
+  map: typeof mapNumberAnswer;
+  input: UpdateNumberAnswerInput;
+  output: NumberAnswer;
+};
+type NumbersAnswerUpdateConfig = {
+  schema: typeof updateNumbersAnswerSchema;
+  map: typeof mapNumbersAnswer;
+  input: UpdateNumbersAnswerInput;
+  output: NumbersAnswer;
+};
+type MultiNumbersAnswerUpdateConfig = {
+  schema: typeof updateMultiNumbersAnswerSchema;
+  map: typeof mapMultiNumbersAnswer;
+  input: UpdateMultiNumbersAnswerInput;
+  output: MultiNumbersAnswer;
+};
+type FileAnswerUpdateConfig = {
+  schema: typeof updateFileAnswerSchema;
+  map: typeof mapFileAnswer;
+  input: UpdateFileAnswerInput;
+  output: FileAnswer;
+};
+type FilesAnswerUpdateConfig = {
+  schema: typeof updateFilesAnswerSchema;
+  map: typeof mapFilesAnswer;
+  input: UpdateFilesAnswerInput;
+  output: FilesAnswer;
+};
 
 export const createUpdateAnswer = <
   Config extends
@@ -265,15 +265,15 @@ export const createUpdateAnswer = <
     | FileAnswerUpdateConfig
     | FilesAnswerUpdateConfig
 >(
-  schema: Config[0],
-  map: Config[1],
+  schema: Config['schema'],
+  map: Config['map'],
 ) => async (
   _: never,
   args: {
-    input: Config[2];
+    input: Config['input'];
   },
   context: Context,
-): Promise<Config[3]> => {
+): Promise<Config['output']> => {
   await schema.validateAsync(args.input);
 
   if (!context.user) {
