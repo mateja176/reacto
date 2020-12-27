@@ -6,15 +6,6 @@ import { Context } from '../../Context';
 import {
   AdminRole,
   BooleanQuestion,
-  CreateBooleanQuestionInput,
-  CreateFileQuestionInput,
-  CreateFilesQuestionInput,
-  CreateMultiNumbersQuestionInput,
-  CreateMultiStringsQuestionInput,
-  CreateNumberQuestionInput,
-  CreateNumbersQuestionInput,
-  CreateStringQuestionInput,
-  CreateStringsQuestionInput,
   FileQuestion,
   FilesQuestion,
   MultiNumbersQuestion,
@@ -47,19 +38,31 @@ import {
   ValidatedFilterInput,
 } from '../../utils/validate';
 import {
+  BooleanQuestionConfig,
   BooleanQuestionTemplateConfig,
+  CreateQuestionDocConfig,
   CreateQuestionTemplateDocConfig,
+  FileQuestionConfig,
   FileQuestionTemplateConfig,
+  FilesQuestionConfig,
   FilesQuestionTemplateConfig,
+  MultiNumbersQuestionConfig,
   MultiNumbersQuestionTemplateConfig,
+  MultiStringsQuestionConfig,
   MultiStringsQuestionTemplateConfig,
+  NumberQuestionConfig,
   NumberQuestionTemplateConfig,
+  NumbersQuestionConfig,
   NumbersQuestionTemplateConfig,
+  QuestionConfig,
   QuestionTemplateConfig,
+  StringQuestionConfig,
   StringQuestionTemplateConfig,
+  StringsQuestionConfig,
   StringsQuestionTemplateConfig,
 } from './interfaces';
 import {
+  createQuestionDoc,
   createQuestionTemplateDoc,
   mapBooleanQuestion,
   mapBooleanQuestionTemplate,
@@ -268,73 +271,8 @@ export const questionTemplateMutation = {
   deleteQuestionTemplate,
 };
 
-type BooleanQuestionConfig = {
-  schema: typeof createBooleanQuestionSchema;
-  map: typeof mapBooleanQuestion;
-  input: CreateBooleanQuestionInput;
-  output: BooleanQuestion;
-};
-type StringQuestionConfig = {
-  schema: typeof createStringsQuestionSchema;
-  map: typeof mapStringQuestion;
-  input: CreateStringQuestionInput;
-  output: StringQuestion;
-};
-type StringsQuestionConfig = {
-  schema: typeof createStringsQuestionSchema;
-  map: typeof mapStringsQuestion;
-  input: CreateStringsQuestionInput;
-  output: StringsQuestion;
-};
-type MultiStringsQuestionConfig = {
-  schema: typeof createMultiStringsQuestionSchema;
-  map: typeof mapMultiStringsQuestion;
-  input: CreateMultiStringsQuestionInput;
-  output: MultiStringsQuestion;
-};
-type NumberQuestionConfig = {
-  schema: typeof createNumberQuestionSchema;
-  map: typeof mapNumberQuestion;
-  input: CreateNumberQuestionInput;
-  output: NumberQuestion;
-};
-type NumbersQuestionConfig = {
-  schema: typeof createNumbersQuestionSchema;
-  map: typeof mapNumbersQuestion;
-  input: CreateNumbersQuestionInput;
-  output: NumbersQuestion;
-};
-type MultiNumbersQuestionConfig = {
-  schema: typeof createMultiNumbersQuestionSchema;
-  map: typeof mapMultiNumbersQuestion;
-  input: CreateMultiNumbersQuestionInput;
-  output: MultiNumbersQuestion;
-};
-type FileQuestionConfig = {
-  schema: typeof createFileQuestionSchema;
-  map: typeof mapFileQuestion;
-  input: CreateFileQuestionInput;
-  output: FileQuestion;
-};
-type FilesQuestionConfig = {
-  schema: typeof createFilesQuestionSchema;
-  map: typeof mapFilesQuestion;
-  input: CreateFilesQuestionInput;
-  output: FilesQuestion;
-};
-
-export const createCreateQuestion = <
-  Config extends
-    | BooleanQuestionConfig
-    | StringQuestionConfig
-    | StringsQuestionConfig
-    | MultiStringsQuestionConfig
-    | NumberQuestionConfig
-    | NumbersQuestionConfig
-    | MultiNumbersQuestionConfig
-    | FileQuestionConfig
-    | FilesQuestionConfig
->(
+export const createCreateQuestion = <Config extends QuestionConfig>(
+  type: Config['type'],
   schema: Config['schema'],
   map: Config['map'],
 ) => async (
@@ -345,10 +283,6 @@ export const createCreateQuestion = <
   context: Context,
 ): Promise<Config['output']> => {
   await schema.validateAsync(args.input);
-
-  const {
-    input: { questionnaireId, ...questionBase },
-  } = args;
 
   if (!context.user) {
     throw new NotAuthenticatedError();
@@ -361,15 +295,12 @@ export const createCreateQuestion = <
   const session = await mongoose.startSession();
   session.startTransaction();
 
-  const doc = await context.models.Question.create({
-    ...questionBase,
-    rule: args.input.rule ?? undefined,
-    questionnaire: questionnaireId,
-    answer: undefined,
-  });
+  const doc = await context.models.Question.create(
+    createQuestionDoc({ type, input: args.input } as CreateQuestionDocConfig),
+  );
 
   const questionnaire = await context.models.Questionnaire.findOneAndUpdate(
-    { _id: questionnaireId },
+    { _id: args.input.questionnaireId },
     { $push: { questions: doc._id } },
   );
 
@@ -545,38 +476,47 @@ const deleteQuestion: Mutation['deleteQuestion'] = async (_, args, context) => {
 
 export const questionMutation = {
   createBooleanQuestion: createCreateQuestion<BooleanQuestionConfig>(
+    'boolean',
     createBooleanQuestionSchema,
     mapBooleanQuestion,
   ),
   createStringQuestion: createCreateQuestion<StringQuestionConfig>(
+    'string',
     createStringQuestionSchema,
     mapStringQuestion,
   ),
   createStringsQuestion: createCreateQuestion<StringsQuestionConfig>(
+    'strings',
     createStringsQuestionSchema,
     mapStringsQuestion,
   ),
   createMultiStringsQuestion: createCreateQuestion<MultiStringsQuestionConfig>(
+    'multiStrings',
     createMultiStringsQuestionSchema,
     mapMultiStringsQuestion,
   ),
   createNumberQuestion: createCreateQuestion<NumberQuestionConfig>(
+    'number',
     createNumberQuestionSchema,
     mapNumberQuestion,
   ),
   createNumbersQuestion: createCreateQuestion<NumbersQuestionConfig>(
+    'numbers',
     createNumbersQuestionSchema,
     mapNumbersQuestion,
   ),
   createMultiNumbersQuestion: createCreateQuestion<MultiNumbersQuestionConfig>(
+    'multiNumbers',
     createMultiNumbersQuestionSchema,
     mapMultiNumbersQuestion,
   ),
   createFileQuestion: createCreateQuestion<FileQuestionConfig>(
+    'file',
     createFileQuestionSchema,
     mapFileQuestion,
   ),
   createFilesQuestion: createCreateQuestion<FilesQuestionConfig>(
+    'files',
     createFilesQuestionSchema,
     mapFilesQuestion,
   ),

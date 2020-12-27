@@ -40,7 +40,10 @@ import {
 } from '../Answer/map';
 import { mapQuestionnaire } from '../Questionnaire/map';
 import { mapQuestionnaireConfiguration } from '../QuestionnaireConfiguration/map';
-import { CreateQuestionTemplateDocConfig } from './interfaces';
+import {
+  CreateQuestionDocConfig,
+  CreateQuestionTemplateDocConfig,
+} from './interfaces';
 
 export const createQuestionTemplateDoc = (
   config: CreateQuestionTemplateDocConfig,
@@ -365,6 +368,90 @@ export const mapQuestionTemplate = (models: Models) => (
 };
 
 // QUESTION
+
+export const createQuestionDoc = (
+  config: CreateQuestionDocConfig,
+): CreateQuery<QuestionClass> => {
+  const { label, name, optional, rule, questionnaireId } = config.input;
+
+  const questionBase = {
+    label,
+    name,
+    optional,
+    rule: rule ?? undefined,
+    questionnaire: questionnaireId,
+  };
+
+  switch (config.type) {
+    case 'boolean':
+      return {
+        ...questionBase,
+        boolean: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'string':
+      return {
+        ...questionBase,
+        string: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'strings':
+      return {
+        ...questionBase,
+        strings: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+        },
+      };
+    case 'multiStrings':
+      return {
+        ...questionBase,
+        multiStrings: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+        },
+      };
+    case 'number':
+      return {
+        ...questionBase,
+        number: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'numbers':
+      return {
+        ...questionBase,
+        numbers: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+        },
+      };
+    case 'multiNumbers':
+      return {
+        ...questionBase,
+        multiNumbers: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+        },
+      };
+    case 'file':
+      return {
+        ...questionBase,
+        file: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'files':
+      return {
+        ...questionBase,
+        files: {
+          default: config.input.default ?? undefined,
+        },
+      };
+  }
+};
 
 export class InvalidQuestionError extends Error {
   constructor() {

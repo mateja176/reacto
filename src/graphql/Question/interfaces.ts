@@ -1,42 +1,77 @@
 import {
+  BooleanQuestion,
   BooleanQuestionTemplate,
+  CreateBooleanQuestionInput,
   CreateBooleanQuestionTemplateInput,
+  CreateFileQuestionInput,
   CreateFileQuestionTemplateInput,
+  CreateFilesQuestionInput,
   CreateFilesQuestionTemplateInput,
+  CreateMultiNumbersQuestionInput,
   CreateMultiNumbersQuestionTemplateInput,
+  CreateMultiStringsQuestionInput,
   CreateMultiStringsQuestionTemplateInput,
+  CreateNumberQuestionInput,
   CreateNumberQuestionTemplateInput,
+  CreateNumbersQuestionInput,
   CreateNumbersQuestionTemplateInput,
+  CreateStringQuestionInput,
   CreateStringQuestionTemplateInput,
+  CreateStringsQuestionInput,
   CreateStringsQuestionTemplateInput,
+  FileQuestion,
   FileQuestionTemplate,
+  FilesQuestion,
   FilesQuestionTemplate,
+  MultiNumbersQuestion,
   MultiNumbersQuestionTemplate,
+  MultiStringsQuestion,
   MultiStringsQuestionTemplate,
+  NumberQuestion,
   NumberQuestionTemplate,
+  NumbersQuestion,
   NumbersQuestionTemplate,
+  StringQuestion,
   StringQuestionTemplate,
+  StringsQuestion,
   StringsQuestionTemplate,
 } from '../../generated/graphql';
 import {
+  mapBooleanQuestion,
   mapBooleanQuestionTemplate,
+  mapFileQuestion,
   mapFileQuestionTemplate,
+  mapFilesQuestion,
   mapFilesQuestionTemplate,
+  mapMultiNumbersQuestion,
   mapMultiNumbersQuestionTemplate,
+  mapMultiStringsQuestion,
   mapMultiStringsQuestionTemplate,
+  mapNumberQuestion,
   mapNumberQuestionTemplate,
+  mapNumbersQuestion,
   mapNumbersQuestionTemplate,
+  mapStringQuestion,
   mapStringQuestionTemplate,
+  mapStringsQuestion,
   mapStringsQuestionTemplate,
 } from './map';
 import {
+  createBooleanQuestionSchema,
   createBooleanQuestionTemplateSchema,
+  createFileQuestionSchema,
   createFileQuestionTemplateSchema,
+  createFilesQuestionSchema,
   createFilesQuestionTemplateSchema,
+  createMultiNumbersQuestionSchema,
   createMultiNumbersQuestionTemplateSchema,
+  createMultiStringsQuestionSchema,
   createMultiStringsQuestionTemplateSchema,
+  createNumberQuestionSchema,
   createNumberQuestionTemplateSchema,
+  createNumbersQuestionSchema,
   createNumbersQuestionTemplateSchema,
+  createStringsQuestionSchema,
   createStringsQuestionTemplateSchema,
 } from './validate';
 
@@ -153,4 +188,117 @@ export type CreateQuestionTemplateDocConfig =
   | {
       type: 'files';
       input: CreateFilesQuestionTemplateInput;
+    };
+
+export type BooleanQuestionConfig = {
+  type: 'boolean';
+  schema: typeof createBooleanQuestionSchema;
+  map: typeof mapBooleanQuestion;
+  input: CreateBooleanQuestionInput;
+  output: BooleanQuestion;
+};
+export type StringQuestionConfig = {
+  type: 'string';
+  schema: typeof createStringsQuestionSchema;
+  map: typeof mapStringQuestion;
+  input: CreateStringQuestionInput;
+  output: StringQuestion;
+};
+export type StringsQuestionConfig = {
+  type: 'strings';
+  schema: typeof createStringsQuestionSchema;
+  map: typeof mapStringsQuestion;
+  input: CreateStringsQuestionInput;
+  output: StringsQuestion;
+};
+export type MultiStringsQuestionConfig = {
+  type: 'multiStrings';
+  schema: typeof createMultiStringsQuestionSchema;
+  map: typeof mapMultiStringsQuestion;
+  input: CreateMultiStringsQuestionInput;
+  output: MultiStringsQuestion;
+};
+export type NumberQuestionConfig = {
+  type: 'number';
+  schema: typeof createNumberQuestionSchema;
+  map: typeof mapNumberQuestion;
+  input: CreateNumberQuestionInput;
+  output: NumberQuestion;
+};
+export type NumbersQuestionConfig = {
+  type: 'numbers';
+  schema: typeof createNumbersQuestionSchema;
+  map: typeof mapNumbersQuestion;
+  input: CreateNumbersQuestionInput;
+  output: NumbersQuestion;
+};
+export type MultiNumbersQuestionConfig = {
+  type: 'multiNumbers';
+  schema: typeof createMultiNumbersQuestionSchema;
+  map: typeof mapMultiNumbersQuestion;
+  input: CreateMultiNumbersQuestionInput;
+  output: MultiNumbersQuestion;
+};
+export type FileQuestionConfig = {
+  type: 'file';
+  schema: typeof createFileQuestionSchema;
+  map: typeof mapFileQuestion;
+  input: CreateFileQuestionInput;
+  output: FileQuestion;
+};
+export type FilesQuestionConfig = {
+  type: 'files';
+  schema: typeof createFilesQuestionSchema;
+  map: typeof mapFilesQuestion;
+  input: CreateFilesQuestionInput;
+  output: FilesQuestion;
+};
+
+export type QuestionConfig =
+  | BooleanQuestionConfig
+  | StringQuestionConfig
+  | StringsQuestionConfig
+  | MultiStringsQuestionConfig
+  | NumberQuestionConfig
+  | NumbersQuestionConfig
+  | MultiNumbersQuestionConfig
+  | FileQuestionConfig
+  | FilesQuestionConfig;
+
+export type CreateQuestionDocConfig =
+  | {
+      type: 'boolean';
+      input: CreateBooleanQuestionInput;
+    }
+  | {
+      type: 'string';
+      input: CreateStringQuestionInput;
+    }
+  | {
+      type: 'strings';
+      input: CreateStringsQuestionInput;
+    }
+  | {
+      type: 'multiStrings';
+      input: CreateMultiStringsQuestionInput;
+    }
+  | {
+      type: 'number';
+      input: CreateNumberQuestionInput;
+    }
+  | {
+      type: 'numbers';
+      input: CreateNumbersQuestionInput;
+    }
+  | {
+      type: 'multiNumbers';
+      input: CreateMultiNumbersQuestionInput;
+    }
+  | {
+      type: 'file';
+      input: CreateFileQuestionInput;
+    }
+  | {
+      type: 'files';
+      input: CreateFilesQuestionInput;
     };
