@@ -1,0 +1,10 @@
+mutation CreateStringQuestion($input: CreateStringQuestionInput!) {
+  createStringQuestion(input: $input) {
+    id
+    name
+    label
+    optional
+    rule
+    default
+  }
+}

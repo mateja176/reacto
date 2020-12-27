@@ -18,6 +18,7 @@ import {
 import {
   createCompanyAndUser,
   createQuestionnaireConfigurationDoc,
+  createQuestionnaireDoc,
 } from '../helpers/db';
 import { createHeaders } from '../helpers/helpers';
 import { userDocToJWTUser } from '../helpers/map';
@@ -172,6 +173,29 @@ describe('e2e', () => {
         });
 
         expect(createQuestionnaireConfiguration.type).toBe(type);
+      });
+    });
+
+    describe('question', () => {
+      test('create', async () => {
+        const { sdk, questionnaireDoc } = await createQuestionnaireDoc(
+          models,
+          seedInput,
+        );
+
+        const defaultString = 'Fine, thank you.';
+
+        const { createStringQuestion } = await sdk.CreateStringQuestion({
+          input: {
+            name: 'Test',
+            label: 'How are you?',
+            optional: false,
+            questionnaireId: questionnaireDoc._id,
+            default: defaultString,
+          },
+        });
+
+        expect(createStringQuestion.default).toBe(defaultString);
       });
     });
   });
