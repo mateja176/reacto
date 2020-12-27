@@ -136,12 +136,10 @@ describe('e2e', () => {
       const {
         sdk,
         questionnaireConfigurationDoc,
+        type,
       } = await createQuestionnaireConfigurationDoc(models, seedInput);
 
-      const type = 'Test';
-      const {
-        createQuestionnaire,
-      } = await sdk.CreateQuestionnaireWithStringQuestion({
+      const { createQuestionnaire } = await sdk.CreateQuestionnaire({
         input: {
           name: 'Test Questionnaire',
           questionnaireConfigurationId: questionnaireConfigurationDoc._id.toHexString(),
@@ -149,9 +147,6 @@ describe('e2e', () => {
       });
 
       expect(createQuestionnaire.type).toBe(type);
-      expect(createQuestionnaire.inheritedQuestions[0].__typename).toBe(
-        'StringQuestion',
-      );
     });
 
     describe('questionnaire configuration', () => {

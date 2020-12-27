@@ -47,14 +47,23 @@ export const createQuestionnaireConfigurationDoc = async (
 
   const questionnaireConfigurationId = mongoose.Types.ObjectId();
 
+  const questionTemplate = await models.QuestionTemplate.create({
+    name: 'Test',
+    label: 'How are you?',
+    optional: false,
+    string: {},
+    questionnaireConfiguration: questionnaireConfigurationId,
+  });
+
+  const type = 'Test';
   const questionnaireConfigurationDoc = await models.QuestionnaireConfiguration.create(
     {
       _id: questionnaireConfigurationId,
       name: 'Test Questionnaire Configuration',
-      type: 'Test',
+      type,
       company: companyDoc._id,
       user: userDoc._id,
-      questionTemplates: [],
+      questionTemplates: [questionTemplate._id],
     },
   );
 
@@ -71,6 +80,7 @@ export const createQuestionnaireConfigurationDoc = async (
     companyDoc,
     userDoc,
     questionnaireConfigurationDoc,
+    type,
   };
 };
 

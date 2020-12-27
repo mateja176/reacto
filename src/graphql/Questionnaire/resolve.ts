@@ -65,9 +65,10 @@ const createQuestionnaire: Mutation['createQuestionnaire'] = async (
 
   const questionnaireId = mongoose.Types.ObjectId();
 
-  const inheritedQuestionDocs = await context.models.Question.create(
-    questionTemplateDocs.map(questionTemplateToQuestion(questionnaireId)),
-  );
+  const inheritedQuestionDocs =
+    (await context.models.Question.create(
+      questionTemplateDocs.map(questionTemplateToQuestion(questionnaireId)),
+    )) ?? []; // * if questionTemplateDocs is [] then undefined is returned
 
   const questionnaireDoc = await context.models.Questionnaire.create({
     _id: questionnaireId,
