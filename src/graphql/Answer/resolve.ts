@@ -86,6 +86,7 @@ export const createCreateAnswer = <Config extends AnswerConfig>(
   const questionDoc = (await context.models.Question.findOneAndUpdate(
     { _id: questionId },
     { answer: doc._id },
+    { new: true },
   ).populate('questionnaire')) as DocumentType<
     Omit<QuestionClass, 'questionnaire'> & {
       questionnaire: DocumentType<QuestionnaireClass>;
@@ -138,6 +139,7 @@ export const createUpdateAnswer = <Config extends UpdateAnswerConfig>(
       _id: args.input.id,
     },
     { answer: args.input.answer },
+    { new: true },
   ).populate({
     path: 'question',
     populate: 'questionnaire',

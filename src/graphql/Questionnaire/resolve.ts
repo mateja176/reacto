@@ -120,6 +120,7 @@ const updateQuestionnaire: Mutation['updateQuestionnaire'] = async (
     {
       name: args.input.name,
     },
+    { new: true },
   );
 
   if (!questionnaireDoc) {

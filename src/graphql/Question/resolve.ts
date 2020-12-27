@@ -156,6 +156,7 @@ export const createCreateQuestionTemplate = <
   const questionnaireConfiguration = await context.models.QuestionnaireConfiguration.findOneAndUpdate(
     { _id: args.input.questionnaireConfigurationId },
     { $push: { questionTemplates: doc._id } },
+    { new: true },
   );
 
   if (!questionnaireConfiguration) {
@@ -282,6 +283,7 @@ export const createCreateQuestion = <Config extends QuestionConfig>(
   const questionnaire = await context.models.Questionnaire.findOneAndUpdate(
     { _id: args.input.questionnaireId },
     { $push: { questions: doc._id } },
+    { new: true },
   );
 
   if (!questionnaire) {
@@ -328,6 +330,7 @@ export const createUpdateQuestion = <Config extends UpdateQuestionConfig>(
           !isNil(entry[1]),
       ),
     ),
+    { new: true },
   ).populate('questionnaire')) as DocumentType<
     Omit<QuestionClass, 'questionnaire'> & { questionnaire: QuestionnaireClass }
   >;

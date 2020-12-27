@@ -142,6 +142,7 @@ const invite: Mutation['invite'] = async (_, args, context) => {
   const companyDoc = await context.models.Company.findOneAndUpdate(
     { _id: context.user.company.id },
     { $push: { pendingUsers: pendingUserDoc._id } },
+    { new: true },
   );
 
   if (!companyDoc) {

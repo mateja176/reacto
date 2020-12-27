@@ -114,6 +114,7 @@ const updateQuestionnaireConfiguration: Mutation['updateQuestionnaireConfigurati
       name: args.input.name,
       type: args.input.type,
     },
+    { new: true },
   );
 
   if (!questionnaireConfigurationDoc) {
