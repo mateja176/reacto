@@ -1,0 +1,12 @@
+mutation CreateStringQuestionTemplate(
+  $input: CreateStringQuestionTemplateInput!
+) {
+  createStringQuestionTemplate(input: $input) {
+    id
+    name
+    label
+    optional
+    rule
+    default
+  }
+}

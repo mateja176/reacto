@@ -1,0 +1,6 @@
+mutation CreateStringAnswer($input: CreateStringAnswerInput!) {
+  createStringAnswer(input: $input) {
+    id
+    answer
+  }
+}

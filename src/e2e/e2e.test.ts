@@ -19,6 +19,7 @@ import {
   createCompanyAndUser,
   createQuestionnaireConfigurationDoc,
   createQuestionnaireDoc,
+  createStringQuestionDoc,
 } from '../helpers/db';
 import { createHeaders } from '../helpers/helpers';
 import { userDocToJWTUser } from '../helpers/map';
@@ -138,7 +139,7 @@ describe('e2e', () => {
         sdk,
         questionnaireConfigurationDoc,
         type,
-      } = await createQuestionnaireConfigurationDoc(models, seedInput);
+      } = await createQuestionnaireConfigurationDoc({ models, seedInput });
 
       const { createQuestionnaire } = await sdk.CreateQuestionnaire({
         input: {
@@ -176,12 +177,36 @@ describe('e2e', () => {
       });
     });
 
+    describe('question template', () => {
+      test('create string', async () => {
+        const {
+          sdk,
+          questionnaireConfigurationDoc,
+        } = await createQuestionnaireConfigurationDoc({ models, seedInput });
+
+        const defaultString = 'Fine, thank you.';
+        const {
+          createStringQuestionTemplate,
+        } = await sdk.CreateStringQuestionTemplate({
+          input: {
+            name: 'Test',
+            label: 'How are you?',
+            optional: false,
+            questionnaireConfigurationId: questionnaireConfigurationDoc._id,
+            default: defaultString,
+          },
+        });
+
+        expect(createStringQuestionTemplate.default).toBe(defaultString);
+      });
+    });
+
     describe('question', () => {
-      test('create', async () => {
-        const { sdk, questionnaireDoc } = await createQuestionnaireDoc(
+      test('create string', async () => {
+        const { sdk, questionnaireDoc } = await createQuestionnaireDoc({
           models,
           seedInput,
-        );
+        });
 
         const defaultString = 'Fine, thank you.';
 
@@ -196,6 +221,25 @@ describe('e2e', () => {
         });
 
         expect(createStringQuestion.default).toBe(defaultString);
+      });
+    });
+
+    describe('answer', () => {
+      test('create string', async () => {
+        const { sdk, questionDoc } = await createStringQuestionDoc({
+          models,
+          seedInput,
+        });
+
+        const answer = 'Great, and you?';
+        const { createStringAnswer } = await sdk.CreateStringAnswer({
+          input: {
+            questionId: questionDoc._id,
+            answer,
+          },
+        });
+
+        expect(createStringAnswer.answer).toBe(answer);
       });
     });
   });

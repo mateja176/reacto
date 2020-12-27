@@ -39,10 +39,12 @@ export const createCompanyAndUser = (models: Models) => async ({
   return { userDoc, companyDoc: reacto };
 };
 
-export const createQuestionnaireConfigurationDoc = async (
-  models: Models,
-  seedInput: SeedInput,
-) => {
+type CreateParams = { models: Models; seedInput: SeedInput };
+
+export const createQuestionnaireConfigurationDoc = async ({
+  models,
+  seedInput,
+}: CreateParams) => {
   const { companyDoc, userDoc } = await createCompanyAndUser(models)(seedInput);
 
   const questionnaireConfigurationId = mongoose.Types.ObjectId();
@@ -84,15 +86,13 @@ export const createQuestionnaireConfigurationDoc = async (
   };
 };
 
-export const createQuestionnaireDoc = async (
-  ...params: Parameters<typeof createQuestionnaireConfigurationDoc>
-) => {
+export const createQuestionnaireDoc = async (params: CreateParams) => {
   const questionnaireConfigurationOutput = await createQuestionnaireConfigurationDoc(
-    ...params,
+    params,
   );
   const { companyDoc, userDoc } = questionnaireConfigurationOutput;
 
-  const [models] = params;
+  const { models } = params;
 
   const questionnaireId = mongoose.Types.ObjectId();
 
@@ -107,4 +107,20 @@ export const createQuestionnaireDoc = async (
   });
 
   return { ...questionnaireConfigurationOutput, questionnaireDoc };
+};
+
+export const createStringQuestionDoc = async (params: CreateParams) => {
+  const questionnaireData = await createQuestionnaireDoc(params);
+
+  const { questionnaireDoc } = questionnaireData;
+
+  const questionDoc = await params.models.Question.create({
+    name: 'Test',
+    label: 'How are you?',
+    optional: false,
+    string: { default: 'Fine, thank you.' },
+    questionnaire: questionnaireDoc._id,
+  });
+
+  return { ...questionnaireData, questionDoc };
 };
