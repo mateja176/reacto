@@ -1,9 +1,9 @@
 import { DocumentType, mongoose } from '@typegoose/typegoose';
 import { ApolloError } from 'apollo-server-express';
-import { Context } from 'vm';
 import { AnswerClass } from '../../classes/Answer/Answer';
 import { QuestionClass } from '../../classes/Question/Question';
 import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
+import { Context } from '../../Context';
 import { AdminRole, Nullable } from '../../generated/graphql';
 import {
   Forbidden,
