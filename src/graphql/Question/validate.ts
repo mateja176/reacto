@@ -1,4 +1,6 @@
+import { DocumentType } from '@typegoose/typegoose';
 import joi from 'joi';
+import { QuestionClass } from '../../classes/Question/Question';
 import {
   CreateBooleanQuestionInput,
   CreateBooleanQuestionTemplateInput,
@@ -29,7 +31,34 @@ import {
   UpdateStringQuestionInput,
   UpdateStringsQuestionInput,
 } from '../../generated/graphql';
+import { QuestionType } from '../../interfaces/Type';
 import { idSchema } from '../../utils/validate';
+
+export const doesUpdateQuestionMatchQuestion = (
+  type: QuestionType,
+  questionDoc: DocumentType<QuestionClass>,
+): boolean => {
+  switch (type) {
+    case 'boolean':
+      return !!questionDoc.boolean;
+    case 'string':
+      return !!questionDoc.string;
+    case 'strings':
+      return !!questionDoc.strings;
+    case 'multiStrings':
+      return !!questionDoc.multiStrings;
+    case 'number':
+      return !!questionDoc.number;
+    case 'numbers':
+      return !!questionDoc.numbers;
+    case 'multiNumbers':
+      return !!questionDoc.multiNumbers;
+    case 'file':
+      return !!questionDoc.file;
+    case 'files':
+      return !!questionDoc.files;
+  }
+};
 
 type Base = Omit<QuestionBase, 'id'>;
 const baseSchemaMap: joi.SchemaMap<Base> = {

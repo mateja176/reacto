@@ -566,10 +566,16 @@ export class UnknownQuestionError extends Error {
 
 type QuestionBase = Base & Pick<Question, 'questionnaire'>;
 
+const isQuestionDoc = (
+  doc: DocumentType<QuestionClass> | MapClass<QuestionClass>,
+): doc is DocumentType<QuestionClass> => '_id' in doc;
+
 export const mapQuestionDoc = <Q extends Question>(
   map: (models: Models, base: QuestionBase, cls: MapClass<QuestionClass>) => Q,
-) => (models: Models) => (doc: DocumentType<QuestionClass>) => {
-  const cls = mapDoc(doc);
+) => (models: Models) => (
+  doc: DocumentType<QuestionClass> | MapClass<QuestionClass>,
+) => {
+  const cls = isQuestionDoc(doc) ? mapDoc(doc) : doc;
   const { id, label, name, rule, optional, questionnaire } = cls;
   return map(
     models,

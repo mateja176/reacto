@@ -9,6 +9,7 @@ import {
   NotFoundError,
   QuestionnaireConfigurationNotFound,
 } from '../../utils/errors';
+import { MapClass } from '../../utils/map';
 import {
   filterInputSchema,
   idSchema,
@@ -91,6 +92,7 @@ import {
   createStringQuestionTemplateSchema,
   createStringsQuestionSchema,
   createStringsQuestionTemplateSchema,
+  doesUpdateQuestionMatchQuestion,
 } from './validate';
 
 const questionTemplates: Query['questionTemplates'] = async (
@@ -318,35 +320,50 @@ export const createUpdateQuestion = <Config extends UpdateQuestionConfig>(
   const session = await mongoose.startSession();
   session.startTransaction();
 
-  const doc = (await context.models.Question.findOneAndUpdate(
+  const currentQuestionDoc = (await context.models.Question.findOneAndUpdate(
     { _id: args.input.id },
     createUpdateQuestionDoc({
       type,
       input: args.input,
     } as UpdateQuestionConfig),
-    { new: true },
   ).populate('questionnaire')) as DocumentType<
     Omit<QuestionClass, 'questionnaire'> & { questionnaire: QuestionnaireClass }
   >;
 
-  if (!doc) {
+  if (!currentQuestionDoc) {
     throw new NotFoundError();
   }
 
   if (
     !(
       (context.user.role === AdminRole.admin &&
-        String(doc.questionnaire.company) === context.user.company.id) ||
-      String(doc.questionnaire.user) === context.user.id
+        String(currentQuestionDoc.questionnaire.company) ===
+          context.user.company.id) ||
+      String(currentQuestionDoc.questionnaire.user) === context.user.id
     )
   ) {
     throw new Forbidden();
   }
 
+  if (!doesUpdateQuestionMatchQuestion(type, currentQuestionDoc)) {
+    throw new Error(
+      `The question you are attempting to update is not a "${type}" question.`,
+    );
+  }
+
   await session.commitTransaction();
   session.endSession();
 
-  const output = map(context.models)(doc);
+  const newQuestionDoc: MapClass<QuestionClass> = {
+    ...createUpdateQuestionDoc({
+      type,
+      input: args.input,
+    } as UpdateQuestionConfig),
+    id: String(currentQuestionDoc._id),
+    questionnaire: currentQuestionDoc.questionnaire,
+  };
+
+  const output = map(context.models)(newQuestionDoc);
 
   return output;
 };
