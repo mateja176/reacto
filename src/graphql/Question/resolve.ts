@@ -1,5 +1,4 @@
 import { DocumentType, mongoose } from '@typegoose/typegoose';
-import { isNil } from 'ramda';
 import { QuestionClass } from '../../classes/Question/Question';
 import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
 import { Context } from '../../Context';
@@ -52,6 +51,7 @@ import {
 import {
   createQuestionDoc,
   createQuestionTemplateDoc,
+  createUpdateQuestionDoc,
   mapBooleanQuestion,
   mapBooleanQuestionTemplate,
   mapFileQuestion,
@@ -311,10 +311,6 @@ export const createUpdateQuestion = <Config extends UpdateQuestionConfig>(
 ): Promise<Config['output']> => {
   await schema.validateAsync(args.input);
 
-  const {
-    input: { id, ...questionBase },
-  } = args;
-
   if (!context.user) {
     throw new NotAuthenticatedError();
   }
@@ -323,13 +319,11 @@ export const createUpdateQuestion = <Config extends UpdateQuestionConfig>(
   session.startTransaction();
 
   const doc = (await context.models.Question.findOneAndUpdate(
-    { _id: id },
-    Object.fromEntries<string, typeof questionBase[keyof typeof questionBase]>(
-      Object.entries(questionBase).filter(
-        (entry): entry is [typeof entry[0], NonNullable<typeof entry[1]>] =>
-          !isNil(entry[1]),
-      ),
-    ),
+    { _id: args.input.id },
+    createUpdateQuestionDoc({
+      type,
+      input: args.input,
+    } as UpdateQuestionConfig),
     { new: true },
   ).populate('questionnaire')) as DocumentType<
     Omit<QuestionClass, 'questionnaire'> & { questionnaire: QuestionnaireClass }

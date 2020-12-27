@@ -191,82 +191,82 @@ input CreateFilesQuestionInput {
 
 input UpdateBooleanQuestionInput {
   id: ID!
-  name: String
-  label: String
+  name: String!
+  label: String!
+  optional: Boolean!
   rule: String
-  optional: Boolean
   default: Boolean
 }
 input UpdateStringQuestionInput {
   id: ID!
-  name: String
-  label: String
+  name: String!
+  label: String!
+  optional: Boolean!
   rule: String
-  optional: Boolean
   default: String
 }
 input UpdateStringsQuestionInput {
   id: ID!
-  name: String
-  label: String
+  name: String!
+  label: String!
+  optional: Boolean!
   rule: String
-  optional: Boolean
-  options: [String!]
+  options: [String!]!
   otherOptionsCount: Int!
   default: String
 }
 input UpdateMultiStringsQuestionInput {
   id: ID!
-  name: String
-  label: String
+  name: String!
+  label: String!
+  optional: Boolean!
   rule: String
-  optional: Boolean
-  options: [String!]
+  options: [String!]!
   otherOptionsCount: Int!
   default: [String!]
 }
 input UpdateNumberQuestionInput {
   id: ID!
-  name: String
-  label: String
+  name: String!
+  label: String!
+  optional: Boolean!
   rule: String
-  optional: Boolean
   default: Float
 }
 input UpdateNumbersQuestionInput {
   id: ID!
-  name: String
-  label: String
+  name: String!
+  label: String!
+  optional: Boolean!
   rule: String
-  optional: Boolean
-  options: [Float!]
+  options: [Float!]!
   otherOptionsCount: Int!
   default: Float
 }
 input UpdateMultiNumbersQuestionInput {
   id: ID!
-  name: String
-  label: String
+  name: String!
+  label: String!
+  optional: Boolean!
   rule: String
-  optional: Boolean
-  options: [Float!]
+  options: [Float!]!
   otherOptionsCount: Int!
   default: [Float!]
 }
 input UpdateFileQuestionInput {
   id: ID!
-  name: String
-  label: String
+  name: String!
+  label: String!
+  optional: Boolean!
   rule: String
-  optional: Boolean
   default: String
 }
 input UpdateFilesQuestionInput {
   id: ID!
-  name: String
-  label: String
+  name: String!
+  label: String!
+  optional: Boolean!
   rule: String
-  optional: Boolean
   default: [String!]
 }
 

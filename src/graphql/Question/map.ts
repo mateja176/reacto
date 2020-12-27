@@ -43,6 +43,7 @@ import { mapQuestionnaireConfiguration } from '../QuestionnaireConfiguration/map
 import {
   CreateQuestionDocConfig,
   CreateQuestionTemplateDocConfig,
+  UpdateQuestionDocConfig,
 } from './interfaces';
 
 export const createQuestionTemplateDoc = (
@@ -388,6 +389,93 @@ export const createQuestionDoc = (
     optional,
     rule: rule ?? undefined,
     questionnaire: questionnaireId,
+  };
+
+  switch (config.type) {
+    case 'boolean':
+      return {
+        ...questionBase,
+        boolean: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'string':
+      return {
+        ...questionBase,
+        string: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'strings':
+      return {
+        ...questionBase,
+        strings: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount,
+        },
+      };
+    case 'multiStrings':
+      return {
+        ...questionBase,
+        multiStrings: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount,
+        },
+      };
+    case 'number':
+      return {
+        ...questionBase,
+        number: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'numbers':
+      return {
+        ...questionBase,
+        numbers: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount,
+        },
+      };
+    case 'multiNumbers':
+      return {
+        ...questionBase,
+        multiNumbers: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount,
+        },
+      };
+    case 'file':
+      return {
+        ...questionBase,
+        file: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'files':
+      return {
+        ...questionBase,
+        files: {
+          default: config.input.default ?? undefined,
+        },
+      };
+  }
+};
+export const createUpdateQuestionDoc = (
+  config: UpdateQuestionDocConfig,
+): Omit<QuestionClass, 'questionnaire'> => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { id, label, name, optional, rule } = config.input;
+
+  const questionBase = {
+    label,
+    name,
+    optional,
+    rule: rule ?? undefined,
   };
 
   switch (config.type) {
