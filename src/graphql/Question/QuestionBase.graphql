@@ -1,7 +1,16 @@
 interface QuestionBase implements Node & NamedNode {
   id: ID!
   name: String!
+  """
+  The text of the question.
+  """
   label: String!
+  """
+  The corresponding questionnaire may be complete with having an answer for the respective optional question.
+  """
   optional: Boolean!
+  """
+  Rule which when parsed determines whether to show or skip the question.
+  """
   rule: String
 }

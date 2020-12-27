@@ -8,30 +8,23 @@ import { Ruled } from '../../interfaces/Ruled';
 export class QuestionBase implements Named, Ruled {
   @prop()
   public name: string;
-  @prop({ comment: 'The text of the question.' })
+  @prop()
   public label: string;
-  @prop({
-    comment:
-      'Rule which when parsed determines whether to show or skip the question.',
-  })
+  @prop()
   public rule?: string;
-  @prop({
-    default: false,
-    comment:
-      'The corresponding questionnaire may be complete with having an answer for the respective optional question.',
-  })
+  @prop()
   public optional: boolean;
   @prop()
   public boolean?: { default?: boolean };
   @prop()
   public string?: { default?: string };
-  @prop({ comment: 'Select Textual' })
+  @prop()
   public strings?: {
     options: string[];
     allowOtherOption: boolean;
     default?: string;
   };
-  @prop({ comment: 'Multi-select Textual' })
+  @prop()
   public multiStrings?: {
     options: string[];
     otherOptionsCount: number;
@@ -39,13 +32,13 @@ export class QuestionBase implements Named, Ruled {
   };
   @prop()
   public number?: { default?: number };
-  @prop({ comment: 'Select Numerical' })
+  @prop()
   public numbers?: {
     options: number[];
     allowOtherOption: boolean;
     default?: number;
   };
-  @prop({ comment: 'Multi-select Numerical' })
+  @prop()
   public multiNumbers?: {
     options: number[];
     otherOptionsCount: number;

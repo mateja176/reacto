@@ -16,6 +16,9 @@ type StringQuestion implements Node & NamedNode & QuestionBase {
   optional: Boolean!
   questionnaire: Questionnaire!
   answer: StringAnswer
+  """
+  Textual
+  """
   default: String
 }
 type StringsQuestion implements Node & NamedNode & QuestionBase {
@@ -28,6 +31,9 @@ type StringsQuestion implements Node & NamedNode & QuestionBase {
   answer: StringsAnswer
   options: [String!]!
   allowOtherOption: Boolean!
+  """
+  Select Textual
+  """
   default: String
 }
 type MultiStringsQuestion implements Node & NamedNode & QuestionBase {
@@ -40,6 +46,9 @@ type MultiStringsQuestion implements Node & NamedNode & QuestionBase {
   answer: MultiStringsAnswer
   options: [String!]!
   otherOptionsCount: Int!
+  """
+  Multi-select Textual
+  """
   default: [String!]
 }
 type NumberQuestion implements Node & NamedNode & QuestionBase {
@@ -50,6 +59,9 @@ type NumberQuestion implements Node & NamedNode & QuestionBase {
   optional: Boolean!
   questionnaire: Questionnaire!
   answer: NumberAnswer
+  """
+  Numerical
+  """
   default: Float
 }
 type NumbersQuestion implements Node & NamedNode & QuestionBase {
@@ -62,6 +74,9 @@ type NumbersQuestion implements Node & NamedNode & QuestionBase {
   answer: NumbersAnswer
   options: [Float!]!
   allowOtherOption: Boolean!
+  """
+  Select Numerical
+  """
   default: Float
 }
 type MultiNumbersQuestion implements Node & NamedNode & QuestionBase {
@@ -74,6 +89,9 @@ type MultiNumbersQuestion implements Node & NamedNode & QuestionBase {
   answer: MultiNumbersAnswer
   options: [Float!]!
   otherOptionsCount: Int!
+  """
+  Multi-select Numerical
+  """
   default: [Float!]
 }
 type FileQuestion implements Node & NamedNode & QuestionBase {

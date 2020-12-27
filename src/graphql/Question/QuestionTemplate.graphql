@@ -14,6 +14,9 @@ type StringQuestionTemplate implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
+  """
+  Textual
+  """
   default: String
 }
 type StringsQuestionTemplate implements Node & NamedNode & QuestionBase {
@@ -25,6 +28,9 @@ type StringsQuestionTemplate implements Node & NamedNode & QuestionBase {
   questionnaireConfiguration: QuestionnaireConfiguration!
   options: [String!]!
   allowOtherOption: Boolean!
+  """
+  Select Textual
+  """
   default: String
 }
 type MultiStringsQuestionTemplate implements Node & NamedNode & QuestionBase {
@@ -36,6 +42,9 @@ type MultiStringsQuestionTemplate implements Node & NamedNode & QuestionBase {
   questionnaireConfiguration: QuestionnaireConfiguration!
   options: [String!]!
   otherOptionsCount: Int!
+  """
+  Multi-select Textual
+  """
   default: [String!]
 }
 type NumberQuestionTemplate implements Node & NamedNode & QuestionBase {
@@ -45,6 +54,9 @@ type NumberQuestionTemplate implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
+  """
+  Numerical
+  """
   default: Float
 }
 type NumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
@@ -56,6 +68,9 @@ type NumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
   questionnaireConfiguration: QuestionnaireConfiguration!
   options: [Float!]!
   allowOtherOption: Boolean!
+  """
+  Select Numerical
+  """
   default: Float
 }
 type MultiNumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
@@ -67,6 +82,9 @@ type MultiNumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
   questionnaireConfiguration: QuestionnaireConfiguration!
   options: [Float!]!
   otherOptionsCount: Int!
+  """
+  Multi-select Textual
+  """
   default: [Float!]
 }
 type FileQuestionTemplate implements Node & NamedNode & QuestionBase {
