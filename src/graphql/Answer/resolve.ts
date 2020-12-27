@@ -7,15 +7,6 @@ import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
 import {
   AdminRole,
   BooleanAnswer,
-  CreateBooleanAnswerInput,
-  CreateFileAnswerInput,
-  CreateFilesAnswerInput,
-  CreateMultiNumbersAnswerInput,
-  CreateMultiStringsAnswerInput,
-  CreateNumberAnswerInput,
-  CreateNumbersAnswerInput,
-  CreateStringAnswerInput,
-  CreateStringsAnswerInput,
   FileAnswer,
   FilesAnswer,
   MultiNumbersAnswer,
@@ -40,6 +31,18 @@ import {
   NotAuthenticatedError,
   NotFoundError,
 } from '../../utils/errors';
+import {
+  AnswerConfig,
+  BooleanAnswerConfig,
+  FileAnswerConfig,
+  FilesAnswerConfig,
+  MultiNumbersAnswerConfig,
+  MultiStringsAnswerConfig,
+  NumberAnswerConfig,
+  NumbersAnswerConfig,
+  StringAnswerConfig,
+  StringsAnswerConfig,
+} from './interfaces';
 import {
   mapBooleanAnswer,
   mapFileAnswer,
@@ -71,73 +74,7 @@ import {
   updateStringsAnswerSchema,
 } from './validate';
 
-type BooleanAnswerConfig = {
-  schema: typeof createBooleanAnswerSchema;
-  map: typeof mapBooleanAnswer;
-  input: CreateBooleanAnswerInput;
-  output: BooleanAnswer;
-};
-type StringAnswerConfig = {
-  schema: typeof createStringsAnswerSchema;
-  map: typeof mapStringAnswer;
-  input: CreateStringAnswerInput;
-  output: StringAnswer;
-};
-type StringsAnswerConfig = {
-  schema: typeof createStringsAnswerSchema;
-  map: typeof mapStringsAnswer;
-  input: CreateStringsAnswerInput;
-  output: StringsAnswer;
-};
-type MultiStringsAnswerConfig = {
-  schema: typeof createMultiStringsAnswerSchema;
-  map: typeof mapMultiStringsAnswer;
-  input: CreateMultiStringsAnswerInput;
-  output: MultiStringsAnswer;
-};
-type NumberAnswerConfig = {
-  schema: typeof createNumberAnswerSchema;
-  map: typeof mapNumberAnswer;
-  input: CreateNumberAnswerInput;
-  output: NumberAnswer;
-};
-type NumbersAnswerConfig = {
-  schema: typeof createNumbersAnswerSchema;
-  map: typeof mapNumbersAnswer;
-  input: CreateNumbersAnswerInput;
-  output: NumbersAnswer;
-};
-type MultiNumbersAnswerConfig = {
-  schema: typeof createMultiNumbersAnswerSchema;
-  map: typeof mapMultiNumbersAnswer;
-  input: CreateMultiNumbersAnswerInput;
-  output: MultiNumbersAnswer;
-};
-type FileAnswerConfig = {
-  schema: typeof createFileAnswerSchema;
-  map: typeof mapFileAnswer;
-  input: CreateFileAnswerInput;
-  output: FileAnswer;
-};
-type FilesAnswerConfig = {
-  schema: typeof createFilesAnswerSchema;
-  map: typeof mapFilesAnswer;
-  input: CreateFilesAnswerInput;
-  output: FilesAnswer;
-};
-
-export const createCreateAnswer = <
-  Config extends
-    | BooleanAnswerConfig
-    | StringAnswerConfig
-    | StringsAnswerConfig
-    | MultiStringsAnswerConfig
-    | NumberAnswerConfig
-    | NumbersAnswerConfig
-    | MultiNumbersAnswerConfig
-    | FileAnswerConfig
-    | FilesAnswerConfig
->(
+export const createCreateAnswer = <Config extends AnswerConfig>(
   schema: Config['schema'],
   map: Config['map'],
 ) => async (
