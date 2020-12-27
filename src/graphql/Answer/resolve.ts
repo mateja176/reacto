@@ -60,6 +60,14 @@ import {
   isAnswerAllowed,
 } from './validate';
 
+class DisallowedAnswerError extends ApolloError {
+  constructor() {
+    super(
+      "The referenced question's type does not match the answer type or the answer is not among the allowed options.",
+    );
+  }
+}
+
 export const createCreateAnswer = <Config extends AnswerConfig>(
   type: Config['type'],
   schema: Config['schema'],
@@ -114,9 +122,7 @@ export const createCreateAnswer = <Config extends AnswerConfig>(
   }
 
   if (!isAnswerAllowed(type, doc, questionDoc)) {
-    throw new ApolloError(
-      "The referenced question's type does not match the answer type or the answer is not among the allowed options.",
-    );
+    throw new DisallowedAnswerError();
   }
 
   await session.commitTransaction();
@@ -177,6 +183,10 @@ export const createUpdateAnswer = <Config extends UpdateAnswerConfig>(
     )
   ) {
     throw new Forbidden();
+  }
+
+  if (!isAnswerAllowed(type, doc, doc.question)) {
+    throw new DisallowedAnswerError();
   }
 
   const output = map(context.models)(doc);
