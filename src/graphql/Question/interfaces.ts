@@ -36,14 +36,23 @@ import {
   StringsQuestion,
   StringsQuestionTemplate,
   UpdateBooleanQuestionInput,
+  UpdateBooleanQuestionTemplateInput,
   UpdateFileQuestionInput,
+  UpdateFileQuestionTemplateInput,
   UpdateFilesQuestionInput,
+  UpdateFilesQuestionTemplateInput,
   UpdateMultiNumbersQuestionInput,
+  UpdateMultiNumbersQuestionTemplateInput,
   UpdateMultiStringsQuestionInput,
+  UpdateMultiStringsQuestionTemplateInput,
   UpdateNumberQuestionInput,
+  UpdateNumberQuestionTemplateInput,
   UpdateNumbersQuestionInput,
+  UpdateNumbersQuestionTemplateInput,
   UpdateStringQuestionInput,
+  UpdateStringQuestionTemplateInput,
   UpdateStringsQuestionInput,
+  UpdateStringsQuestionTemplateInput,
 } from '../../generated/graphql';
 import {
   mapBooleanQuestion,
@@ -83,13 +92,21 @@ import {
   createStringsQuestionSchema,
   createStringsQuestionTemplateSchema,
   updateBooleanQuestionSchema,
+  updateBooleanQuestionTemplateSchema,
   updateFileQuestionSchema,
+  updateFileQuestionTemplateSchema,
   updateFilesQuestionSchema,
+  updateFilesQuestionTemplateSchema,
   updateMultiNumbersQuestionSchema,
+  updateMultiNumbersQuestionTemplateSchema,
   updateMultiStringsQuestionSchema,
+  updateMultiStringsQuestionTemplateSchema,
   updateNumberQuestionSchema,
+  updateNumberQuestionTemplateSchema,
   updateNumbersQuestionSchema,
+  updateNumbersQuestionTemplateSchema,
   updateStringsQuestionSchema,
+  updateStringsQuestionTemplateSchema,
 } from './validate';
 
 export type BooleanQuestionTemplateConfig = {
@@ -206,6 +223,121 @@ export type CreateQuestionTemplateDocConfig =
       type: 'files';
       input: CreateFilesQuestionTemplateInput;
     };
+
+export type BooleanUpdateQuestionTemplateConfig = {
+  type: 'boolean';
+  schema: typeof updateBooleanQuestionTemplateSchema;
+  map: typeof mapBooleanQuestionTemplate;
+  input: UpdateBooleanQuestionTemplateInput;
+  output: BooleanQuestionTemplate;
+};
+export type StringUpdateQuestionTemplateConfig = {
+  type: 'string';
+  schema: typeof updateStringsQuestionTemplateSchema;
+  map: typeof mapStringQuestionTemplate;
+  input: UpdateStringQuestionTemplateInput;
+  output: StringQuestionTemplate;
+};
+export type StringsUpdateQuestionTemplateConfig = {
+  type: 'strings';
+  schema: typeof updateStringsQuestionTemplateSchema;
+  map: typeof mapStringsQuestionTemplate;
+  input: UpdateStringsQuestionTemplateInput;
+  output: StringsQuestionTemplate;
+};
+export type MultiStringsUpdateQuestionTemplateConfig = {
+  type: 'multiStrings';
+  schema: typeof updateMultiStringsQuestionTemplateSchema;
+  map: typeof mapMultiStringsQuestionTemplate;
+  input: UpdateMultiStringsQuestionTemplateInput;
+  output: MultiStringsQuestionTemplate;
+};
+export type NumberUpdateQuestionTemplateConfig = {
+  type: 'number';
+  schema: typeof updateNumberQuestionTemplateSchema;
+  map: typeof mapNumberQuestionTemplate;
+  input: UpdateNumberQuestionTemplateInput;
+  output: NumberQuestionTemplate;
+};
+export type NumbersUpdateQuestionTemplateConfig = {
+  type: 'numbers';
+  schema: typeof updateNumbersQuestionTemplateSchema;
+  map: typeof mapNumbersQuestionTemplate;
+  input: UpdateNumbersQuestionTemplateInput;
+  output: NumbersQuestionTemplate;
+};
+export type MultiNumbersUpdateQuestionTemplateConfig = {
+  type: 'multiNumbers';
+  schema: typeof updateMultiNumbersQuestionTemplateSchema;
+  map: typeof mapMultiNumbersQuestionTemplate;
+  input: UpdateMultiNumbersQuestionTemplateInput;
+  output: MultiNumbersQuestionTemplate;
+};
+export type FileUpdateQuestionTemplateConfig = {
+  type: 'file';
+  schema: typeof updateFileQuestionTemplateSchema;
+  map: typeof mapFileQuestionTemplate;
+  input: UpdateFileQuestionTemplateInput;
+  output: FileQuestionTemplate;
+};
+export type FilesUpdateQuestionTemplateConfig = {
+  type: 'files';
+  schema: typeof updateFilesQuestionTemplateSchema;
+  map: typeof mapFilesQuestionTemplate;
+  input: UpdateFilesQuestionTemplateInput;
+  output: FilesQuestionTemplate;
+};
+
+export type UpdateQuestionTemplateConfig =
+  | BooleanUpdateQuestionTemplateConfig
+  | StringUpdateQuestionTemplateConfig
+  | StringsUpdateQuestionTemplateConfig
+  | MultiStringsUpdateQuestionTemplateConfig
+  | NumberUpdateQuestionTemplateConfig
+  | NumbersUpdateQuestionTemplateConfig
+  | MultiNumbersUpdateQuestionTemplateConfig
+  | FileUpdateQuestionTemplateConfig
+  | FilesUpdateQuestionTemplateConfig;
+
+export type UpdateQuestionTemplateDocConfig =
+  | {
+      type: 'boolean';
+      input: UpdateBooleanQuestionTemplateInput;
+    }
+  | {
+      type: 'string';
+      input: UpdateStringQuestionTemplateInput;
+    }
+  | {
+      type: 'strings';
+      input: UpdateStringsQuestionTemplateInput;
+    }
+  | {
+      type: 'multiStrings';
+      input: UpdateMultiStringsQuestionTemplateInput;
+    }
+  | {
+      type: 'number';
+      input: UpdateNumberQuestionTemplateInput;
+    }
+  | {
+      type: 'numbers';
+      input: UpdateNumbersQuestionTemplateInput;
+    }
+  | {
+      type: 'multiNumbers';
+      input: UpdateMultiNumbersQuestionTemplateInput;
+    }
+  | {
+      type: 'file';
+      input: UpdateFileQuestionTemplateInput;
+    }
+  | {
+      type: 'files';
+      input: UpdateFilesQuestionTemplateInput;
+    };
+
+// QUESTION
 
 export type BooleanQuestionConfig = {
   type: 'boolean';

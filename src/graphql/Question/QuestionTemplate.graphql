@@ -183,6 +183,86 @@ input CreateFilesQuestionTemplateInput {
   questionnaireConfigurationId: ID!
   default: [String!]
 }
+input UpdateBooleanQuestionTemplateInput {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  default: Boolean
+}
+input UpdateStringQuestionTemplateInput {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  default: String
+}
+input UpdateStringsQuestionTemplateInput {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  options: [String!]!
+  allowOtherOption: Boolean!
+  default: String
+}
+input UpdateMultiStringsQuestionTemplateInput {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  options: [String!]!
+  otherOptionsCount: Int!
+  default: [String!]
+}
+input UpdateNumberQuestionTemplateInput {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  default: Float
+}
+input UpdateNumbersQuestionTemplateInput {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  options: [Float!]!
+  allowOtherOption: Boolean!
+  default: Float
+}
+input UpdateMultiNumbersQuestionTemplateInput {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  options: [Float!]!
+  otherOptionsCount: Int!
+  default: [Float!]
+}
+input UpdateFileQuestionTemplateInput {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  default: String
+}
+input UpdateFilesQuestionTemplateInput {
+  id: ID!
+  name: String!
+  label: String!
+  rule: String
+  optional: Boolean!
+  default: [String!]
+}
 type Mutation {
   createBooleanQuestionTemplate(
     input: CreateBooleanQuestionTemplateInput!
@@ -210,6 +290,33 @@ type Mutation {
   ): FileQuestionTemplate!
   createFilesQuestionTemplate(
     input: CreateFilesQuestionTemplateInput!
+  ): FilesQuestionTemplate!
+  updateBooleanQuestionTemplate(
+    input: UpdateBooleanQuestionTemplateInput!
+  ): BooleanQuestionTemplate!
+  updateStringQuestionTemplate(
+    input: UpdateStringQuestionTemplateInput!
+  ): StringQuestionTemplate!
+  updateStringsQuestionTemplate(
+    input: UpdateStringsQuestionTemplateInput!
+  ): StringsQuestionTemplate!
+  updateMultiStringsQuestionTemplate(
+    input: UpdateMultiStringsQuestionTemplateInput!
+  ): MultiStringsQuestionTemplate!
+  updateNumberQuestionTemplate(
+    input: UpdateNumberQuestionTemplateInput!
+  ): NumberQuestionTemplate!
+  updateNumbersQuestionTemplate(
+    input: UpdateNumbersQuestionTemplateInput!
+  ): NumbersQuestionTemplate!
+  updateMultiNumbersQuestionTemplate(
+    input: UpdateMultiNumbersQuestionTemplateInput!
+  ): MultiNumbersQuestionTemplate!
+  updateFileQuestionTemplate(
+    input: UpdateFileQuestionTemplateInput!
+  ): FileQuestionTemplate!
+  updateFilesQuestionTemplate(
+    input: UpdateFilesQuestionTemplateInput!
   ): FilesQuestionTemplate!
   deleteQuestionTemplate(id: ID!): ID!
 }

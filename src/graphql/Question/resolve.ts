@@ -1,6 +1,8 @@
 import { DocumentType, mongoose } from '@typegoose/typegoose';
 import { QuestionClass } from '../../classes/Question/Question';
+import { QuestionTemplateClass } from '../../classes/Question/QuestionTemplate';
 import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
+import { QuestionnaireConfigurationClass } from '../../classes/QuestionnaireConfiguration/QuestionnaireConfiguration';
 import { Context } from '../../Context';
 import { AdminRole, Mutation, Query } from '../../generated/graphql';
 import {
@@ -19,6 +21,7 @@ import {
   BooleanQuestionConfig,
   BooleanQuestionTemplateConfig,
   BooleanUpdateQuestionConfig,
+  BooleanUpdateQuestionTemplateConfig,
   CreateQuestionDocConfig,
   CreateQuestionTemplateDocConfig,
   FileQuestionConfig,
@@ -26,19 +29,25 @@ import {
   FilesQuestionConfig,
   FilesQuestionTemplateConfig,
   FilesUpdateQuestionConfig,
+  FilesUpdateQuestionTemplateConfig,
   FileUpdateQuestionConfig,
+  FileUpdateQuestionTemplateConfig,
   MultiNumbersQuestionConfig,
   MultiNumbersQuestionTemplateConfig,
   MultiNumbersUpdateQuestionConfig,
+  MultiNumbersUpdateQuestionTemplateConfig,
   MultiStringsQuestionConfig,
   MultiStringsQuestionTemplateConfig,
   MultiStringsUpdateQuestionConfig,
+  MultiStringsUpdateQuestionTemplateConfig,
   NumberQuestionConfig,
   NumberQuestionTemplateConfig,
   NumbersQuestionConfig,
   NumbersQuestionTemplateConfig,
   NumbersUpdateQuestionConfig,
+  NumbersUpdateQuestionTemplateConfig,
   NumberUpdateQuestionConfig,
+  NumberUpdateQuestionTemplateConfig,
   QuestionConfig,
   QuestionTemplateConfig,
   StringQuestionConfig,
@@ -46,13 +55,18 @@ import {
   StringsQuestionConfig,
   StringsQuestionTemplateConfig,
   StringsUpdateQuestionConfig,
+  StringsUpdateQuestionTemplateConfig,
   StringUpdateQuestionConfig,
+  StringUpdateQuestionTemplateConfig,
   UpdateQuestionConfig,
+  UpdateQuestionTemplateConfig,
+  UpdateQuestionTemplateDocConfig,
 } from './interfaces';
 import {
   createQuestionDocPayload,
   createQuestionTemplateDocPayload,
   createUpdateQuestionDocPayload,
+  createUpdateQuestionTemplateDocPayload,
   mapBooleanQuestion,
   mapBooleanQuestionTemplate,
   mapFileQuestion,
@@ -93,6 +107,15 @@ import {
   createStringsQuestionSchema,
   createStringsQuestionTemplateSchema,
   doesUpdateQuestionMatchQuestion,
+  updateBooleanQuestionTemplateSchema,
+  updateFileQuestionTemplateSchema,
+  updateFilesQuestionTemplateSchema,
+  updateMultiNumbersQuestionTemplateSchema,
+  updateMultiStringsQuestionTemplateSchema,
+  updateNumberQuestionTemplateSchema,
+  updateNumbersQuestionTemplateSchema,
+  updateStringQuestionTemplateSchema,
+  updateStringsQuestionTemplateSchema,
 } from './validate';
 
 const questionTemplates: Query['questionTemplates'] = async (
@@ -169,6 +192,67 @@ export const createCreateQuestionTemplate = <
   session.endSession();
 
   const output = map(context.models)(doc);
+
+  return output;
+};
+export const createUpdateQuestionTemplate = <
+  Config extends UpdateQuestionTemplateConfig
+>(
+  type: Config['type'],
+  schema: Config['schema'],
+  map: Config['map'],
+) => async (
+  _: never,
+  args: {
+    input: Config['input'];
+  },
+  context: Context,
+): Promise<Config['output']> => {
+  await schema.validateAsync(args.input);
+
+  if (!context.user) {
+    throw new NotAuthenticatedError();
+  }
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  const currentQuestionTemplateDoc = (await context.models.QuestionTemplate.findOneAndUpdate(
+    { _id: args.input.id },
+    createUpdateQuestionTemplateDocPayload({
+      type,
+      input: args.input,
+    } as UpdateQuestionTemplateDocConfig),
+  ).populate('questionnaireConfiguration')) as DocumentType<
+    Omit<QuestionTemplateClass, 'questionnaireConfiguration'> & {
+      questionnaireConfiguration: QuestionnaireConfigurationClass;
+    }
+  >;
+
+  if (!currentQuestionTemplateDoc) {
+    throw new NotFoundError();
+  }
+
+  if (
+    !(
+      context.user.role === AdminRole.admin &&
+      String(currentQuestionTemplateDoc.questionnaireConfiguration.company) ===
+        context.user.company.id
+    )
+  ) {
+    throw new Forbidden();
+  }
+
+  if (!doesUpdateQuestionMatchQuestion(type, currentQuestionTemplateDoc)) {
+    throw new Error(
+      `The question you are attempting to update is not a "${type}" question.`,
+    );
+  }
+
+  await session.commitTransaction();
+  session.endSession();
+
+  const output = map(context.models)(currentQuestionTemplateDoc);
 
   return output;
 };
@@ -251,6 +335,51 @@ export const questionTemplateMutation = {
     createFilesQuestionTemplateSchema,
     mapFilesQuestionTemplate,
   ),
+  updateBooleanQuestionTemplate: createUpdateQuestionTemplate<BooleanUpdateQuestionTemplateConfig>(
+    'boolean',
+    updateBooleanQuestionTemplateSchema,
+    mapBooleanQuestionTemplate,
+  ),
+  updateStringQuestionTemplate: createUpdateQuestionTemplate<StringUpdateQuestionTemplateConfig>(
+    'string',
+    updateStringQuestionTemplateSchema,
+    mapStringQuestionTemplate,
+  ),
+  updateStringsQuestionTemplate: createUpdateQuestionTemplate<StringsUpdateQuestionTemplateConfig>(
+    'strings',
+    updateStringsQuestionTemplateSchema,
+    mapStringsQuestionTemplate,
+  ),
+  updateMultiStringsQuestionTemplate: createUpdateQuestionTemplate<MultiStringsUpdateQuestionTemplateConfig>(
+    'multiStrings',
+    updateMultiStringsQuestionTemplateSchema,
+    mapMultiStringsQuestionTemplate,
+  ),
+  updateNumberQuestionTemplate: createUpdateQuestionTemplate<NumberUpdateQuestionTemplateConfig>(
+    'number',
+    updateNumberQuestionTemplateSchema,
+    mapNumberQuestionTemplate,
+  ),
+  updateNumbersQuestionTemplate: createUpdateQuestionTemplate<NumbersUpdateQuestionTemplateConfig>(
+    'numbers',
+    updateNumbersQuestionTemplateSchema,
+    mapNumbersQuestionTemplate,
+  ),
+  updateMultiNumbersQuestionTemplate: createUpdateQuestionTemplate<MultiNumbersUpdateQuestionTemplateConfig>(
+    'multiNumbers',
+    updateMultiNumbersQuestionTemplateSchema,
+    mapMultiNumbersQuestionTemplate,
+  ),
+  updateFileQuestionTemplate: createUpdateQuestionTemplate<FileUpdateQuestionTemplateConfig>(
+    'file',
+    updateFileQuestionTemplateSchema,
+    mapFileQuestionTemplate,
+  ),
+  updateFilesQuestionTemplate: createUpdateQuestionTemplate<FilesUpdateQuestionTemplateConfig>(
+    'files',
+    updateFilesQuestionTemplateSchema,
+    mapFilesQuestionTemplate,
+  ),
   deleteQuestionTemplate,
 };
 
@@ -269,10 +398,6 @@ export const createCreateQuestion = <Config extends QuestionConfig>(
 
   if (!context.user) {
     throw new NotAuthenticatedError();
-  }
-
-  if (context.user.role !== AdminRole.admin) {
-    throw new Forbidden();
   }
 
   const session = await mongoose.startSession();
@@ -393,7 +518,9 @@ const deleteQuestion: Mutation['deleteQuestion'] = async (_, args, context) => {
 
   if (
     !(
-      context.user.role === AdminRole.admin ||
+      (context.user.role === AdminRole.admin &&
+        String(questionDoc.questionnaire.company) ===
+          context.user.company.id) ||
       context.user.id === String(questionDoc.questionnaire.user)
     )
   ) {

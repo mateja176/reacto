@@ -44,6 +44,7 @@ import {
   CreateQuestionDocConfig,
   CreateQuestionTemplateDocConfig,
   UpdateQuestionDocConfig,
+  UpdateQuestionTemplateDocConfig,
 } from './interfaces';
 
 export const createQuestionTemplateDocPayload = (
@@ -133,6 +134,94 @@ export const createQuestionTemplateDocPayload = (
     case 'files':
       return {
         ...questionBase,
+        files: {
+          default: config.input.default ?? undefined,
+        },
+      };
+  }
+};
+
+export const createUpdateQuestionTemplateDocPayload = (
+  config: UpdateQuestionTemplateDocConfig,
+): Omit<QuestionTemplateClass, 'questionnaireConfiguration'> => {
+  const { id, label, name, optional, rule } = config.input;
+
+  const questionTemplateBase = {
+    id,
+    label,
+    name,
+    optional,
+    rule: rule ?? undefined,
+  };
+
+  switch (config.type) {
+    case 'boolean':
+      return {
+        ...questionTemplateBase,
+        boolean: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'string':
+      return {
+        ...questionTemplateBase,
+        string: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'strings':
+      return {
+        ...questionTemplateBase,
+        strings: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+          allowOtherOption: config.input.allowOtherOption,
+        },
+      };
+    case 'multiStrings':
+      return {
+        ...questionTemplateBase,
+        multiStrings: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount,
+        },
+      };
+    case 'number':
+      return {
+        ...questionTemplateBase,
+        number: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'numbers':
+      return {
+        ...questionTemplateBase,
+        numbers: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+          allowOtherOption: config.input.allowOtherOption,
+        },
+      };
+    case 'multiNumbers':
+      return {
+        ...questionTemplateBase,
+        multiNumbers: {
+          default: config.input.default ?? undefined,
+          options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount,
+        },
+      };
+    case 'file':
+      return {
+        ...questionTemplateBase,
+        file: {
+          default: config.input.default ?? undefined,
+        },
+      };
+    case 'files':
+      return {
+        ...questionTemplateBase,
         files: {
           default: config.input.default ?? undefined,
         },

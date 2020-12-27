@@ -1,6 +1,7 @@
 import { DocumentType } from '@typegoose/typegoose';
 import joi from 'joi';
 import { QuestionClass } from '../../classes/Question/Question';
+import { QuestionTemplateClass } from '../../classes/Question/QuestionTemplate';
 import {
   CreateBooleanQuestionInput,
   CreateBooleanQuestionTemplateInput,
@@ -22,21 +23,30 @@ import {
   CreateStringsQuestionTemplateInput,
   QuestionBase,
   UpdateBooleanQuestionInput,
+  UpdateBooleanQuestionTemplateInput,
   UpdateFileQuestionInput,
+  UpdateFileQuestionTemplateInput,
   UpdateFilesQuestionInput,
+  UpdateFilesQuestionTemplateInput,
   UpdateMultiNumbersQuestionInput,
+  UpdateMultiNumbersQuestionTemplateInput,
   UpdateMultiStringsQuestionInput,
+  UpdateMultiStringsQuestionTemplateInput,
   UpdateNumberQuestionInput,
+  UpdateNumberQuestionTemplateInput,
   UpdateNumbersQuestionInput,
+  UpdateNumbersQuestionTemplateInput,
   UpdateStringQuestionInput,
+  UpdateStringQuestionTemplateInput,
   UpdateStringsQuestionInput,
+  UpdateStringsQuestionTemplateInput,
 } from '../../generated/graphql';
 import { QuestionType } from '../../interfaces/Type';
 import { idSchema } from '../../utils/validate';
 
 export const doesUpdateQuestionMatchQuestion = (
   type: QuestionType,
-  questionDoc: DocumentType<QuestionClass>,
+  questionDoc: DocumentType<QuestionTemplateClass | QuestionClass>,
 ): boolean => {
   switch (type) {
     case 'boolean':
@@ -131,6 +141,71 @@ export const createFilesQuestionTemplateSchema = joi
   })
   .required();
 
+const updateQuestionTemplateBaseSchemaMap: joi.SchemaMap<
+  Omit<UpdateBooleanQuestionTemplateInput, 'default'>
+> = {
+  id: idSchema,
+  name: joi.string(),
+  label: joi.string(),
+  optional: joi.boolean(),
+  rule: joi.string(), // TODO create parser
+};
+
+export const updateBooleanQuestionTemplateSchema = joi
+  .object<UpdateBooleanQuestionTemplateInput>({
+    ...updateQuestionTemplateBaseSchemaMap,
+    default: joi.boolean(),
+  })
+  .required();
+export const updateStringQuestionTemplateSchema = joi
+  .object<UpdateStringQuestionTemplateInput>({
+    ...updateQuestionTemplateBaseSchemaMap,
+    default: joi.string(),
+  })
+  .required();
+export const updateStringsQuestionTemplateSchema = joi
+  .object<UpdateStringsQuestionTemplateInput>({
+    ...updateQuestionTemplateBaseSchemaMap,
+    default: joi.string(),
+  })
+  .required();
+export const updateMultiStringsQuestionTemplateSchema = joi
+  .object<UpdateMultiStringsQuestionTemplateInput>({
+    ...updateQuestionTemplateBaseSchemaMap,
+    default: joi.array().items(joi.string()),
+  })
+  .required();
+export const updateNumberQuestionTemplateSchema = joi
+  .object<UpdateNumberQuestionTemplateInput>({
+    ...updateQuestionTemplateBaseSchemaMap,
+    default: joi.number(),
+  })
+  .required();
+export const updateNumbersQuestionTemplateSchema = joi
+  .object<UpdateNumbersQuestionTemplateInput>({
+    ...updateQuestionTemplateBaseSchemaMap,
+    default: joi.number(),
+  })
+  .required();
+export const updateMultiNumbersQuestionTemplateSchema = joi
+  .object<UpdateMultiNumbersQuestionTemplateInput>({
+    ...updateQuestionTemplateBaseSchemaMap,
+    default: joi.array().items(joi.number().required()),
+  })
+  .required();
+export const updateFileQuestionTemplateSchema = joi
+  .object<UpdateFileQuestionTemplateInput>({
+    ...updateQuestionTemplateBaseSchemaMap,
+    default: joi.string(),
+  })
+  .required();
+export const updateFilesQuestionTemplateSchema = joi
+  .object<UpdateFilesQuestionTemplateInput>({
+    ...updateQuestionTemplateBaseSchemaMap,
+    default: joi.array().items(joi.string()),
+  })
+  .required();
+
 // Question
 const createQuestionBaseSchemaMap: joi.SchemaMap<
   Base & Pick<CreateBooleanQuestionInput, 'questionnaireId'>
@@ -199,7 +274,7 @@ export const createFilesQuestionSchema = joi
 const updateQuestionBaseSchemaMap: joi.SchemaMap<
   Omit<UpdateBooleanQuestionInput, 'default'>
 > = {
-  id: joi.string(),
+  id: idSchema,
   name: joi.string(),
   label: joi.string(),
   optional: joi.boolean(),
