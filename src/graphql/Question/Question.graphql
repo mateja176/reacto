@@ -211,6 +211,8 @@ input UpdateStringsQuestionInput {
   label: String
   rule: String
   optional: Boolean
+  options: [String!]
+  otherOptionsCount: Int
   default: String
 }
 input UpdateMultiStringsQuestionInput {
@@ -219,6 +221,8 @@ input UpdateMultiStringsQuestionInput {
   label: String
   rule: String
   optional: Boolean
+  options: [String!]
+  otherOptionsCount: Int
   default: [String!]
 }
 input UpdateNumberQuestionInput {
@@ -235,6 +239,8 @@ input UpdateNumbersQuestionInput {
   label: String
   rule: String
   optional: Boolean
+  options: [Float!]
+  otherOptionsCount: Int
   default: Float
 }
 input UpdateMultiNumbersQuestionInput {
@@ -243,6 +249,8 @@ input UpdateMultiNumbersQuestionInput {
   label: String
   rule: String
   optional: Boolean
+  options: [Float!]
+  otherOptionsCount: Int
   default: [Float!]
 }
 input UpdateFileQuestionInput {
