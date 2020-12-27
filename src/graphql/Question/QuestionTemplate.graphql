@@ -23,8 +23,9 @@ type StringsQuestionTemplate implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
-  default: String
   options: [String!]!
+  otherOptionsCount: Int!
+  default: String
 }
 type MultiStringsQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
@@ -33,8 +34,9 @@ type MultiStringsQuestionTemplate implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
-  default: [String!]
   options: [String!]!
+  otherOptionsCount: Int!
+  default: [String!]
 }
 type NumberQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
@@ -52,8 +54,9 @@ type NumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
-  default: Float
   options: [Float!]!
+  otherOptionsCount: Int!
+  default: Float
 }
 type MultiNumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
@@ -62,8 +65,9 @@ type MultiNumbersQuestionTemplate implements Node & NamedNode & QuestionBase {
   rule: String
   optional: Boolean!
   questionnaireConfiguration: QuestionnaireConfiguration!
-  default: [Float!]
   options: [Float!]!
+  otherOptionsCount: Int!
+  default: [Float!]
 }
 type FileQuestionTemplate implements Node & NamedNode & QuestionBase {
   id: ID!
@@ -105,6 +109,7 @@ input CreateBooleanQuestionTemplateInput {
   rule: String
   optional: Boolean!
   questionnaireConfigurationId: ID!
+  otherOptionsCount: Int
   default: Boolean
 }
 input CreateStringQuestionTemplateInput {
@@ -121,8 +126,9 @@ input CreateStringsQuestionTemplateInput {
   rule: String
   optional: Boolean!
   questionnaireConfigurationId: ID!
-  default: String
   options: [String!]!
+  otherOptionsCount: Int
+  default: String
 }
 input CreateMultiStringsQuestionTemplateInput {
   name: String!
@@ -130,8 +136,9 @@ input CreateMultiStringsQuestionTemplateInput {
   rule: String
   optional: Boolean!
   questionnaireConfigurationId: ID!
-  default: [String!]
   options: [String!]!
+  otherOptionsCount: Int
+  default: [String!]
 }
 input CreateNumberQuestionTemplateInput {
   name: String!
@@ -147,8 +154,9 @@ input CreateNumbersQuestionTemplateInput {
   rule: String
   optional: Boolean!
   questionnaireConfigurationId: ID!
-  default: Float
   options: [Float!]!
+  otherOptionsCount: Int
+  default: Float
 }
 input CreateMultiNumbersQuestionTemplateInput {
   name: String!
@@ -156,8 +164,9 @@ input CreateMultiNumbersQuestionTemplateInput {
   rule: String
   optional: Boolean!
   questionnaireConfigurationId: ID!
-  default: [Float!]
   options: [Float!]!
+  otherOptionsCount: Int
+  default: [Float!]
 }
 input CreateFileQuestionTemplateInput {
   name: String!

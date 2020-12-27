@@ -85,6 +85,7 @@ export const createQuestionTemplateDoc = (
         strings: {
           default: config.input.default ?? undefined,
           options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount ?? 0,
         },
       };
     case 'multiStrings':
@@ -93,6 +94,7 @@ export const createQuestionTemplateDoc = (
         multiStrings: {
           default: config.input.default ?? undefined,
           options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount ?? 0,
         },
       };
     case 'number':
@@ -108,6 +110,7 @@ export const createQuestionTemplateDoc = (
         numbers: {
           default: config.input.default ?? undefined,
           options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount ?? 0,
         },
       };
     case 'multiNumbers':
@@ -116,6 +119,7 @@ export const createQuestionTemplateDoc = (
         multiNumbers: {
           default: config.input.default ?? undefined,
           options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount ?? 0,
         },
       };
     case 'file':
@@ -211,6 +215,7 @@ const mapStringsQuestionTemplateClass = (
       ...base,
       default: cls.strings.default ?? null,
       options: cls.strings.options,
+      otherOptionsCount: cls.strings.otherOptionsCount,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -229,6 +234,7 @@ const mapMultiStringsQuestionTemplateClass = (
       ...base,
       default: cls.multiStrings.default ?? null,
       options: cls.multiStrings.options,
+      otherOptionsCount: cls.multiStrings.otherOptionsCount,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -264,6 +270,7 @@ const mapNumbersQuestionTemplateClass = (
       ...base,
       default: cls.numbers.default ?? null,
       options: cls.numbers.options,
+      otherOptionsCount: cls.numbers.otherOptionsCount,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -282,6 +289,7 @@ const mapMultiNumbersQuestionTemplateClass = (
       ...base,
       default: cls.multiNumbers.default ?? null,
       options: cls.multiNumbers.options,
+      otherOptionsCount: cls.multiNumbers.otherOptionsCount,
     };
   } else {
     throw new InvalidQuestionTemplateError();
@@ -403,6 +411,7 @@ export const createQuestionDoc = (
         strings: {
           default: config.input.default ?? undefined,
           options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount ?? 0,
         },
       };
     case 'multiStrings':
@@ -411,6 +420,7 @@ export const createQuestionDoc = (
         multiStrings: {
           default: config.input.default ?? undefined,
           options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount ?? 0,
         },
       };
     case 'number':
@@ -426,6 +436,7 @@ export const createQuestionDoc = (
         numbers: {
           default: config.input.default ?? undefined,
           options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount ?? 0,
         },
       };
     case 'multiNumbers':
@@ -434,6 +445,7 @@ export const createQuestionDoc = (
         multiNumbers: {
           default: config.input.default ?? undefined,
           options: config.input.options,
+          otherOptionsCount: config.input.otherOptionsCount ?? 0,
         },
       };
     case 'file':
@@ -548,6 +560,7 @@ const mapStringsQuestionClass = (
       ...base,
       default: cls.strings.default ?? null,
       options: cls.strings.options,
+      otherOptionsCount: cls.strings.otherOptionsCount,
       answer: cls.answer
         ? createFind({
             Model: models.Answer,
@@ -573,6 +586,7 @@ const mapMultiStringsQuestionClass = (
       ...base,
       default: cls.multiStrings.default ?? null,
       options: cls.multiStrings.options,
+      otherOptionsCount: cls.multiStrings.otherOptionsCount,
       answer: cls.answer
         ? createFind({
             Model: models.Answer,
@@ -624,6 +638,7 @@ const mapNumbersQuestionClass = (
       ...base,
       default: cls.numbers.default ?? null,
       options: cls.numbers.options,
+      otherOptionsCount: cls.numbers.otherOptionsCount,
       answer: cls.answer
         ? createFind({
             Model: models.Answer,
@@ -649,6 +664,7 @@ const mapMultiNumbersQuestionClass = (
       ...base,
       default: cls.multiNumbers.default ?? null,
       options: cls.multiNumbers.options,
+      otherOptionsCount: cls.multiNumbers.otherOptionsCount,
       answer: cls.answer
         ? createFind({
             Model: models.Answer,

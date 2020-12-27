@@ -26,15 +26,31 @@ export class QuestionBase implements Named, Ruled {
   @prop()
   public string?: { default?: string };
   @prop({ comment: 'Select Textual' })
-  public strings?: { options: string[]; default?: string };
+  public strings?: {
+    options: string[];
+    otherOptionsCount: number;
+    default?: string;
+  };
   @prop({ comment: 'Multi-select Textual' })
-  public multiStrings?: { options: string[]; default?: string[] };
+  public multiStrings?: {
+    options: string[];
+    otherOptionsCount: number;
+    default?: string[];
+  };
   @prop()
   public number?: { default?: number };
   @prop({ comment: 'Select Numerical' })
-  public numbers?: { options: number[]; default?: number };
+  public numbers?: {
+    options: number[];
+    otherOptionsCount: number;
+    default?: number;
+  };
   @prop({ comment: 'Multi-select Numerical' })
-  public multiNumbers?: { options: number[]; default?: number[] };
+  public multiNumbers?: {
+    options: number[];
+    otherOptionsCount: number;
+    default?: number[];
+  };
   @prop()
   public file?: { default?: string };
   @prop()

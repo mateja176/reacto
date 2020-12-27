@@ -27,6 +27,7 @@ type StringsQuestion implements Node & NamedNode & QuestionBase {
   questionnaire: Questionnaire!
   answer: StringsAnswer
   options: [String!]!
+  otherOptionsCount: Int!
   default: String
 }
 type MultiStringsQuestion implements Node & NamedNode & QuestionBase {
@@ -38,6 +39,7 @@ type MultiStringsQuestion implements Node & NamedNode & QuestionBase {
   questionnaire: Questionnaire!
   answer: MultiStringsAnswer
   options: [String!]!
+  otherOptionsCount: Int!
   default: [String!]
 }
 type NumberQuestion implements Node & NamedNode & QuestionBase {
@@ -59,6 +61,7 @@ type NumbersQuestion implements Node & NamedNode & QuestionBase {
   questionnaire: Questionnaire!
   answer: NumbersAnswer
   options: [Float!]!
+  otherOptionsCount: Int!
   default: Float
 }
 type MultiNumbersQuestion implements Node & NamedNode & QuestionBase {
@@ -70,6 +73,7 @@ type MultiNumbersQuestion implements Node & NamedNode & QuestionBase {
   questionnaire: Questionnaire!
   answer: MultiNumbersAnswer
   options: [Float!]!
+  otherOptionsCount: Int!
   default: [Float!]
 }
 type FileQuestion implements Node & NamedNode & QuestionBase {
@@ -126,8 +130,9 @@ input CreateStringsQuestionInput {
   rule: String
   optional: Boolean!
   questionnaireId: ID!
-  default: String
   options: [String!]!
+  otherOptionsCount: Int
+  default: String
 }
 input CreateMultiStringsQuestionInput {
   name: String!
@@ -135,8 +140,9 @@ input CreateMultiStringsQuestionInput {
   rule: String
   optional: Boolean!
   questionnaireId: ID!
-  default: [String!]
   options: [String!]!
+  otherOptionsCount: Int
+  default: [String!]
 }
 input CreateNumberQuestionInput {
   name: String!
@@ -152,8 +158,9 @@ input CreateNumbersQuestionInput {
   rule: String
   optional: Boolean!
   questionnaireId: ID!
-  default: Float
   options: [Float!]!
+  otherOptionsCount: Int
+  default: Float
 }
 input CreateMultiNumbersQuestionInput {
   name: String!
@@ -161,8 +168,9 @@ input CreateMultiNumbersQuestionInput {
   rule: String
   optional: Boolean!
   questionnaireId: ID!
-  default: [Float!]
   options: [Float!]!
+  otherOptionsCount: Int
+  default: [Float!]
 }
 input CreateFileQuestionInput {
   name: String!
