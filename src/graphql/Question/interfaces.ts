@@ -394,3 +394,41 @@ export type UpdateQuestionConfig =
   | MultiNumbersUpdateQuestionConfig
   | FileUpdateQuestionConfig
   | FilesUpdateQuestionConfig;
+
+export type UpdateQuestionDocConfig =
+  | {
+      type: 'boolean';
+      input: UpdateBooleanQuestionInput;
+    }
+  | {
+      type: 'string';
+      input: UpdateStringQuestionInput;
+    }
+  | {
+      type: 'strings';
+      input: UpdateStringsQuestionInput;
+    }
+  | {
+      type: 'multiStrings';
+      input: UpdateMultiStringsQuestionInput;
+    }
+  | {
+      type: 'number';
+      input: UpdateNumberQuestionInput;
+    }
+  | {
+      type: 'numbers';
+      input: UpdateNumbersQuestionInput;
+    }
+  | {
+      type: 'multiNumbers';
+      input: UpdateMultiNumbersQuestionInput;
+    }
+  | {
+      type: 'file';
+      input: UpdateFileQuestionInput;
+    }
+  | {
+      type: 'files';
+      input: UpdateFilesQuestionInput;
+    };
