@@ -19,6 +19,7 @@
     "seed": "ts-node scripts/seed.ts",
     "merge-schema": "ts-node scripts/mergeSchema.ts",
     "generate-ts": "ts-node scripts/generateTs.ts",
+    "postgenerate-ts": "prettier src/generated/graphql.ts --write",
     "merge-and-generate": "npm run merge-schema && npm run generate-ts",
     "merge-and-generate:watch": "nodemon --config nodemon.dev.json"
   },
