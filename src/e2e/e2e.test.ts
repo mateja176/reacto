@@ -177,6 +177,45 @@ describe('e2e', () => {
     });
   });
 
+  describe('questionnaire configuration', () => {
+    test('questionnaire configurations', async () => {
+      const { sdk } = await createQuestionnaireConfigurationDoc({
+        models,
+        seedInput,
+      });
+
+      const {
+        questionnaireConfigurations,
+      } = await sdk.QuestionnaireConfigurations({ input: {} });
+
+      expect(questionnaireConfigurations.length).toBe(1);
+    });
+
+    test('create', async () => {
+      const { userDoc } = await createCompanyAndUser(models)(seedInput);
+
+      const token = createToken(userDocToJWTUser(userDoc));
+
+      const sdk = getSdk(
+        new GraphQLClient(endpoint, {
+          headers: createHeaders(token),
+        }),
+      );
+
+      const type = 'Test';
+      const {
+        createQuestionnaireConfiguration,
+      } = await sdk.CreateQuestionnaireConfiguration({
+        input: {
+          name: 'Test Questionnaire',
+          type,
+        },
+      });
+
+      expect(createQuestionnaireConfiguration.type).toBe(type);
+    });
+  });
+
   describe('questionnaire', () => {
     test('create', async () => {
       const {
@@ -193,45 +232,6 @@ describe('e2e', () => {
       });
 
       expect(createQuestionnaire.type).toBe(type);
-    });
-
-    describe('questionnaire configuration', () => {
-      test('questionnaire configurations', async () => {
-        const { sdk } = await createQuestionnaireConfigurationDoc({
-          models,
-          seedInput,
-        });
-
-        const {
-          questionnaireConfigurations,
-        } = await sdk.QuestionnaireConfigurations({ input: {} });
-
-        expect(questionnaireConfigurations.length).toBe(1);
-      });
-
-      test('create', async () => {
-        const { userDoc } = await createCompanyAndUser(models)(seedInput);
-
-        const token = createToken(userDocToJWTUser(userDoc));
-
-        const sdk = getSdk(
-          new GraphQLClient(endpoint, {
-            headers: createHeaders(token),
-          }),
-        );
-
-        const type = 'Test';
-        const {
-          createQuestionnaireConfiguration,
-        } = await sdk.CreateQuestionnaireConfiguration({
-          input: {
-            name: 'Test Questionnaire',
-            type,
-          },
-        });
-
-        expect(createQuestionnaireConfiguration.type).toBe(type);
-      });
     });
 
     describe('question template', () => {
