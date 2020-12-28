@@ -196,6 +196,19 @@ describe('e2e', () => {
     });
 
     describe('questionnaire configuration', () => {
+      test('questionnaire configurations', async () => {
+        const { sdk } = await createQuestionnaireConfigurationDoc({
+          models,
+          seedInput,
+        });
+
+        const {
+          questionnaireConfigurations,
+        } = await sdk.QuestionnaireConfigurations({ input: {} });
+
+        expect(questionnaireConfigurations.length).toBe(1);
+      });
+
       test('create', async () => {
         const { userDoc } = await createCompanyAndUser(models)(seedInput);
 
@@ -218,19 +231,6 @@ describe('e2e', () => {
         });
 
         expect(createQuestionnaireConfiguration.type).toBe(type);
-      });
-
-      test('questionnaire configurations', async () => {
-        const { sdk } = await createQuestionnaireConfigurationDoc({
-          models,
-          seedInput,
-        });
-
-        const {
-          questionnaireConfigurations,
-        } = await sdk.QuestionnaireConfigurations({ input: {} });
-
-        expect(questionnaireConfigurations.length).toBe(1);
       });
     });
 
