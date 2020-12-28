@@ -8,5 +8,5 @@ type Company implements Node & NamedNode {
 }
 
 type Query {
-  company(id: ID!): Company!
+  company: Company!
 }

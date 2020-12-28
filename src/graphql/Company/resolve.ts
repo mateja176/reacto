@@ -1,9 +1,5 @@
 import { Query } from '../../generated/graphql';
-import {
-  Forbidden,
-  NotAuthenticatedError,
-  NotFoundError,
-} from '../../utils/errors';
+import { NotAuthenticatedError, NotFoundError } from '../../utils/errors';
 import { mapCompany } from './map';
 
 const company: Query['company'] = async (_, args, context) => {
@@ -11,11 +7,9 @@ const company: Query['company'] = async (_, args, context) => {
     throw new NotAuthenticatedError();
   }
 
-  if (context.user.company.id !== args.id) {
-    throw new Forbidden();
-  }
-
-  const companyDoc = await context.models.Company.findById(args.id);
+  const companyDoc = await context.models.Company.findById(
+    context.user.company.id,
+  );
 
   if (!companyDoc) {
     throw new NotFoundError();

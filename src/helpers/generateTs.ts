@@ -92,7 +92,7 @@ export const mapObject = (
           [],
           fieldType.name,
           undefined,
-          fieldType.args.length === 0
+          fieldType.args.length === 0 && type.name !== 'Query'
             ? mapFactory(fieldType.type)
             : ts.factory.createFunctionTypeNode(
                 [],
@@ -113,16 +113,20 @@ export const mapObject = (
                     undefined,
                     'args',
                     undefined,
-                    ts.factory.createTypeLiteralNode(
-                      fieldType.args.map((arg) =>
-                        ts.factory.createPropertySignature(
-                          [],
-                          arg.name,
-                          undefined,
-                          mapInput(arg.type),
+                    fieldType.args.length === 0
+                      ? ts.factory.createKeywordTypeNode(
+                          ts.SyntaxKind.NullKeyword as ts.KeywordTypeSyntaxKind,
+                        )
+                      : ts.factory.createTypeLiteralNode(
+                          fieldType.args.map((arg) =>
+                            ts.factory.createPropertySignature(
+                              [],
+                              arg.name,
+                              undefined,
+                              mapInput(arg.type),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
                   ),
                   ts.factory.createParameterDeclaration(
                     [],
