@@ -71,6 +71,24 @@ describe('e2e', () => {
   });
 
   describe('users', () => {
+    test('user', async () => {
+      const { userDoc } = await createCompanyAndUser(models)(seedInput);
+
+      const token = createToken(userDocToJWTUser(userDoc));
+
+      const sdk = getSdk(
+        new GraphQLClient(endpoint, { headers: createHeaders(token) }),
+      );
+
+      const { user } = await sdk.User({ id: userDoc._id });
+
+      if (user.__typename !== 'AdminUser') {
+        throw new Error('User is not admin.');
+      }
+
+      expect(user.id).toBe(String(userDoc._id));
+    });
+
     test('login', async () => {
       await createCompanyAndUser(models)(seedInput);
 

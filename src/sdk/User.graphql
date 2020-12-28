@@ -1,0 +1,11 @@
+query User($id: ID!) {
+  user(id: $id) {
+    __typename
+    ... on AdminUser {
+      id
+      email
+      name
+      role
+    }
+  }
+}
