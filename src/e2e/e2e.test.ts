@@ -59,6 +59,17 @@ describe('e2e', () => {
   afterEach(async () => {
     await mongoose.connection.db.dropDatabase();
   });
+
+  describe('company', async () => {
+    const { companyDoc } = await createCompanyAndUser(models)(seedInput);
+
+    const sdk = getSdk(new GraphQLClient(endpoint));
+
+    const { company } = await sdk.Company();
+
+    expect(company.id).toBe(String(companyDoc._id));
+  });
+
   describe('users', () => {
     test('login', async () => {
       await createCompanyAndUser(models)(seedInput);
