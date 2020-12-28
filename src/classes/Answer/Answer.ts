@@ -1,4 +1,12 @@
-import { ModelOptions, prop, Ref, Severity } from '@typegoose/typegoose';
+import {
+  DocumentType,
+  ModelOptions,
+  pre,
+  prop,
+  Ref,
+  Severity,
+} from '@typegoose/typegoose';
+import { answerTypes } from '../../interfaces/Type';
 import { QuestionClass } from '../Question/Question';
 
 /**
@@ -6,6 +14,15 @@ import { QuestionClass } from '../Question/Question';
  * In rare cases where the default question value has changed.
  * This would be inconsistent in relation the to default user was presented with, at the time of answering.
  */
+@pre('save', function (this: DocumentType<AnswerClass>) {
+  const answerTypeCount = answerTypes.reduce(
+    (count, key) => (this[key] ? count + 1 : count),
+    0,
+  );
+  if (answerTypeCount !== 1) {
+    throw new Error('Answer may only have a single type.');
+  }
+})
 @ModelOptions({ options: { customName: 'Answer', allowMixed: Severity.ALLOW } })
 export class AnswerClass {
   @prop({ ref: () => QuestionClass })
