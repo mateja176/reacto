@@ -124,3 +124,21 @@ export const createStringQuestionDoc = async (params: CreateParams) => {
 
   return { ...questionnaireData, questionDoc };
 };
+
+export const createStringQuestionTemplateDoc = async (params: CreateParams) => {
+  const questionnaireConfigurationData = await createQuestionnaireConfigurationDoc(
+    params,
+  );
+
+  const { questionnaireConfigurationDoc } = questionnaireConfigurationData;
+
+  const questionTemplateDoc = await params.models.QuestionTemplate.create({
+    name: 'Test',
+    label: 'How are you?',
+    optional: false,
+    string: { default: 'Fine, thank you.' },
+    questionnaireConfiguration: questionnaireConfigurationDoc._id,
+  });
+
+  return { ...questionnaireConfigurationData, questionTemplateDoc };
+};

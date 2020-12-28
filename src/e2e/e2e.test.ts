@@ -20,6 +20,7 @@ import {
   createQuestionnaireConfigurationDoc,
   createQuestionnaireDoc,
   createStringQuestionDoc,
+  createStringQuestionTemplateDoc,
 } from '../helpers/db';
 import { createHeaders } from '../helpers/helpers';
 import { userDocToJWTUser } from '../helpers/map';
@@ -198,6 +199,19 @@ describe('e2e', () => {
         });
 
         expect(createStringQuestionTemplate.default).toBe(defaultString);
+      });
+
+      test('delete', async () => {
+        const {
+          sdk,
+          questionTemplateDoc,
+        } = await createStringQuestionTemplateDoc({ models, seedInput });
+
+        const { deleteQuestionTemplate } = await sdk.DeleteQuestionTemplate({
+          id: questionTemplateDoc._id,
+        });
+
+        expect(deleteQuestionTemplate).toBe(String(questionTemplateDoc._id));
       });
     });
 
