@@ -89,6 +89,20 @@ describe('e2e', () => {
       expect(user.id).toBe(String(userDoc._id));
     });
 
+    test('users query', async () => {
+      const { userDoc } = await createCompanyAndUser(models)(seedInput);
+
+      const token = createToken(userDocToJWTUser(userDoc));
+
+      const sdk = getSdk(
+        new GraphQLClient(endpoint, { headers: createHeaders(token) }),
+      );
+
+      const { users } = await sdk.Users({ input: {} });
+
+      expect(users.length).toBe(1);
+    });
+
     test('login', async () => {
       await createCompanyAndUser(models)(seedInput);
 

@@ -1,0 +1,11 @@
+query Users($input: FilterInput!) {
+  users(input: $input) {
+    __typename
+    ... on AdminUser {
+      id
+      email
+      name
+      role
+    }
+  }
+}
