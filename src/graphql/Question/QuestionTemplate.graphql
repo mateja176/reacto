@@ -117,10 +117,6 @@ union QuestionTemplate =
   | FileQuestionTemplate
   | FilesQuestionTemplate
 
-type Query {
-  questionTemplates(input: FilterInput!): [QuestionTemplate!]!
-}
-
 input CreateBooleanQuestionTemplateInput {
   name: String!
   label: String!

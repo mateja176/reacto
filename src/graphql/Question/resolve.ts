@@ -4,7 +4,7 @@ import { QuestionTemplateClass } from '../../classes/Question/QuestionTemplate';
 import { QuestionnaireClass } from '../../classes/Questionnaire/Questionnaire';
 import { QuestionnaireConfigurationClass } from '../../classes/QuestionnaireConfiguration/QuestionnaireConfiguration';
 import { Context } from '../../Context';
-import { AdminRole, Mutation, Query } from '../../generated/graphql';
+import { AdminRole, Mutation } from '../../generated/graphql';
 import {
   Forbidden,
   NotAuthenticatedError,
@@ -12,11 +12,7 @@ import {
   QuestionnaireConfigurationNotFound,
 } from '../../utils/errors';
 import { WithId } from '../../utils/map';
-import {
-  filterInputSchema,
-  idSchema,
-  ValidatedFilterInput,
-} from '../../utils/validate';
+import { idSchema } from '../../utils/validate';
 import {
   BooleanQuestionConfig,
   BooleanQuestionTemplateConfig,
@@ -81,7 +77,6 @@ import {
   mapNumberQuestionTemplate,
   mapNumbersQuestion,
   mapNumbersQuestionTemplate,
-  mapQuestionTemplate,
   mapStringQuestion,
   mapStringQuestionTemplate,
   mapStringsQuestion,
@@ -118,32 +113,7 @@ import {
   updateStringsQuestionTemplateSchema,
 } from './validate';
 
-const questionTemplates: Query['questionTemplates'] = async (
-  _,
-  args,
-  context,
-) => {
-  const {
-    skip,
-    limit,
-  }: ValidatedFilterInput = await filterInputSchema.validateAsync(args.input);
-
-  if (!context.user) {
-    throw new NotAuthenticatedError();
-  }
-
-  const questionTemplateDocs = await context.models.QuestionTemplate.find({
-    company: context.user.company.id,
-  })
-    .skip(skip)
-    .limit(limit);
-
-  return questionTemplateDocs.map(mapQuestionTemplate(context.models));
-};
-
-export const questionTemplateQuery = {
-  questionTemplates,
-};
+export const questionTemplateQuery = {};
 
 export const createCreateQuestionTemplate = <
   Config extends QuestionTemplateConfig
