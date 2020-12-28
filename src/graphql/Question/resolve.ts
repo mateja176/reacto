@@ -508,7 +508,7 @@ const deleteQuestion: Mutation['deleteQuestion'] = async (_, args, context) => {
 
   const questionDoc = (await context.models.Question.findByIdAndDelete(
     args.id,
-  )) as DocumentType<
+  ).populate('questionnaire')) as DocumentType<
     Omit<QuestionClass, 'questionnaire'> & { questionnaire: QuestionnaireClass }
   >;
 

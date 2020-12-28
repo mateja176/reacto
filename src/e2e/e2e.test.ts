@@ -236,6 +236,19 @@ describe('e2e', () => {
 
         expect(createStringQuestion.default).toBe(defaultString);
       });
+
+      test('delete', async () => {
+        const { sdk, questionDoc } = await createStringQuestionDoc({
+          models,
+          seedInput,
+        });
+
+        const { deleteQuestion } = await sdk.DeleteQuestion({
+          id: questionDoc._id,
+        });
+
+        expect(deleteQuestion).toBe(String(questionDoc._id));
+      });
     });
 
     describe('answer', () => {
