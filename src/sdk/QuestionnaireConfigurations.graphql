@@ -1,0 +1,7 @@
+query QuestionnaireConfigurations($input: FilterInput!) {
+  questionnaireConfigurations(input: $input) {
+    id
+    name
+    type
+  }
+}
