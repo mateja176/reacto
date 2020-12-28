@@ -217,6 +217,14 @@ describe('e2e', () => {
   });
 
   describe('questionnaire', () => {
+    test('questionnaires', async () => {
+      const { sdk } = await createQuestionnaireDoc({ models, seedInput });
+
+      const { questionnaires } = await sdk.Questionnaires({ input: {} });
+
+      expect(questionnaires.length).toBe(1);
+    });
+
     test('create', async () => {
       const {
         sdk,

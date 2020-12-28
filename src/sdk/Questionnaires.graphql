@@ -1,0 +1,7 @@
+query Questionnaires($input: FilterInput!) {
+  questionnaires(input: $input) {
+    id
+    name
+    type
+  }
+}
