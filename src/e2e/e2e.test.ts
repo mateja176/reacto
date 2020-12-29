@@ -61,7 +61,7 @@ describe('e2e', () => {
   });
 
   describe('company', async () => {
-    const { companyDoc } = await createCompanyAndUser(models)(seedInput);
+    const { companyDoc } = await createCompanyAndUser({ models, seedInput });
 
     const sdk = getSdk(new GraphQLClient(endpoint));
 
@@ -72,7 +72,7 @@ describe('e2e', () => {
 
   describe('users', () => {
     test('user', async () => {
-      const { userDoc } = await createCompanyAndUser(models)(seedInput);
+      const { userDoc } = await createCompanyAndUser({ models, seedInput });
 
       const token = createToken(userDocToJWTUser(userDoc));
 
@@ -90,7 +90,7 @@ describe('e2e', () => {
     });
 
     test('users query', async () => {
-      const { userDoc } = await createCompanyAndUser(models)(seedInput);
+      const { userDoc } = await createCompanyAndUser({ models, seedInput });
 
       const token = createToken(userDocToJWTUser(userDoc));
 
@@ -104,7 +104,7 @@ describe('e2e', () => {
     });
 
     test('login', async () => {
-      await createCompanyAndUser(models)(seedInput);
+      await createCompanyAndUser({ models, seedInput });
 
       const sdk = getSdk(new GraphQLClient(endpoint));
 
@@ -122,9 +122,12 @@ describe('e2e', () => {
       expect(typeof logIn.token).toBe('string');
     });
     test('invite', async () => {
-      const { userDoc } = await createCompanyAndUser(models)({
-        ...pick(['password', 'name'], seedInput),
-        email: env.mailGunEmail,
+      const { userDoc } = await createCompanyAndUser({
+        models,
+        seedInput: {
+          ...pick(['password', 'name'], seedInput),
+          email: env.mailGunEmail,
+        },
       });
 
       const token = createToken(userDocToJWTUser(userDoc));
@@ -147,7 +150,7 @@ describe('e2e', () => {
       expect(invite.email).toEqual(seedInput.email);
     });
     test('register', async () => {
-      const { companyDoc } = await createCompanyAndUser(models)(seedInput);
+      const { companyDoc } = await createCompanyAndUser({ models, seedInput });
 
       const token = v4();
 
@@ -192,7 +195,7 @@ describe('e2e', () => {
     });
 
     test('create', async () => {
-      const { userDoc } = await createCompanyAndUser(models)(seedInput);
+      const { userDoc } = await createCompanyAndUser({ models, seedInput });
 
       const token = createToken(userDocToJWTUser(userDoc));
 

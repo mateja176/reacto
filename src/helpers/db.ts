@@ -10,11 +10,14 @@ import { createHeaders } from './helpers';
 import { userDocToJWTUser } from './map';
 import { SeedInput } from './seed';
 
-export const createCompanyAndUser = (models: Models) => async ({
-  name,
-  email,
-  password,
-}: SeedInput) => {
+type CreateParams = { models: Models; seedInput: SeedInput };
+
+export const createCompanyAndUser = async ({
+  models,
+  seedInput,
+}: CreateParams) => {
+  const { name, email, password } = seedInput;
+
   const userId = mongoose.Types.ObjectId();
 
   const reacto = await models.Company.create({
@@ -39,13 +42,14 @@ export const createCompanyAndUser = (models: Models) => async ({
   return { userDoc, companyDoc: reacto };
 };
 
-type CreateParams = { models: Models; seedInput: SeedInput };
-
 export const createQuestionnaireConfigurationDoc = async ({
   models,
   seedInput,
 }: CreateParams) => {
-  const { companyDoc, userDoc } = await createCompanyAndUser(models)(seedInput);
+  const { companyDoc, userDoc } = await createCompanyAndUser({
+    models,
+    seedInput,
+  });
 
   const questionnaireConfigurationId = mongoose.Types.ObjectId();
 
